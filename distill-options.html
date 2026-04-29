@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pick a Distill-style — 4 options</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Inter:wght@300;400;500;600;700&amp;family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&amp;family=Spectral:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Inter", system-ui, sans-serif;
+      background: #1a1a1a;
+      color: #ddd;
+    }
+    /* Page chrome */
+    .picker-header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(26,26,26,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid #333;
+      padding: 18px 28px;
+    }
+    .picker-header__row {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; flex-wrap: wrap;
+    }
+    .picker-header h1 { font-size: 16px; font-weight: 600; color: #fff; }
+    .picker-header p { font-size: 13px; color: #999; }
+    .picker-toc { display: flex; gap: 6px; flex-wrap: wrap; max-width: 1200px; margin: 12px auto 0; }
+    .picker-toc a {
+      padding: 4px 10px; border: 1px solid #333; border-radius: 999px;
+      font-size: 12px; color: #ccc; text-decoration: none; background: #222;
+      transition: all 0.15s ease;
+    }
+    .picker-toc a:hover { border-color: #6cff95; color: #6cff95; }
+    .picker-toc a span { font-family: "JetBrains Mono", monospace; font-size: 10px; opacity: 0.6; margin-right: 4px; }
+
+    .preview-section {
+      position: relative;
+      padding: 60px 0;
+      overflow: hidden;
+    }
+    .preview-label {
+      position: absolute; top: 16px; right: 16px;
+      background: rgba(0,0,0,0.85); color: #fff;
+      font-family: "JetBrains Mono", monospace; font-size: 11px;
+      padding: 6px 12px; border-radius: 4px; z-index: 10;
+      letter-spacing: 0.05em;
+    }
+
+    /* ===== Distill grid (shared across variants) ===== */
+    .d-wrap { display: block; padding: 0 20px; }
+    .d-section { margin: 0 auto; }
+    .d-text { max-width: 720px; margin: 0 auto; }
+    .d-wide { max-width: 1080px; margin: 32px auto; }
+
+    .d-divider { height: 1px; max-width: 720px; margin: 40px auto; }
+
+    /* ===== Index card layout (shared) ===== */
+    .d-index-h { font-weight: 600; margin-bottom: 4px; }
+    .d-index-sub { margin-bottom: 24px; }
+    .d-article-card { padding: 16px 0; border-bottom: 1px solid; }
+    .d-article-card:last-child { border-bottom: none; }
+    .d-article-card a { text-decoration: none; display: block; }
+    .d-article-card h3 { font-weight: 600; margin-bottom: 6px; line-height: 1.25; }
+    .d-article-card .d-byline { font-size: 13px; margin-bottom: 8px; }
+    .d-article-card .d-abstract { font-size: 14.5px; line-height: 1.55; }
+
+    /* ===== Post layout (shared) ===== */
+    .d-post-title {
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .d-post-subtitle {
+      font-size: 19px;
+      line-height: 1.45;
+      margin-bottom: 24px;
+    }
+    .d-post-byline {
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid;
+    }
+    .d-post-byline strong { font-weight: 600; }
+    .d-post-byline .d-affil { display: block; font-size: 12px; margin-top: 2px; opacity: 0.7; letter-spacing: 0; font-style: italic; }
+
+    .d-toc {
+      font-size: 13px;
+      margin-bottom: 32px;
+      padding: 16px;
+      border: 1px solid;
+    }
+    .d-toc__label { font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; font-size: 11px; margin-bottom: 8px; }
+    .d-toc ol { list-style: none; padding: 0; }
+    .d-toc li { padding: 2px 0; }
+    .d-toc a { text-decoration: none; }
+
+    .d-abstract-block {
+      font-style: italic;
+      line-height: 1.6;
+      margin-bottom: 32px;
+      padding-left: 16px;
+      border-left: 2px solid;
+    }
+
+    .d-h2 {
+      font-weight: 600;
+      letter-spacing: -0.005em;
+      margin: 40px 0 14px;
+    }
+
+    .d-p {
+      line-height: 1.65;
+      margin-bottom: 18px;
+    }
+
+    .d-figure { margin: 28px 0; }
+    .d-figure__caption {
+      font-size: 13px;
+      line-height: 1.45;
+      margin-top: 10px;
+      max-width: 720px;
+      margin-left: auto; margin-right: auto;
+    }
+    .d-figure__placeholder {
+      width: 100%; aspect-ratio: 4 / 1.6;
+      background: linear-gradient(135deg, transparent 25%, currentColor 25%, currentColor 50%, transparent 50%, transparent 75%, currentColor 75%);
+      background-size: 12px 12px;
+      opacity: 0.08;
+      border: 1px solid;
+    }
+
+    .d-code {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      line-height: 1.55;
+      padding: 14px 18px;
+      overflow-x: auto;
+      margin: 18px 0;
+      border: 1px solid;
+    }
+    .d-code code { white-space: pre; }
+
+    /* Sidenote — only used in Pure Distill (A) */
+    .d-sidenote-host { position: relative; }
+    .d-sidenote {
+      position: absolute;
+      top: 0;
+      right: -300px;
+      width: 260px;
+      font-size: 12.5px;
+      line-height: 1.5;
+      font-style: italic;
+    }
+    .d-sidenote::before {
+      content: counter(sn);
+      counter-increment: sn;
+      position: absolute;
+      left: -22px;
+      top: 0;
+      font-size: 10px;
+      font-weight: 600;
+      font-style: normal;
+    }
+    .d-sidenote-marker {
+      counter-increment: sn-inline;
+      color: inherit;
+      vertical-align: super;
+      font-size: 10px;
+      font-weight: 600;
+      margin-left: 1px;
+    }
+    .d-sidenote-marker::before { content: counter(sn-inline); }
+    @media (max-width: 1100px) {
+      .d-sidenote { position: static; width: 100%; margin: 8px 0 16px; padding-left: 12px; border-left: 2px solid; right: 0; }
+      .d-sidenote::before { left: 0; position: relative; margin-right: 6px; }
+    }
+
+    /* =========================================================
+       A · PURE DISTILL
+       ========================================================= */
+    [data-distill="a-pure"] {
+      background: #ffffff;
+      color: #1a1a1a;
+      font-family: "Crimson Pro", Georgia, serif;
+      font-size: 17px;
+      counter-reset: sn sn-inline;
+    }
+    [data-distill="a-pure"] h1, [data-distill="a-pure"] h2, [data-distill="a-pure"] h3,
+    [data-distill="a-pure"] .d-post-byline, [data-distill="a-pure"] .d-toc,
+    [data-distill="a-pure"] .d-figure__caption, [data-distill="a-pure"] .d-sidenote-marker {
+      font-family: "Inter", sans-serif;
+    }
+    [data-distill="a-pure"] .d-divider { background: #e0e0e0; }
+    [data-distill="a-pure"] .d-index-h { font-size: 24px; color: #000; }
+    [data-distill="a-pure"] .d-index-sub { font-size: 14px; color: #666; font-style: italic; }
+    [data-distill="a-pure"] .d-article-card { border-color: #e0e0e0; }
+    [data-distill="a-pure"] .d-article-card h3 { font-size: 19px; color: #000; }
+    [data-distill="a-pure"] .d-article-card .d-byline { color: #555; font-family: "Inter", sans-serif; }
+    [data-distill="a-pure"] .d-article-card a:hover h3 { color: #067df7; }
+    [data-distill="a-pure"] .d-post-title { font-size: 44px; color: #000; font-family: "Inter", sans-serif; }
+    [data-distill="a-pure"] .d-post-subtitle { color: #555; font-style: italic; }
+    [data-distill="a-pure"] .d-post-byline { color: #333; border-color: #e0e0e0; text-transform: uppercase; }
+    [data-distill="a-pure"] .d-toc { border-color: #e0e0e0; background: #fafafa; }
+    [data-distill="a-pure"] .d-toc__label { color: #555; }
+    [data-distill="a-pure"] .d-toc a { color: #067df7; }
+    [data-distill="a-pure"] .d-abstract-block { color: #444; border-color: #067df7; }
+    [data-distill="a-pure"] .d-h2 { font-size: 22px; color: #000; }
+    [data-distill="a-pure"] .d-p { color: #1a1a1a; }
+    [data-distill="a-pure"] .d-p a { color: #067df7; text-decoration: none; border-bottom: 1px solid rgba(6,125,247,0.3); }
+    [data-distill="a-pure"] .d-p a:hover { border-bottom-color: #067df7; }
+    [data-distill="a-pure"] .d-p strong { font-weight: 600; }
+    [data-distill="a-pure"] .d-p em { font-style: italic; }
+    [data-distill="a-pure"] .d-figure__placeholder { color: #067df7; border-color: #e0e0e0; }
+    [data-distill="a-pure"] .d-figure__caption { color: #555; }
+    [data-distill="a-pure"] .d-code { background: #fafafa; border-color: #e0e0e0; color: #1a1a1a; }
+    [data-distill="a-pure"] .d-sidenote { color: #666; }
+    [data-distill="a-pure"] .d-sidenote::before { color: #067df7; }
+    [data-distill="a-pure"] .d-sidenote-marker { color: #067df7; }
+
+    /* =========================================================
+       B · DISTILL LITE
+       ========================================================= */
+    [data-distill="b-lite"] {
+      background: #ffffff;
+      color: #1a1a1a;
+      font-family: "Crimson Pro", Georgia, serif;
+      font-size: 17px;
+    }
+    [data-distill="b-lite"] h1, [data-distill="b-lite"] h2, [data-distill="b-lite"] h3,
+    [data-distill="b-lite"] .d-post-byline, [data-distill="b-lite"] .d-figure__caption {
+      font-family: "Inter", sans-serif;
+    }
+    [data-distill="b-lite"] .d-divider { background: #e0e0e0; }
+    [data-distill="b-lite"] .d-index-h { font-size: 22px; color: #000; }
+    [data-distill="b-lite"] .d-index-sub { font-size: 14px; color: #666; }
+    [data-distill="b-lite"] .d-article-card { border-color: #e8e8e8; }
+    [data-distill="b-lite"] .d-article-card h3 { font-size: 19px; color: #000; }
+    [data-distill="b-lite"] .d-article-card .d-byline { color: #888; font-family: "Inter", sans-serif; }
+    [data-distill="b-lite"] .d-article-card a:hover h3 { color: #067df7; }
+    [data-distill="b-lite"] .d-post-title { font-size: 40px; color: #000; }
+    [data-distill="b-lite"] .d-post-subtitle { color: #555; font-style: italic; }
+    [data-distill="b-lite"] .d-post-byline { color: #555; border-color: #e8e8e8; }
+    [data-distill="b-lite"] .d-h2 { font-size: 22px; color: #000; }
+    [data-distill="b-lite"] .d-p { color: #1a1a1a; }
+    [data-distill="b-lite"] .d-p a { color: #067df7; text-decoration: none; border-bottom: 1px solid rgba(6,125,247,0.3); }
+    [data-distill="b-lite"] .d-p strong { font-weight: 600; }
+    [data-distill="b-lite"] .d-p em { font-style: italic; }
+    [data-distill="b-lite"] .d-figure__placeholder { color: #067df7; border-color: #e8e8e8; }
+    [data-distill="b-lite"] .d-figure__caption { color: #666; }
+    [data-distill="b-lite"] .d-code { background: #fafafa; border-color: #e8e8e8; color: #1a1a1a; }
+
+    /* =========================================================
+       C · DISTILL CREAM
+       ========================================================= */
+    [data-distill="c-cream"] {
+      background: #fbf7ed;
+      color: #2a2520;
+      font-family: "Crimson Pro", Georgia, serif;
+      font-size: 17px;
+    }
+    [data-distill="c-cream"] h1, [data-distill="c-cream"] h2, [data-distill="c-cream"] h3,
+    [data-distill="c-cream"] .d-post-byline, [data-distill="c-cream"] .d-figure__caption {
+      font-family: "Inter", sans-serif;
+    }
+    [data-distill="c-cream"] .d-divider { background: #d8cfb8; }
+    [data-distill="c-cream"] .d-index-h { font-size: 22px; color: #1a1410; }
+    [data-distill="c-cream"] .d-index-sub { font-size: 14px; color: #6b5d4f; }
+    [data-distill="c-cream"] .d-article-card { border-color: #e6dfc8; }
+    [data-distill="c-cream"] .d-article-card h3 { font-size: 19px; color: #1a1410; }
+    [data-distill="c-cream"] .d-article-card .d-byline { color: #8a7d6c; font-family: "Inter", sans-serif; }
+    [data-distill="c-cream"] .d-article-card a:hover h3 { color: #b8541b; }
+    [data-distill="c-cream"] .d-post-title { font-size: 40px; color: #1a1410; }
+    [data-distill="c-cream"] .d-post-subtitle { color: #6b5d4f; font-style: italic; }
+    [data-distill="c-cream"] .d-post-byline { color: #6b5d4f; border-color: #e6dfc8; }
+    [data-distill="c-cream"] .d-h2 { font-size: 22px; color: #1a1410; }
+    [data-distill="c-cream"] .d-p { color: #2a2520; }
+    [data-distill="c-cream"] .d-p a { color: #b8541b; text-decoration: none; border-bottom: 1px solid rgba(184,84,27,0.4); }
+    [data-distill="c-cream"] .d-p strong { font-weight: 600; }
+    [data-distill="c-cream"] .d-p em { font-style: italic; }
+    [data-distill="c-cream"] .d-figure__placeholder { color: #b8541b; border-color: #e6dfc8; }
+    [data-distill="c-cream"] .d-figure__caption { color: #6b5d4f; }
+    [data-distill="c-cream"] .d-code { background: #f4ecd8; border-color: #e6dfc8; color: #2a2520; }
+
+    /* =========================================================
+       D · DISTILL DARK
+       ========================================================= */
+    [data-distill="d-dark"] {
+      background: #0a0e0a;
+      color: #c4e8cf;
+      font-family: "Crimson Pro", Georgia, serif;
+      font-size: 17px;
+    }
+    [data-distill="d-dark"] h1, [data-distill="d-dark"] h2, [data-distill="d-dark"] h3,
+    [data-distill="d-dark"] .d-post-byline, [data-distill="d-dark"] .d-figure__caption {
+      font-family: "Inter", sans-serif;
+    }
+    [data-distill="d-dark"] .d-divider { background: #1c3322; }
+    [data-distill="d-dark"] .d-index-h { font-size: 22px; color: #6cff95; }
+    [data-distill="d-dark"] .d-index-sub { font-size: 14px; color: #4a8c5e; }
+    [data-distill="d-dark"] .d-article-card { border-color: #1c3322; }
+    [data-distill="d-dark"] .d-article-card h3 { font-size: 19px; color: #6cff95; }
+    [data-distill="d-dark"] .d-article-card .d-byline { color: #4a8c5e; font-family: "Inter", sans-serif; }
+    [data-distill="d-dark"] .d-article-card a:hover h3 { color: #ffd166; }
+    [data-distill="d-dark"] .d-post-title { font-size: 40px; color: #6cff95; }
+    [data-distill="d-dark"] .d-post-subtitle { color: #c4e8cf; font-style: italic; }
+    [data-distill="d-dark"] .d-post-byline { color: #4a8c5e; border-color: #1c3322; }
+    [data-distill="d-dark"] .d-h2 { font-size: 22px; color: #6cff95; }
+    [data-distill="d-dark"] .d-p { color: #c4e8cf; }
+    [data-distill="d-dark"] .d-p a { color: #6cff95; text-decoration: none; border-bottom: 1px solid rgba(108,255,149,0.4); }
+    [data-distill="d-dark"] .d-p strong { color: #6cff95; font-weight: 600; }
+    [data-distill="d-dark"] .d-p em { color: #ffd166; font-style: italic; }
+    [data-distill="d-dark"] .d-figure__placeholder { color: #6cff95; border-color: #1c3322; }
+    [data-distill="d-dark"] .d-figure__caption { color: #4a8c5e; }
+    [data-distill="d-dark"] .d-code { background: #050805; border-color: #1c3322; color: #c4e8cf; }
+
+    .footer-cta {
+      padding: 60px 24px 100px; text-align: center;
+      background: #1a1a1a; color: #ddd;
+    }
+    .footer-cta h2 { font-size: 22px; margin-bottom: 12px; font-weight: 500; color: #fff; }
+    .footer-cta p { color: #aaa; max-width: 540px; margin: 0 auto; line-height: 1.6; }
+    .footer-cta code { background: #2a2a2a; padding: 2px 8px; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 13px; color: #6cff95; }
+  </style>
+</head>
+<body>
+
+  <header class="picker-header">
+    <div class="picker-header__row">
+      <div>
+        <h1>Pick a Distill-style</h1>
+        <p>4 takes on distill.pub. Each shows what the blog index + a post would look like.</p>
+      </div>
+    </div>
+    <nav class="picker-toc" aria-label="Variants">
+      <a href="#a"><span>A</span> Pure Distill</a>
+      <a href="#b"><span>B</span> Distill Lite</a>
+      <a href="#c"><span>C</span> Distill Cream</a>
+      <a href="#d"><span>D</span> Distill Dark</a>
+    </nav>
+  </header>
+
+  <!-- ============== A PURE DISTILL ============== -->
+  <section class="preview-section" id="a" data-distill="a-pure">
+    <span class="preview-label">A · PURE DISTILL</span>
+    <div class="d-wrap">
+
+      <!-- INDEX preview -->
+      <div class="d-section d-text">
+        <h2 class="d-index-h">The Blog</h2>
+        <p class="d-index-sub">A journal on agentic systems, ML infrastructure, and tooling.</p>
+        <article class="d-article-card">
+          <a href="#">
+            <h3>My setup for running ten CLI coding agents at once</h3>
+            <p class="d-byline">Arthur · Apr 28, 2026 · 5 min</p>
+            <p class="d-abstract">tmux, Tailscale, Terminus on iOS, and a small PWA panel — how I keep ~10 parallel coding agents tractable from desk or phone.</p>
+          </a>
+        </article>
+        <article class="d-article-card">
+          <a href="#">
+            <h3>Notes on retrieval over multimodal embeddings</h3>
+            <p class="d-byline">Arthur · Mar 12, 2026 · 8 min</p>
+            <p class="d-abstract">Practical lessons from improving few-shot agent quality with vector-store retrieval — what works, what doesn't, and what surprised me.</p>
+          </a>
+        </article>
+      </div>
+
+      <hr class="d-divider" />
+
+      <!-- POST preview -->
+      <article class="d-section">
+        <header class="d-text">
+          <h1 class="d-post-title">Plan, Define, Act</h1>
+          <p class="d-post-subtitle">A simple three-phase loop for keeping multi-step LLM coding tasks tractable, debuggable, and able to recover from being wrong.</p>
+          <p class="d-post-byline">
+            <strong>Arthur Yau</strong>
+            <span class="d-affil">ML Engineer · Independent</span>
+          </p>
+          <nav class="d-toc">
+            <p class="d-toc__label">Contents</p>
+            <ol>
+              <li><a href="#">1 · Plan</a></li>
+              <li><a href="#">2 · Define</a></li>
+              <li><a href="#">3 · Act</a></li>
+            </ol>
+          </nav>
+          <p class="d-abstract-block">Most LLM coding agents fail in one of three predictable ways. This article describes a simple workflow — Plan, Define, Act — that addresses all three by separating intent, completion criteria, and execution.</p>
+        </header>
+
+        <div class="d-text">
+          <h2 class="d-h2">Plan</h2>
+          <p class="d-p">Before any tool call, the agent writes a discrete-step plan with explicit inputs and outputs. The point isn't to be exhaustive; it's to make wrong assumptions visible <em>before</em> they cost a tool round.<span class="d-sidenote-marker"></span></p>
+          <p class="d-p" style="position: relative;">
+            <span class="d-sidenote">In practice, even a 5-line plan catches roughly half of the cases where the agent would have gone the wrong direction.</span>
+            A good plan is one a colleague could read in 30 seconds and tell you which step is wrong. That's the bar — not "complete" but "falsifiable".
+          </p>
+
+          <pre class="d-code"><code># PLAN
+1. Locate auth middleware
+2. Add requireRole('admin')
+3. Update tests</code></pre>
+
+          <h2 class="d-h2">Define</h2>
+          <p class="d-p">The hidden failure mode is "I finished" without a clear definition of done. The Define phase forces the agent to write down what artifacts will exist, what signal indicates success, and what rollback looks like.</p>
+        </div>
+
+        <figure class="d-figure d-wide">
+          <div class="d-figure__placeholder"></div>
+          <figcaption class="d-figure__caption"><strong>Figure 1.</strong> A typical Plan–Define–Act loop, with the Act phase looping back to Plan when reality disagrees.</figcaption>
+        </figure>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============== B DISTILL LITE ============== -->
+  <section class="preview-section" id="b" data-distill="b-lite">
+    <span class="preview-label">B · DISTILL LITE</span>
+    <div class="d-wrap">
+
+      <div class="d-section d-text">
+        <h2 class="d-index-h">Blog</h2>
+        <p class="d-index-sub">Notes on agentic systems and ML infrastructure.</p>
+        <article class="d-article-card">
+          <a href="#">
+            <h3>My setup for running ten CLI coding agents at once</h3>
+            <p class="d-byline">Apr 28, 2026 · 5 min read</p>
+            <p class="d-abstract">tmux, Tailscale, Terminus on iOS, and a small PWA panel — how I keep ~10 parallel coding agents tractable from desk or phone.</p>
+          </a>
+        </article>
+        <article class="d-article-card">
+          <a href="#">
+            <h3>Notes on retrieval over multimodal embeddings</h3>
+            <p class="d-byline">Mar 12, 2026 · 8 min read</p>
+            <p class="d-abstract">Practical lessons from improving few-shot agent quality with vector-store retrieval — what works, what doesn't, and what surprised me.</p>
+          </a>
+        </article>
+      </div>
+
+      <hr class="d-divider" />
+
+      <article class="d-section">
+        <header class="d-text">
+          <h1 class="d-post-title">Plan, Define, Act</h1>
+          <p class="d-post-subtitle">A simple three-phase loop for keeping multi-step LLM coding tasks tractable, debuggable, and able to recover from being wrong.</p>
+          <p class="d-post-byline">Arthur · Apr 15, 2026 · 6 min read</p>
+        </header>
+
+        <div class="d-text">
+          <p class="d-p">Most LLM coding agents fail in one of three predictable ways: they jump in without a plan, they plan in words but never define <em>what done looks like</em>, or they "act" in tiny steps that lose the thread. I've been using a <strong>three-phase workflow</strong> — see <a href="#">the original notes</a> — that addresses all three.</p>
+
+          <h2 class="d-h2">Plan</h2>
+          <p class="d-p">Before any tool call, the agent writes a discrete-step plan with explicit inputs and outputs.</p>
+
+          <pre class="d-code"><code># PLAN
+1. Locate auth middleware
+2. Add requireRole('admin')
+3. Update tests</code></pre>
+        </div>
+
+        <figure class="d-figure d-wide">
+          <div class="d-figure__placeholder"></div>
+          <figcaption class="d-figure__caption">A typical Plan–Define–Act loop, with the Act phase looping back to Plan when reality disagrees.</figcaption>
+        </figure>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============== C DISTILL CREAM ============== -->
+  <section class="preview-section" id="c" data-distill="c-cream">
+    <span class="preview-label">C · DISTILL CREAM</span>
+    <div class="d-wrap">
+
+      <div class="d-section d-text">
+        <h2 class="d-index-h">Blog</h2>
+        <p class="d-index-sub">Notes on agentic systems and ML infrastructure.</p>
+        <article class="d-article-card">
+          <a href="#">
+            <h3>My setup for running ten CLI coding agents at once</h3>
+            <p class="d-byline">Apr 28, 2026 · 5 min read</p>
+            <p class="d-abstract">tmux, Tailscale, Terminus on iOS, and a small PWA panel — how I keep ~10 parallel coding agents tractable from desk or phone.</p>
+          </a>
+        </article>
+        <article class="d-article-card">
+          <a href="#">
+            <h3>Notes on retrieval over multimodal embeddings</h3>
+            <p class="d-byline">Mar 12, 2026 · 8 min read</p>
+            <p class="d-abstract">Practical lessons from improving few-shot agent quality with vector-store retrieval — what works, what doesn't, and what surprised me.</p>
+          </a>
+        </article>
+      </div>
+
+      <hr class="d-divider" />
+
+      <article class="d-section">
+        <header class="d-text">
+          <h1 class="d-post-title">Plan, Define, Act</h1>
+          <p class="d-post-subtitle">A simple three-phase loop for keeping multi-step LLM coding tasks tractable, debuggable, and able to recover from being wrong.</p>
+          <p class="d-post-byline">Arthur · Apr 15, 2026 · 6 min read</p>
+        </header>
+
+        <div class="d-text">
+          <p class="d-p">Most LLM coding agents fail in one of three predictable ways: they jump in without a plan, they plan in words but never define <em>what done looks like</em>, or they "act" in tiny steps that lose the thread. I've been using a <strong>three-phase workflow</strong> — see <a href="#">the original notes</a> — that addresses all three.</p>
+
+          <h2 class="d-h2">Plan</h2>
+          <p class="d-p">Before any tool call, the agent writes a discrete-step plan with explicit inputs and outputs.</p>
+
+          <pre class="d-code"><code># PLAN
+1. Locate auth middleware
+2. Add requireRole('admin')
+3. Update tests</code></pre>
+        </div>
+
+        <figure class="d-figure d-wide">
+          <div class="d-figure__placeholder"></div>
+          <figcaption class="d-figure__caption">A typical Plan–Define–Act loop, with the Act phase looping back to Plan when reality disagrees.</figcaption>
+        </figure>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============== D DISTILL DARK ============== -->
+  <section class="preview-section" id="d" data-distill="d-dark">
+    <span class="preview-label">D · DISTILL DARK</span>
+    <div class="d-wrap">
+
+      <div class="d-section d-text">
+        <h2 class="d-index-h">Blog</h2>
+        <p class="d-index-sub">Notes on agentic systems and ML infrastructure.</p>
+        <article class="d-article-card">
+          <a href="#">
+            <h3>My setup for running ten CLI coding agents at once</h3>
+            <p class="d-byline">Apr 28, 2026 · 5 min read</p>
+            <p class="d-abstract">tmux, Tailscale, Terminus on iOS, and a small PWA panel — how I keep ~10 parallel coding agents tractable from desk or phone.</p>
+          </a>
+        </article>
+        <article class="d-article-card">
+          <a href="#">
+            <h3>Notes on retrieval over multimodal embeddings</h3>
+            <p class="d-byline">Mar 12, 2026 · 8 min read</p>
+            <p class="d-abstract">Practical lessons from improving few-shot agent quality with vector-store retrieval — what works, what doesn't, and what surprised me.</p>
+          </a>
+        </article>
+      </div>
+
+      <hr class="d-divider" />
+
+      <article class="d-section">
+        <header class="d-text">
+          <h1 class="d-post-title">Plan, Define, Act</h1>
+          <p class="d-post-subtitle">A simple three-phase loop for keeping multi-step LLM coding tasks tractable, debuggable, and able to recover from being wrong.</p>
+          <p class="d-post-byline">Arthur · Apr 15, 2026 · 6 min read</p>
+        </header>
+
+        <div class="d-text">
+          <p class="d-p">Most LLM coding agents fail in one of three predictable ways: they jump in without a plan, they plan in words but never define <em>what done looks like</em>, or they "act" in tiny steps that lose the thread. I've been using a <strong>three-phase workflow</strong> — see <a href="#">the original notes</a> — that addresses all three.</p>
+
+          <h2 class="d-h2">Plan</h2>
+          <p class="d-p">Before any tool call, the agent writes a discrete-step plan with explicit inputs and outputs.</p>
+
+          <pre class="d-code"><code># PLAN
+1. Locate auth middleware
+2. Add requireRole('admin')
+3. Update tests</code></pre>
+        </div>
+
+        <figure class="d-figure d-wide">
+          <div class="d-figure__placeholder"></div>
+          <figcaption class="d-figure__caption">A typical Plan–Define–Act loop, with the Act phase looping back to Plan when reality disagrees.</figcaption>
+        </figure>
+      </article>
+    </div>
+  </section>
+
+  <footer class="footer-cta">
+    <h2>Pick a letter</h2>
+    <p>Tell me which one — for example, <code>use distill B</code> or <code>let's go with the cream one</code> — and I'll apply it to <code>blog/index.html</code> and the post pages. Home page stays terminal.</p>
+  </footer>
+
+</body>
+</html>

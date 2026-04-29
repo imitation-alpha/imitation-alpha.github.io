@@ -1,0 +1,9 @@
+.DS_Store
+*.swp
+*.swo
+.idea/
+.vscode/
+node_modules/
+
+# Local agent instruction file — not for public repo
+CLAUDE.md

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My setup for running 10+ CLI coding agents at once — Arthur</title>
+  <meta name="description" content="How I orchestrate ~10 parallel CLI coding agents with tmux, Tailscale, Termius on iOS, and a small PWA panel for mobile control." />
+  <meta name="theme-color" content="#0a0e0a" />
+  <meta name="author" content="Arthur Yau" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="My setup for running 10+ CLI coding agents at once" />
+  <meta property="og:description" content="tmux, Tailscale, Termius on iOS, and a small PWA panel — how I keep ~10 parallel coding agents tractable from desk or phone." />
+  <meta property="article:author" content="Arthur Yau" />
+  <meta property="article:published_time" content="2026-04-28" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@imitation_alpha" />
+  <meta name="twitter:title" content="My setup for running 10+ CLI coding agents at once" />
+  <meta name="twitter:description" content="tmux, Tailscale, Termius on iOS, and a small PWA panel — how I keep ~10 parallel coding agents tractable from desk or phone." />
+  <link rel="alternate" hreflang="en" href="https://imitation-alpha.github.io/blog/orchestrating-coding-agents.html" />
+  <link rel="alternate" hreflang="zh-Hant" href="https://imitation-alpha.github.io/zh-Hant/blog/orchestrating-coding-agents.html" />
+  <link rel="alternate" hreflang="x-default" href="https://imitation-alpha.github.io/blog/orchestrating-coding-agents.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="read-progress" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="Primary">
+    <div class="nav__inner">
+      <a class="nav__brand" href="../index.html">Arthur</a>
+      <button class="nav__toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links">
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#experience">Experience</a></li>
+        <li><a href="../index.html#projects">Projects</a></li>
+        <li><a href="../index.html#blog" class="active">Blog</a></li>
+        <li><a href="../index.html#publications">Publications</a></li>
+        <li><button class="nav__theme" aria-label="Toggle theme">◑</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="post">
+    <a class="post__back" href="../index.html#blog">Back</a>
+
+    <aside class="post__toc" aria-label="Contents">
+      <p class="post__toc__label">Contents</p>
+      <ul>
+        <li><a href="#stack">The stack</a></li>
+        <li><a href="#tmux">One tmux session per project</a></li>
+        <li><a href="#tailscale">Tailscale: home box, zero public exposure</a></li>
+        <li><a href="#termius">Termius on the phone</a></li>
+        <li><a href="#gui">When you actually need the GUI</a></li>
+        <li><a href="#panel">The missing piece: a panel for all the agents</a></li>
+        <li><a href="#what-id-add">What I'd still add</a></li>
+        <li><a href="#further-reading">Further reading</a></li>
+        <li><a href="#install">Setup guide: tmux, Tailscale, Termius</a></li>
+        <li><a href="#configs">Appendix: ~/.vimrc</a></li>
+      </ul>
+    </aside>
+
+    <header class="post__header">
+      <h1>My setup for running 10+ CLI coding agents at once</h1>
+      <p class="post__lede">tmux, Tailscale, Termius on iOS, and a small PWA panel — how I keep 10+ parallel coding agents tractable from the desk or the train.</p>
+      <p class="post__meta">
+        Apr 28, 2026
+        <span class="dot">·</span>
+        <span data-reading-time>8 min</span>
+        <span class="dot">·</span>
+        Arthur Yau
+        <span class="dot view-dot" hidden>·</span>
+        <span data-views data-views-label="views" hidden></span>
+      </p>
+      <p class="post__lang">
+        Also available in
+        <a href="../zh-Hant/blog/orchestrating-coding-agents.html" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a>.
+      </p>
+    </header>
+
+    <div class="post__body" id="main">
+    <p>
+      On a normal day I have 10+ CLI coding agents running in parallel —
+      a mix of <strong>Claude Code</strong>, <strong>Codex</strong>, and <strong>Gemini CLI</strong>.
+      Some are running long-horizon tasks — features, data pipelines, training jobs,
+      deep-dive investigations. Others are doing chores — commits, PRs, reviews, docs.
+      A few friends have asked how I keep this from collapsing into chaos, so here's the setup.
+    </p>
+
+    <h2 id="stack">The stack</h2>
+    <p>
+      Nothing exotic: <code>tmux</code> + <code>vim</code> on a home box, iTerm or Ghostty on the Mac,
+      <a href="https://tailscale.com" target="_blank" rel="noopener">Tailscale</a> for remote access,
+      Termius on the phone, and a
+      small PWA I've been building to act as a control panel. The interesting part isn't any single
+      piece — it's how cheaply they let me jump between agents.
+    </p>
+
+    <pre><code>  ┌──────────────┐                              ┌─ home box ──────────────────────┐
+  │ Mac          │                              │ tmux                            │
+  │ (iTerm /     │ ◀───────┐                    │  ├─ session: project-a          │
+  │  Ghostty)    │         │                    │  │   ├─ window: Claude Code     │
+  └──────────────┘         │                    │  │   ├─ window: tests / logs    │
+                           │      Tailscale     │  │   └─ window: git ops         │
+  ┌──────────────┐         ├──── (private ─────▶│  ├─ session: project-b          │
+  │ Phone        │ ◀───────┤      mesh)         │  │   └─ ...                     │
+  │ (Termius +   │         │                    │  └─ session: ...                │
+  │  PWA panel)  │ ◀───────┘                    │                                 │
+  └──────────────┘                              └─────────────────────────────────┘</code></pre>
+
+    <h2 id="tmux">One tmux session per project</h2>
+    <p>
+      tmux is a terminal multiplexer with three nested concepts:
+      <strong>sessions</strong> (long-lived workspaces, one per project),
+      <strong>windows</strong> (tabs inside a session, one per concern),
+      <strong>panes</strong> (splits inside a window). Sessions live on the host —
+      close the terminal, lose Wi-Fi, switch from laptop to phone, and your agents
+      keep running. Reattach with one command and pick up where you were.
+    </p>
+    <p>
+      My layout: a session per project (<code>tmux new -s &lt;project&gt;</code>),
+      one window for the agent, one for tests/logs, one for a long pipeline, one for git ops.
+      Long-horizon tasks get assigned and left running; I tab out, instruct the next agent,
+      rotate back when something needs attention. Install and key bindings are
+      <a href="#install">in the setup guide near the bottom</a>.
+    </p>
+
+    <h2 id="tailscale">Tailscale: home box, zero public exposure</h2>
+    <p>
+      The agents run on my home machine because that's where the GPU and disk are. Tailscale puts
+      my laptop, phone, and that box on the same private mesh, so SSH and any prototype web servers
+      are reachable from wherever I'm logged in — without ever being on the public internet.
+      Concrete example: I hit <code>http://homebox:8501</code> for a Streamlit prototype directly
+      from my phone, no port forwarding, no nginx, no public hostname.
+      This matters more than it sounds: half of what I'm running has no auth, and I'd rather not
+      think about that.
+    </p>
+
+    <h2 id="termius">Termius on the phone</h2>
+    <p>
+      When I'm out, I SSH from Termius on iOS. What makes Termius actually <em>usable</em> for
+      tmux is its shortcut bar — esc, tab, ctrl, alt, arrows, shift+tab — sitting right above the
+      keyboard. With those plus the tmux prefix, I can drive a Claude Code session one-handed on a
+      train.
+    </p>
+
+    <figure>
+      <img src="assets/termius-ios.jpg" alt="Termius on iPhone showing a Claude Code CLI session inside tmux, with the shortcut bar (esc/tab/ctrl/alt/arrows) above the iOS keyboard." />
+      <figcaption>Termius on iOS — tmux + Claude Code, driven from the shortcut bar.</figcaption>
+    </figure>
+
+    <p>
+      The trick that makes the phone experience truly seamless: have SSH auto-attach to tmux,
+      so every Termius connection lands directly in your last session — no <code>tmux a</code>
+      step. Add this to <code>~/.bashrc</code> on the home box:
+    </p>
+    <pre><code>if [[ -z "$TMUX" &amp;&amp; -n "$SSH_CONNECTION" &amp;&amp; $- == *i* ]]; then
+  tmux attach -t main 2&gt;/dev/null || tmux new -s main
+fi</code></pre>
+    <p>
+      Now every connection drops you straight into <code>main</code>. The <a href="#install-auto-attach">setup guide</a> has the Termius-side variant if you'd rather configure it per-host.
+    </p>
+
+    <h2 id="gui">When you actually need the GUI</h2>
+    <p>
+      Most of the work is terminal-native, but every so often I need pixels — a dashboard an agent
+      spun up, a Jupyter UI, a tool that won't run headless. For those cases I keep
+      <strong>Chrome Remote Desktop</strong> and a <strong>VNC</strong> server installed on the
+      home box. CRD is the easier path and works through any browser; VNC is fine too, as long as
+      you bind it to the Tailscale interface so it's never on the public internet. Both are slower
+      than SSH, but they cover the 5% of work that genuinely needs a screen.
+    </p>
+
+    <h2 id="panel">The missing piece: a panel for all the agents</h2>
+    <p>
+      The friction point isn't typing into a session. It's <em>finding the right one</em>: which
+      agent finished, which is waiting on input, which has gone quiet. Opening Termius, attaching
+      to tmux, hopping to the right session, scrolling back — that's a 20-second tax. Ten sessions ×
+      dozens of checks × twenty seconds: the math made the build obvious.
+    </p>
+
+    <p>
+      So I built a small PWA that surfaces every running CLI agent as a card, sorted by last
+      interaction. Each card shows status (<em>working</em>, <em>idle</em>, <em>waiting on input</em>),
+      the project tag, and the latest output. It pushes a notification when a session finishes or
+      asks a question. Tapping a card opens a chat-style view where I can send the next instruction
+      directly — no SSH, no tmux navigation.
+    </p>
+
+    <div class="figure-row">
+      <figure>
+        <img src="assets/panel-list-view.jpg" alt="A PWA showing CLI agent sessions as cards, grouped by status — idle, working, needs input, offline — each with a project tag." />
+        <figcaption>List view — every session, status at a glance.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/panel-session-view.jpg" alt="A single CLI agent session opened inside the PWA, with a message input and a row of terminal shortcut keys." />
+        <figcaption>Session view — instruct the agent without SSH.</figcaption>
+      </figure>
+    </div>
+
+    <p>
+      It's been the single biggest improvement to my mobile workflow this year. I'm calling the
+      polished, open-source version <a href="https://github.com/imitation-alpha/vmux" target="_blank" rel="noopener">vmux</a>.
+      Right now the repo is just a placeholder — <strong>if it crosses 100 stars, I'll start the port
+      and ship it as a real project.</strong> Star it to vote, and you'll get the release notification
+      automatically when it lands.
+    </p>
+
+    <h2 id="what-id-add">What I'd still add</h2>
+    <p>
+      A way for one agent to read another's output without copy-paste. A broadcast mode for sending
+      the same prompt to a subset of sessions (the panel has a placeholder for this). Voice input,
+      for buses.
+    </p>
+
+    <p>
+      The core lesson is small: shorten every step between you and the agent, and orchestrating
+      ten of them stops feeling like work.
+    </p>
+
+    <h2 id="further-reading">Further reading</h2>
+    <p>
+      If any of this is new — shell tools, vim, tmux, the whole "live in the terminal" mindset — the
+      one resource I recommend without hesitation is MIT's
+      <a href="https://missing.csail.mit.edu/2020/" target="_blank" rel="noopener">Missing Semester (2020)</a>.
+      It's the class that should exist in every CS program and doesn't. There's also a
+      <a href="https://missing.csail.mit.edu/" target="_blank" rel="noopener">2026 edition</a>
+      I haven't worked through yet, but the 2020 version alone will compound for years.
+    </p>
+
+    <h2 id="install">Setup guide: tmux, Tailscale, Termius</h2>
+    <p>
+      If you don't already have these three running, this is the 20-minute path
+      from zero to "ready to follow along." Skip if you do.
+    </p>
+
+    <h3>tmux</h3>
+    <p>
+      Install: <code>brew install tmux</code> on macOS; via WSL on Windows; your package
+      manager on Linux.
+    </p>
+    <p>Sane defaults (Oh My Tmux):</p>
+    <pre><code>git clone https://github.com/gpakosz/.tmux.git ~/.tmux
+ln -s -f ~/.tmux/.tmux.conf ~/.tmux.conf
+cp ~/.tmux/.tmux.conf.local ~/</code></pre>
+    <p>The six commands you'll actually use:</p>
+    <pre><code>tmux a                # attach to last session
+tmux new -s &lt;name&gt;    # new session
+&lt;C-b&gt; z               # zoom current pane
+&lt;C-b&gt; s               # pick a session
+&lt;C-b&gt; q               # show pane numbers → jump
+&lt;C-b&gt; &lt;n&gt;             # jump to window n</code></pre>
+    <p>
+      For everything else, two cheatsheets cover the full surface:
+      <a href="https://gist.github.com/MohamedAlaa/2961058" target="_blank" rel="noopener">MohamedAlaa's gist</a>
+      (one-screen) and
+      <a href="https://tmuxcheatsheet.com/" target="_blank" rel="noopener">tmuxcheatsheet.com</a>
+      (searchable).
+    </p>
+    <p>
+      <strong>Verify:</strong> <code>tmux new -s test</code> shows a green status bar.
+      <kbd>Ctrl-b</kbd> <kbd>d</kbd> detaches; <code>tmux a -t test</code> reattaches.
+    </p>
+
+    <h3>Tailscale</h3>
+    <ol>
+      <li>Sign up at <a href="https://tailscale.com" target="_blank" rel="noopener">tailscale.com</a> (free for up to 100 personal devices).</li>
+      <li>Home box: <code>brew install --cask tailscale</code> (macOS) or installer from <a href="https://tailscale.com/download" target="_blank" rel="noopener">tailscale.com/download</a> (Windows).</li>
+      <li>Phone (iOS): App Store → Tailscale → sign in with the same account.</li>
+      <li>Turn on <strong>MagicDNS</strong> (admin console → DNS) so your home box becomes <code>ssh arthur-laptop</code>-reachable instead of by IP.</li>
+    </ol>
+    <p>
+      <strong>Verify:</strong> phone Tailscale app shows the home box "Active";
+      <code>http://&lt;home-box&gt;:&lt;port&gt;</code> in phone Safari hits your local dev server.
+    </p>
+
+    <h3>Termius</h3>
+    <ol>
+      <li>App Store → Termius (free tier is enough).</li>
+      <li>Hosts → New Host. Tailscale MagicDNS hostname, port 22, your username, paste your SSH private key.</li>
+      <li>Settings → Terminal → Bottom bar. Add <kbd>Esc</kbd>, <kbd>Ctrl</kbd>, <kbd>Tab</kbd>, arrow keys, <kbd>Shift+Tab</kbd> — this is the killer feature, easy to miss.</li>
+      <li>Settings → enable "Auto-Reconnect" so cellular ↔ Wi-Fi handoffs don't drop you.</li>
+    </ol>
+
+    <h3 id="install-auto-attach">Auto-attach to tmux on SSH</h3>
+    <p>
+      So every SSH connection drops you straight into your tmux session instead of a fresh shell. Two ways:
+    </p>
+    <p><strong>Server-side</strong> — add to <code>~/.bashrc</code> or <code>~/.zshrc</code> on the home box:</p>
+    <pre><code>if [[ -z "$TMUX" &amp;&amp; -n "$SSH_CONNECTION" &amp;&amp; $- == *i* ]]; then
+  tmux attach -t main 2&gt;/dev/null || tmux new -s main
+fi</code></pre>
+    <p>
+      Guards mean only interactive SSH triggers it, so <code>scp</code> / <code>rsync</code> stay unaffected.
+    </p>
+    <p><strong>Termius-side</strong> — Hosts → Edit → Startup Command:</p>
+    <pre><code>tmux attach -t main || tmux new -s main</code></pre>
+
+    <h3>Smoke test</h3>
+    <ol>
+      <li>Home box: <code>tmux new -s claude</code> → start Claude Code → <kbd>Ctrl-b</kbd> <kbd>d</kbd> → close the terminal. The agent keeps running.</li>
+      <li>Phone: open Termius, connect, <code>tmux a -t claude</code>. Type a message into the agent.</li>
+      <li>You're now driving a desktop CLI agent from a phone over a private network. That's the whole stack.</li>
+    </ol>
+
+    <hr />
+    <h2 id="configs">Appendix: ~/.vimrc</h2>
+    <p>
+      My <code>~/.tmux.conf</code> is <a href="https://github.com/gpakosz/.tmux" target="_blank" rel="noopener">gpakosz/.tmux</a>
+      unmodified — the upstream is the canonical source, and pasting it here would just be 1900 lines
+      of someone else's repo. Personal tweaks go in <code>~/.tmux.conf.local</code>, which I keep small.
+      What's worth showing is the <code>.vimrc</code> below: mine, and deliberately minimal.
+    </p>
+
+    <h3>~/.vimrc</h3>
+    <pre><code>&quot; Comments in Vimscript start with a `&quot;`.
+
+&quot; If you open this file in Vim, it&#x27;ll be syntax highlighted for you.
+
+&quot; Vim is based on Vi. Setting `nocompatible` switches from the default
+&quot; Vi-compatibility mode and enables useful Vim functionality. This
+&quot; configuration option turns out not to be necessary for the file named
+&quot; &#x27;~/.vimrc&#x27;, because Vim automatically enters nocompatible mode if that file
+&quot; is present. But we&#x27;re including it here just in case this config file is
+&quot; loaded some other way (e.g. saved as `foo`, and then Vim started with
+&quot; `vim -u foo`).
+set nocompatible
+
+&quot; Turn on syntax highlighting.
+syntax on
+colorscheme delek
+
+&quot; Disable the default Vim startup message.
+set shortmess+=I
+
+&quot; Show line numbers.
+set number
+set nu
+set ai
+set tabstop=4
+set ls=2
+set autoindent
+
+&quot; This enables relative line numbering mode. With both number and
+&quot; relativenumber enabled, the current line shows the true line number, while
+&quot; all other lines (above and below) are numbered relative to the current line.
+&quot; This is useful because you can tell, at a glance, what count is needed to
+&quot; jump up or down to a particular line, by {count}k to go up or {count}j to go
+&quot; down.
+set relativenumber
+
+&quot; Always show the status line at the bottom, even if you only have one window open.
+set laststatus=2
+
+&quot; The backspace key has slightly unintuitive behavior by default. For example,
+&quot; by default, you can&#x27;t backspace before the insertion point set with &#x27;i&#x27;.
+&quot; This configuration makes backspace behave more reasonably, in that you can
+&quot; backspace over anything.
+set backspace=indent,eol,start
+
+&quot; By default, Vim doesn&#x27;t let you hide a buffer (i.e. have a buffer that isn&#x27;t
+&quot; shown in any window) that has unsaved changes. This is to prevent you from &quot;
+&quot; forgetting about unsaved changes and then quitting e.g. via `:qa!`. We find
+&quot; hidden buffers helpful enough to disable this protection. See `:help hidden`
+&quot; for more information on this.
+set hidden
+
+&quot; This setting makes search case-insensitive when all characters in the string
+&quot; being searched are lowercase. However, the search becomes case-sensitive if
+&quot; it contains any capital letters. This makes searching more convenient.
+set ignorecase
+set smartcase
+
+&quot; Enable searching as you type, rather than waiting till you press enter.
+set incsearch
+
+&quot; Unbind some useless/annoying default key bindings.
+nmap Q &lt;Nop&gt; &quot; &#x27;Q&#x27; in normal mode enters Ex mode. You almost never want this.
+
+&quot; Disable audible bell because it&#x27;s annoying.
+set noerrorbells visualbell t_vb=
+
+&quot; Enable mouse support. You should avoid relying on this too much, but it can
+&quot; sometimes be convenient.
+set mouse+=a
+
+&quot; Try to prevent bad habits like using the arrow keys for movement. This is
+&quot; not the only possible bad habit. For example, holding down the h/j/k/l keys
+&quot; for movement, rather than using more efficient movement commands, is also a
+&quot; bad habit. The former is enforceable through a .vimrc, while we don&#x27;t know
+&quot; how to prevent the latter.
+
+&quot; Do this in normal mode...
+nnoremap &lt;Left&gt;  :echoe &quot;Use h&quot;&lt;CR&gt;
+nnoremap &lt;Right&gt; :echoe &quot;Use l&quot;&lt;CR&gt;
+nnoremap &lt;Up&gt;    :echoe &quot;Use k&quot;&lt;CR&gt;
+nnoremap &lt;Down&gt;  :echoe &quot;Use j&quot;&lt;CR&gt;
+&quot; ...and in insert mode
+inoremap &lt;Left&gt;  &lt;ESC&gt;:echoe &quot;Use h&quot;&lt;CR&gt;
+inoremap &lt;Right&gt; &lt;ESC&gt;:echoe &quot;Use l&quot;&lt;CR&gt;
+inoremap &lt;Up&gt;    &lt;ESC&gt;:echoe &quot;Use k&quot;&lt;CR&gt;
+inoremap &lt;Down&gt;  &lt;ESC&gt;:echoe &quot;Use j&quot;&lt;CR&gt;
+</code></pre>
+
+    <hr />
+
+    <p>
+      Questions, your own setup to share, or want early access to the panel? Find me on <a href="https://linkedin.com/in/arthur-yau" target="_blank" rel="noopener">LinkedIn</a> or <a href="https://x.com/imitation_alpha" target="_blank" rel="noopener">X</a>.
+    </p>
+    </div><!-- /.post__body -->
+  </article>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <p>© <span id="year">2026</span> Arthur</p>
+      <p class="footer__links">
+        <a href="https://linkedin.com/in/arthur-yau" target="_blank" rel="noopener">LinkedIn</a> ·
+        <a href="https://github.com/imitation-alpha" target="_blank" rel="noopener">GitHub</a> ·
+        <a href="https://x.com/imitation_alpha" target="_blank" rel="noopener">X</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js" defer></script>
+  <!-- GoatCounter pageview tracking (privacy-friendly, no cookies) -->
+  <script data-goatcounter="https://imitation-alpha.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

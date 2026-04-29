@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arthur — ML Engineer / Independent Researcher / Vibe Coder</title>
+  <meta name="description" content="ML Engineer / Independent Researcher / Vibe Coder working on agent systems, multimodal learning, and graph-based representation learning." />
+  <meta name="author" content="Arthur" />
+  <meta name="theme-color" content="#0a0e0a" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Arthur — ML Engineer / Independent Researcher / Vibe Coder" />
+  <meta property="og:description" content="Agent systems, multimodal learning, and graph-based representation learning. Toronto." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:creator" content="@imitation_alpha" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <nav class="nav" aria-label="Primary">
+    <div class="nav__inner">
+      <a class="nav__brand" href="#top">Arthur</a>
+      <button class="nav__toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links">
+        <li><a href="#blog">Blog</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#publications">Publications</a></li>
+        <li><button class="nav__theme" aria-label="Toggle theme">◐</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="main">
+    <!-- HERO -->
+    <header class="hero" id="top">
+      <div class="hero__inner">
+        <p class="hero__eyebrow">ML Engineer / Independent Researcher / Vibe Coder · Toronto</p>
+        <h1 class="hero__name">
+          Hi, I'm <span class="accent">Arthur</span>.
+        </h1>
+        <p class="hero__tagline">
+          Research-oriented ML engineer building <strong>agent systems</strong>,
+          <strong>multimodal learning workflows</strong>, and
+          <strong>graph-based representation learning</strong>. Interested in post-training, ICL, RL, imitation learning, evolution-based approaches, and world-model-inspired research.
+        </p>
+        <div class="hero__interests">
+          <span class="tag">Agentic Coding</span>
+          <span class="tag">Long-Horizon Task Automation</span>
+          <span class="tag">RL</span>
+          <span class="tag">World Models</span>
+          <span class="tag">Evolution</span>
+        </div>
+        <ul class="hero__links" aria-label="Contact">
+          <li><a href="https://linkedin.com/in/arthur-yau" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://github.com/imitation-alpha" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://x.com/imitation_alpha" target="_blank" rel="noopener">X</a></li>
+        </ul>
+      </div>
+    </header>
+
+    <!-- BLOG -->
+    <section class="section" id="blog">
+      <h2 class="section__title"><span class="accent">01</span> Blog</h2>
+      <div class="section__body project-grid">
+        <article class="project">
+          <header>
+            <h3><a href="blog/orchestrating-coding-agents.html">My setup for running 10+ CLI coding agents at once</a></h3>
+            <span class="project__date">Apr 28, 2026 · 8 min read</span>
+          </header>
+          <p>tmux, Tailscale, Termius on iOS, and a small PWA panel — how I keep ~10 parallel coding agents tractable from desk or phone.</p>
+          <div class="project__tags">
+            <span>tmux</span><span>Tailscale</span><span>Agents</span><span>PWA</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <h2 class="section__title"><span class="accent">02</span> About</h2>
+      <div class="section__body about">
+        <p>
+          I'm an ML engineer working on large-scale applied ML — across post-training,
+          agent systems, in-context learning, and graph-based representation learning.
+          Earlier in my career I built ML systems for finance, and conducted
+          HCI / human-in-the-loop ML research focused on multimodal interaction.
+        </p>
+        <p>
+          My current interests sit at the intersection of <strong>agentic coding</strong>,
+          <strong>long-horizon task automation</strong>, <strong>RL</strong>,
+          <strong>world models</strong>, and <strong>evolution-based methods</strong>. I'm
+          particularly interested in how agents can plan, execute, and self-correct over
+          horizons longer than a single prompt — and in foundational architectures that let
+          them learn from their own trajectories.
+        </p>
+        <p>
+          When I'm not training models, I write about agentic coding workflows and tooling.
+          Recent notes live <a href="#blog">below</a>.
+        </p>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section class="section" id="experience">
+      <h2 class="section__title"><span class="accent">03</span> Experience</h2>
+      <div class="section__body">
+        <article class="job">
+          <div class="job__head">
+            <h3>Machine Learning Software Engineer</h3>
+            <span class="job__meta">Google · Toronto</span>
+            <span class="job__date">Aug 2022 — Present</span>
+          </div>
+          <p class="job__summary">
+            Large-scale applied ML across post-training, agent systems, in-context learning,
+            and graph-based representation learning. Core areas:
+            <strong>retrieval / search / clustering</strong>,
+            <strong>representation learning</strong>,
+            <strong>GNNs</strong>,
+            <strong>agents</strong>,
+            <strong>post-training</strong>, and
+            <strong>RL</strong>.
+          </p>
+          <ul class="job__bullets">
+            <li><strong>Agent systems, RL &amp; imitation learning.</strong> Built end-to-end LLM agents for production workflows (sequential, parallel, sub-agent, critic-agent designs) and large-scale RL / imitation learning experiments on 10B+ user-interaction trajectories, spanning offline and online settings.</li>
+            <li><strong>Post-training &amp; ICL.</strong> Fine-tuned <strong>Gemini encoder models</strong> via SFT pipelines in JAX for downstream tasks; improved agent quality with retrieval over multimodal embeddings and vector stores for few-shot ICL.</li>
+            <li><strong>Infrastructure &amp; scale.</strong> Operate ML systems at Google-scale: <strong>petabyte-scale</strong> graph and feature pipelines with <strong>second-level latency</strong>; distributed training in JAX on TPU pods; online ANN serving over 1B+ learned vectors; production data flows on Pub/Sub, Kafka, and Spanner. Comfortable owning the path from raw event streams through training, evaluation, and online serving.</li>
+            <li><strong>Representation learning &amp; retrieval.</strong> Built GNN-based representation learning on heterogeneous graphs with 50B+ edges, with ANN retrieval over 1B+ learned vectors for downstream agent and recommendation surfaces.</li>
+            <li><strong>Agentic coding influence.</strong> Have been using and promoting the <em>Plan–Define–Act</em> workflow for agentic coding since May 2025; authored an internal doc on Gemini CLI and agentic coding that reached 12k+ unique views within Google/Alphabet, and delivered tech talks on GenAI developer tooling.</li>
+          </ul>
+          <div class="job__stack">
+            <span>JAX</span><span>TensorFlow</span><span>TF-GNN</span><span>Gemini</span><span>ADK</span><span>Spanner</span><span>Pub/Sub</span><span>Kafka</span><span>GCP</span>
+          </div>
+        </article>
+
+        <article class="job">
+          <div class="job__head">
+            <h3>Machine Learning Engineer (Senior Associate)</h3>
+            <span class="job__meta">J.P. Morgan · Hong Kong</span>
+            <span class="job__date">Dec 2021 — Aug 2022</span>
+          </div>
+          <p class="job__summary">
+            ML systems for large-scale financial time-series, focused on anomaly detection,
+            feedback-driven model improvement, and end-to-end production ML pipelines.
+          </p>
+          <ul class="job__bullets">
+            <li>Designed large-scale anomaly detection workflows for financial time-series in collaboration with Portfolio Managers and Quants.</li>
+            <li>Built a feedback-loop system to address distribution shift and pattern discovery, iteratively improving model accuracy and stability.</li>
+            <li>Engineered end-to-end ML pipelines: data processing, feature engineering, training, tuning, evaluation, versioning, and serving.</li>
+          </ul>
+          <div class="job__stack">
+            <span>Python</span><span>PyTorch</span><span>PySpark</span><span>Pandas</span><span>SageMaker</span>
+          </div>
+        </article>
+
+        <article class="job">
+          <div class="job__head">
+            <h3>HCI &amp; Human-in-the-Loop ML Researcher</h3>
+            <span class="job__meta">HKUST-DT SyMLab · Hong Kong</span>
+            <span class="job__date">Jun 2019 — Sep 2021</span>
+          </div>
+          <p class="job__summary">
+            HCI and human-in-the-loop ML research on multimodal interaction, wearable input,
+            and human-drone control — focused on subtle one-handed drone interaction using touch,
+            force, and IMU sensing.
+          </p>
+          <ul class="job__bullets">
+            <li>Designed and evaluated four multimodal control schemes for one-handed drone interaction, identifying a method that outperformed a two-handed commercial baseline on task completion time.</li>
+            <li>Built a ring-sized wearable controller enabling joystick-like drone navigation through subtle thumb interaction and wrist pitch/roll gestures.</li>
+            <li>Conducted user studies on task completion time, perceived workload, and interaction footprint to derive design guidelines for compact multimodal interfaces.</li>
+          </ul>
+        </article>
+
+        <article class="job">
+          <div class="job__head">
+            <h3>Computer Vision Research Intern</h3>
+            <span class="job__meta">ASTRI · Hong Kong</span>
+            <span class="job__date">Jun 2017 — Aug 2017</span>
+          </div>
+          <p class="job__summary">
+            CV research and engineering for visual recognition on edge devices — dataset construction,
+            transfer learning, model compression, and deployment to mobile and embedded platforms.
+            Worked on car model classification with Inception-v3 transfer learning.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="section" id="projects">
+      <h2 class="section__title"><span class="accent">04</span> Projects &amp; Research</h2>
+      <div class="section__body project-grid">
+        <article class="project">
+          <header>
+            <h3>World Models, Multimodal Learning &amp; Agents</h3>
+            <span class="project__date">2021 — Present</span>
+          </header>
+          <p>
+            Self-directed study and implementation work on world models, LLMs, and agent systems.
+            Reimplemented ideas from <em>World Models</em> (Ha et al.) with VAE-based latent representations,
+            and explored TinyWorld — a minimal Genie-1-inspired replication.
+          </p>
+          <div class="project__tags">
+            <span>World Models</span><span>VAE</span><span>VLM</span><span>VLA</span>
+          </div>
+        </article>
+
+        <article class="project">
+          <header>
+            <h3>NeurIPS 2024 LLM Merging Challenge</h3>
+            <span class="project__date">2024 · Project Lead</span>
+          </header>
+          <p>
+            Led a small team in the NeurIPS 2024 LLM Merging Competition. Implemented and benchmarked
+            Linear, SLERP, TIES, Git Re-Basin, and MoE-based merging; explored evolutionary merging
+            and FunSearch-inspired search.
+          </p>
+          <div class="project__tags">
+            <span>LLM Merging</span><span>SLERP</span><span>TIES</span><span>PyTorch</span>
+          </div>
+        </article>
+
+        <article class="project">
+          <header>
+            <h3>Deep RL for Sonic — PPO &amp; Transfer Learning</h3>
+            <span class="project__date">2018 — 2019</span>
+          </header>
+          <p>
+            Re-implemented DQN, A2C, and PPO from scratch. Built a parallel data-collection and
+            evaluation pipeline; improved sample efficiency with reward / feature engineering and a
+            VAE-based world encoder for sparse-reward environments.
+          </p>
+          <p class="project__links">
+            <a href="https://www.youtube.com/watch?v=0oggN07KYRA" target="_blank" rel="noopener">▶ Watch demo</a>
+          </p>
+          <div class="project__tags">
+            <span>PPO</span><span>DQN</span><span>A2C</span><span>VAE</span>
+          </div>
+        </article>
+
+        <article class="project">
+          <header>
+            <h3>AI Guide Dog</h3>
+            <span class="project__date">2017 — 2018</span>
+          </header>
+          <p>
+            Multimodal assistive vision system for visually impaired users — image classification,
+            object detection, and image-to-text scene description deployed across mobile, cloud,
+            and embedded components.
+          </p>
+          <div class="project__tags">
+            <span>CV</span><span>TensorFlow</span><span>Edge</span><span>Firebase</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- PUBLICATIONS -->
+    <section class="section" id="publications">
+      <h2 class="section__title"><span class="accent">05</span> Publications</h2>
+      <div class="section__body">
+        <ol class="pubs">
+          <li>
+            <p class="pubs__title">How subtle can it get? A Trimodal Study of Ring-sized Interfaces for One-handed Drone Control</p>
+            <p class="pubs__authors"><strong>A. Yau</strong>, Lik Hang Lee, Zheng Li, Tristan Braud, Yi-Hsuan Ho, Pan Hui</p>
+            <p class="pubs__venue">UbiComp · ACM International Joint Conference on Pervasive and Ubiquitous Computing, 2020</p>
+          </li>
+          <li>
+            <p class="pubs__title">MyoKey: Surface Electromyography and Inertial Motion Sensing-based Text Entry in AR</p>
+            <p class="pubs__authors">Young D. Kwon, Kirill A. Shatilov, Lik-Hang Lee, Serkan Kumyol, Kit-Yung Lam, <strong>A. Yau</strong>, Pan Hui</p>
+            <p class="pubs__venue">PerCom · IEEE International Conference on Pervasive Computing and Communications, 2020</p>
+          </li>
+          <li>
+            <p class="pubs__title">One-thumb Text Acquisition on Force-assisted Miniature Interfaces for Mobile Headsets</p>
+            <p class="pubs__authors">Lik Hang Lee, Yiming Zhu, <strong>A. Yau</strong>, Tristan Braud, Xiang Su, Pan Hui</p>
+            <p class="pubs__venue">PerCom · IEEE International Conference on Pervasive Computing and Communications, 2020</p>
+          </li>
+          <li>
+            <p class="pubs__title">HIBEY: Hide the Keyboard in Augmented Reality</p>
+            <p class="pubs__authors">Lik Hang Lee, Kit Yung Lam, <strong>A. Yau</strong>, Tristan Braud, Pan Hui</p>
+            <p class="pubs__venue">PerCom · IEEE International Conference on Pervasive Computing and Communications, 2019</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <p>© <span id="year">2026</span> Arthur</p>
+      <p class="footer__links">
+        <a href="https://linkedin.com/in/arthur-yau" target="_blank" rel="noopener">LinkedIn</a> ·
+        <a href="https://github.com/imitation-alpha" target="_blank" rel="noopener">GitHub</a> ·
+        <a href="https://x.com/imitation_alpha" target="_blank" rel="noopener">X</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pick a style — 10 options</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&amp;family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&amp;family=Playfair+Display:wght@400;500;700&amp;family=Space+Grotesk:wght@400;500;700&amp;family=Fraunces:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap" rel="stylesheet" />
+  <style>
+    /* ===== Page chrome ===== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Inter", system-ui, sans-serif;
+      background: #f5f5f3;
+      color: #111;
+    }
+    .picker-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(245,245,243,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid #d6d4cc;
+      padding: 18px 28px;
+    }
+    .picker-header__row {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .picker-header h1 {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .picker-header p { font-size: 13px; color: #555; }
+    .picker-toc {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      max-width: 1200px;
+      margin: 12px auto 0;
+    }
+    .picker-toc a {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border: 1px solid #d6d4cc;
+      border-radius: 999px;
+      font-size: 12px;
+      color: #333;
+      text-decoration: none;
+      background: #fff;
+      transition: all 0.15s ease;
+    }
+    .picker-toc a:hover { border-color: #111; color: #111; }
+    .picker-toc a span { font-family: "JetBrains Mono", monospace; font-size: 10px; opacity: 0.6; }
+
+    .preview-section {
+      position: relative;
+      min-height: 90vh;
+      padding: 80px 24px;
+      overflow: hidden;
+    }
+    .preview-label {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(0,0,0,0.85);
+      color: #fff;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      padding: 6px 12px;
+      border-radius: 4px;
+      z-index: 10;
+      letter-spacing: 0.05em;
+    }
+    .preview-content {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .footer-cta {
+      padding: 60px 24px 100px;
+      text-align: center;
+      background: #111;
+      color: #f5f5f3;
+    }
+    .footer-cta h2 { font-size: 22px; margin-bottom: 12px; font-weight: 500; }
+    .footer-cta p { color: #aaa; max-width: 540px; margin: 0 auto; line-height: 1.6; }
+    .footer-cta code { background: #2a2a2a; padding: 2px 8px; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 13px; }
+
+    /* ===== Shared sample structure ===== */
+    .s-nav { display: flex; gap: 16px; margin-bottom: 48px; font-size: 14px; }
+    .s-nav__brand { font-weight: 600; }
+    .s-meta { font-size: 13px; margin-bottom: 8px; }
+    .s-h1 { line-height: 1.15; margin-bottom: 16px; }
+    .s-lede { line-height: 1.55; margin-bottom: 32px; }
+    .s-p { line-height: 1.7; margin-bottom: 16px; }
+    .s-quote { margin: 24px 0; line-height: 1.5; }
+    .s-h2 { line-height: 1.3; margin: 32px 0 12px; }
+    .s-pre { line-height: 1.55; padding: 14px 16px; overflow-x: auto; margin: 16px 0; }
+    .s-pre code { white-space: pre; }
+
+    /* =========================================================
+       01 · BRUTALIST MONO
+       ========================================================= */
+    [data-style="01-brutalist"] {
+      background: #fff;
+      color: #000;
+      font-family: "IBM Plex Mono", monospace;
+    }
+    [data-style="01-brutalist"] .s-nav { border-bottom: 2px solid #000; padding-bottom: 12px; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; }
+    [data-style="01-brutalist"] .s-nav__brand { background: #000; color: #fff; padding: 2px 8px; }
+    [data-style="01-brutalist"] .s-nav a { color: #000; text-decoration: none; }
+    [data-style="01-brutalist"] .s-meta { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; border-left: 4px solid #000; padding-left: 8px; }
+    [data-style="01-brutalist"] .s-h1 { font-size: 36px; font-weight: 600; text-transform: uppercase; letter-spacing: -0.02em; margin-top: 16px; }
+    [data-style="01-brutalist"] .s-lede { font-size: 15px; padding: 16px; border: 2px solid #000; }
+    [data-style="01-brutalist"] .s-p { font-size: 14px; }
+    [data-style="01-brutalist"] .s-p a { color: #000; text-decoration: underline; text-decoration-thickness: 2px; }
+    [data-style="01-brutalist"] strong { background: #ffeb3b; padding: 0 2px; }
+    [data-style="01-brutalist"] em { font-style: normal; text-decoration: underline; }
+    [data-style="01-brutalist"] .s-quote { border: 2px solid #000; padding: 16px; font-size: 14px; }
+    [data-style="01-brutalist"] .s-h2 { font-size: 18px; text-transform: uppercase; border-bottom: 2px solid #000; padding-bottom: 4px; }
+    [data-style="01-brutalist"] .s-pre { background: #000; color: #fff; font-size: 12px; }
+
+    /* =========================================================
+       02 · EDITORIAL SERIF
+       ========================================================= */
+    [data-style="02-editorial"] {
+      background: #fbf7f0;
+      color: #2a2520;
+      font-family: "EB Garamond", "Iowan Old Style", Georgia, serif;
+    }
+    [data-style="02-editorial"] .preview-content { max-width: 620px; }
+    [data-style="02-editorial"] .s-nav { font-family: "Inter", sans-serif; font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: #6b5d4f; border-bottom: 1px solid #d8cbb8; padding-bottom: 16px; }
+    [data-style="02-editorial"] .s-nav__brand { font-family: "EB Garamond", serif; font-size: 18px; letter-spacing: 0; text-transform: none; color: #2a2520; font-weight: 500; font-style: italic; }
+    [data-style="02-editorial"] .s-nav a { color: #6b5d4f; text-decoration: none; }
+    [data-style="02-editorial"] .s-meta { font-family: "Inter", sans-serif; font-size: 11px; color: #9a8b78; letter-spacing: 0.1em; text-transform: uppercase; }
+    [data-style="02-editorial"] .s-h1 { font-size: 48px; font-weight: 500; letter-spacing: -0.015em; line-height: 1.1; }
+    [data-style="02-editorial"] .s-lede { font-style: italic; font-size: 22px; color: #6b5d4f; line-height: 1.45; }
+    [data-style="02-editorial"] .s-p { font-size: 19px; line-height: 1.65; }
+    [data-style="02-editorial"] .s-p:first-of-type::first-letter { float: left; font-size: 64px; line-height: 0.95; margin: 8px 8px 0 -2px; font-weight: 500; color: #b8341e; }
+    [data-style="02-editorial"] .s-p a { color: #b8341e; text-decoration: none; border-bottom: 1px solid rgba(184,52,30,0.4); }
+    [data-style="02-editorial"] .s-quote { padding-left: 24px; border-left: 2px solid #b8341e; font-style: italic; font-size: 22px; color: #4a3f33; }
+    [data-style="02-editorial"] .s-h2 { font-size: 26px; font-weight: 500; font-style: italic; }
+    [data-style="02-editorial"] .s-pre { font-family: "JetBrains Mono", monospace; background: #f3ecdf; border: 1px solid #d8cbb8; border-radius: 2px; font-size: 13px; }
+
+    /* =========================================================
+       03 · TERMINAL GREEN
+       ========================================================= */
+    [data-style="03-terminal"] {
+      background: #0a0e0a;
+      color: #6cff95;
+      font-family: "JetBrains Mono", monospace;
+    }
+    [data-style="03-terminal"] .preview-content { padding: 24px; border: 1px solid #1c3322; box-shadow: inset 0 0 60px rgba(108,255,149,0.05); }
+    [data-style="03-terminal"] .s-nav { color: #4a8c5e; font-size: 13px; }
+    [data-style="03-terminal"] .s-nav__brand { color: #6cff95; }
+    [data-style="03-terminal"] .s-nav__brand::before { content: "$ "; color: #4a8c5e; }
+    [data-style="03-terminal"] .s-nav a { color: #4a8c5e; text-decoration: none; }
+    [data-style="03-terminal"] .s-nav a:hover { color: #6cff95; }
+    [data-style="03-terminal"] .s-meta { color: #4a8c5e; font-size: 12px; }
+    [data-style="03-terminal"] .s-meta::before { content: "// "; }
+    [data-style="03-terminal"] .s-h1 { font-size: 28px; color: #6cff95; font-weight: 500; }
+    [data-style="03-terminal"] .s-h1::before { content: "# "; color: #4a8c5e; }
+    [data-style="03-terminal"] .s-lede { font-size: 14px; color: #a4d9b3; }
+    [data-style="03-terminal"] .s-p { font-size: 14px; color: #c4e8cf; }
+    [data-style="03-terminal"] .s-p a { color: #6cff95; text-decoration: underline; }
+    [data-style="03-terminal"] strong { color: #fff; }
+    [data-style="03-terminal"] em { color: #ffd166; font-style: normal; }
+    [data-style="03-terminal"] .s-quote { padding-left: 16px; border-left: 2px solid #6cff95; color: #a4d9b3; font-size: 14px; }
+    [data-style="03-terminal"] .s-quote::before { content: "> "; color: #4a8c5e; }
+    [data-style="03-terminal"] .s-h2 { font-size: 16px; color: #6cff95; }
+    [data-style="03-terminal"] .s-h2::before { content: "## "; color: #4a8c5e; }
+    [data-style="03-terminal"] .s-pre { background: #050805; border: 1px solid #1c3322; color: #c4e8cf; font-size: 12px; }
+
+    /* =========================================================
+       04 · SOFT MODERNIST
+       ========================================================= */
+    [data-style="04-soft"] {
+      background: #fafafa;
+      color: #1c1c1c;
+      font-family: "Inter", system-ui, sans-serif;
+    }
+    [data-style="04-soft"] .preview-content { max-width: 640px; }
+    [data-style="04-soft"] .s-nav { font-size: 14px; color: #888; }
+    [data-style="04-soft"] .s-nav__brand { color: #1c1c1c; font-weight: 500; }
+    [data-style="04-soft"] .s-nav a { color: #888; text-decoration: none; }
+    [data-style="04-soft"] .s-meta { font-size: 13px; color: #999; font-weight: 500; }
+    [data-style="04-soft"] .s-h1 { font-size: 38px; font-weight: 600; letter-spacing: -0.02em; }
+    [data-style="04-soft"] .s-lede { font-size: 17px; color: #555; }
+    [data-style="04-soft"] .s-p { font-size: 16px; color: #333; }
+    [data-style="04-soft"] .s-p a { color: #1c1c1c; text-decoration: underline; text-decoration-color: #ddd; text-underline-offset: 4px; }
+    [data-style="04-soft"] strong { font-weight: 600; }
+    [data-style="04-soft"] em { color: #555; }
+    [data-style="04-soft"] .s-quote { padding: 20px 24px; background: #f0efed; border-radius: 12px; font-size: 16px; color: #444; }
+    [data-style="04-soft"] .s-h2 { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+    [data-style="04-soft"] .s-pre { background: #f0efed; border-radius: 12px; font-family: "JetBrains Mono", monospace; font-size: 13px; color: #333; }
+
+    /* =========================================================
+       05 · ACADEMIC PAPER
+       ========================================================= */
+    [data-style="05-academic"] {
+      background: #fff;
+      color: #000;
+      font-family: "Source Serif 4", "Times New Roman", serif;
+    }
+    [data-style="05-academic"] .preview-content { max-width: 600px; }
+    [data-style="05-academic"] .s-nav { font-size: 12px; color: #555; font-style: italic; border-bottom: 0.5px solid #000; padding-bottom: 8px; }
+    [data-style="05-academic"] .s-nav__brand { font-style: normal; font-variant: small-caps; letter-spacing: 0.05em; }
+    [data-style="05-academic"] .s-nav a { color: #555; text-decoration: none; }
+    [data-style="05-academic"] .s-meta { font-size: 11px; font-style: italic; color: #555; margin-top: 12px; text-align: center; }
+    [data-style="05-academic"] .s-h1 { font-size: 26px; font-weight: 500; text-align: center; margin: 8px 0 4px; }
+    [data-style="05-academic"] .s-lede { text-align: center; font-size: 14px; color: #444; font-style: italic; max-width: 480px; margin: 0 auto 32px; }
+    [data-style="05-academic"] .s-p { font-size: 15px; line-height: 1.55; text-align: justify; text-indent: 1.5em; hyphens: auto; }
+    [data-style="05-academic"] .s-p:first-of-type { text-indent: 0; }
+    [data-style="05-academic"] .s-p a { color: #1a4480; text-decoration: none; }
+    [data-style="05-academic"] strong { font-weight: 600; }
+    [data-style="05-academic"] em { font-style: italic; }
+    [data-style="05-academic"] .s-quote { font-size: 14px; padding: 4px 32px; line-height: 1.5; }
+    [data-style="05-academic"] .s-h2 { font-size: 16px; font-weight: 600; font-variant: small-caps; letter-spacing: 0.04em; }
+    [data-style="05-academic"] .s-pre { font-family: "Latin Modern Mono", "Courier New", monospace; background: #f5f5f3; border: 0.5px solid #ccc; font-size: 12px; }
+
+    /* =========================================================
+       06 · SWISS GRID
+       ========================================================= */
+    [data-style="06-swiss"] {
+      background: #fff;
+      color: #000;
+      font-family: "Inter", "Helvetica Neue", sans-serif;
+    }
+    [data-style="06-swiss"] .preview-content { max-width: 720px; }
+    [data-style="06-swiss"] .s-nav { font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; border-top: 4px solid #000; padding-top: 12px; }
+    [data-style="06-swiss"] .s-nav__brand { background: #e63946; color: #fff; padding: 2px 8px; }
+    [data-style="06-swiss"] .s-nav a { color: #000; text-decoration: none; }
+    [data-style="06-swiss"] .s-meta { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #e63946; }
+    [data-style="06-swiss"] .s-h1 { font-size: 56px; font-weight: 700; letter-spacing: -0.03em; line-height: 1; text-transform: uppercase; }
+    [data-style="06-swiss"] .s-lede { font-size: 18px; font-weight: 400; max-width: 480px; }
+    [data-style="06-swiss"] .s-p { font-size: 15px; line-height: 1.6; max-width: 540px; }
+    [data-style="06-swiss"] .s-p a { color: #e63946; text-decoration: none; font-weight: 500; }
+    [data-style="06-swiss"] strong { font-weight: 700; }
+    [data-style="06-swiss"] em { font-style: normal; background: linear-gradient(180deg, transparent 60%, #ffe66b 60%); }
+    [data-style="06-swiss"] .s-quote { padding: 16px 0; border-top: 1px solid #000; border-bottom: 1px solid #000; font-size: 20px; font-weight: 500; }
+    [data-style="06-swiss"] .s-h2 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; padding: 4px 0; border-bottom: 2px solid #000; display: inline-block; }
+    [data-style="06-swiss"] .s-pre { font-family: "JetBrains Mono", monospace; background: #f5f5f3; font-size: 12px; }
+
+    /* =========================================================
+       07 · NEO-DARK TECH
+       ========================================================= */
+    [data-style="07-neo-dark"] {
+      background: #0d1117;
+      color: #c9d1d9;
+      font-family: "Inter", sans-serif;
+    }
+    [data-style="07-neo-dark"] .s-nav { font-size: 14px; padding-bottom: 16px; border-bottom: 1px solid #21262d; color: #8b949e; }
+    [data-style="07-neo-dark"] .s-nav__brand { background: linear-gradient(135deg, #a371f7, #58a6ff); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 600; }
+    [data-style="07-neo-dark"] .s-nav a { color: #8b949e; text-decoration: none; }
+    [data-style="07-neo-dark"] .s-meta { font-size: 13px; color: #6e7681; font-family: "JetBrains Mono", monospace; }
+    [data-style="07-neo-dark"] .s-h1 { font-size: 40px; font-weight: 600; letter-spacing: -0.02em; background: linear-gradient(135deg, #fff 0%, #8b949e 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    [data-style="07-neo-dark"] .s-lede { font-size: 17px; color: #8b949e; }
+    [data-style="07-neo-dark"] .s-p { font-size: 16px; }
+    [data-style="07-neo-dark"] .s-p a { color: #58a6ff; text-decoration: none; }
+    [data-style="07-neo-dark"] strong { color: #fff; }
+    [data-style="07-neo-dark"] em { color: #a371f7; font-style: normal; }
+    [data-style="07-neo-dark"] .s-quote { padding: 16px 20px; background: rgba(88,166,255,0.06); border-left: 3px solid #58a6ff; border-radius: 0 8px 8px 0; font-size: 16px; color: #c9d1d9; }
+    [data-style="07-neo-dark"] .s-h2 { font-size: 22px; font-weight: 600; color: #fff; }
+    [data-style="07-neo-dark"] .s-pre { background: #161b22; border: 1px solid #30363d; border-radius: 8px; font-family: "JetBrains Mono", monospace; font-size: 13px; color: #c9d1d9; }
+
+    /* =========================================================
+       08 · NEWSPRINT
+       ========================================================= */
+    [data-style="08-newsprint"] {
+      background: #f5f1e8;
+      color: #1a1a1a;
+      font-family: "Source Serif 4", "Iowan Old Style", Georgia, serif;
+    }
+    [data-style="08-newsprint"] .preview-content { max-width: 620px; }
+    [data-style="08-newsprint"] .s-nav { font-family: "Playfair Display", serif; font-size: 24px; font-weight: 700; border-bottom: 3px double #1a1a1a; padding-bottom: 8px; text-align: center; }
+    [data-style="08-newsprint"] .s-nav__brand { font-style: italic; }
+    [data-style="08-newsprint"] .s-nav a { font-size: 12px; font-family: "Source Serif 4", serif; font-weight: 400; color: #555; text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em; }
+    [data-style="08-newsprint"] .s-meta { font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: #555; text-align: center; margin-top: 24px; }
+    [data-style="08-newsprint"] .s-h1 { font-family: "Playfair Display", serif; font-size: 42px; font-weight: 700; text-align: center; line-height: 1.1; margin: 8px 0 12px; }
+    [data-style="08-newsprint"] .s-lede { text-align: center; font-style: italic; font-size: 17px; color: #444; max-width: 480px; margin: 0 auto 32px; line-height: 1.5; }
+    [data-style="08-newsprint"] .s-p { font-size: 16px; line-height: 1.65; column-count: 1; }
+    [data-style="08-newsprint"] .s-p:first-of-type::first-letter { float: left; font-family: "Playfair Display", serif; font-size: 60px; line-height: 0.9; margin: 6px 8px 0 0; font-weight: 700; }
+    [data-style="08-newsprint"] .s-p a { color: #1a1a1a; text-decoration: underline; }
+    [data-style="08-newsprint"] strong { font-weight: 700; }
+    [data-style="08-newsprint"] em { font-style: italic; }
+    [data-style="08-newsprint"] .s-quote { border-top: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; padding: 16px 24px; font-family: "Playfair Display", serif; font-size: 22px; font-style: italic; text-align: center; }
+    [data-style="08-newsprint"] .s-h2 { font-family: "Playfair Display", serif; font-size: 22px; font-weight: 700; }
+    [data-style="08-newsprint"] .s-pre { background: #ebe5d6; border: 1px solid #c9bfa6; font-family: "JetBrains Mono", monospace; font-size: 12px; }
+
+    /* =========================================================
+       09 · PASTEL INDIE
+       ========================================================= */
+    [data-style="09-pastel"] {
+      background: linear-gradient(135deg, #ffe5ec 0%, #e0e7ff 100%);
+      color: #2d2645;
+      font-family: "Space Grotesk", "Inter", sans-serif;
+    }
+    [data-style="09-pastel"] .preview-content { background: #fff; padding: 40px; border-radius: 24px; box-shadow: 0 20px 60px rgba(180,140,200,0.15); }
+    [data-style="09-pastel"] .s-nav { font-size: 14px; color: #6c5ce7; }
+    [data-style="09-pastel"] .s-nav__brand { background: linear-gradient(135deg, #ff6b9d, #6c5ce7); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 700; }
+    [data-style="09-pastel"] .s-nav a { color: #6c5ce7; text-decoration: none; padding: 4px 10px; border-radius: 999px; }
+    [data-style="09-pastel"] .s-nav a:hover { background: #f0eeff; }
+    [data-style="09-pastel"] .s-meta { font-size: 12px; color: #ff6b9d; font-weight: 500; }
+    [data-style="09-pastel"] .s-h1 { font-size: 38px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; background: linear-gradient(135deg, #ff6b9d 0%, #6c5ce7 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    [data-style="09-pastel"] .s-lede { font-size: 17px; color: #5a4d75; }
+    [data-style="09-pastel"] .s-p { font-size: 16px; color: #2d2645; }
+    [data-style="09-pastel"] .s-p a { color: #6c5ce7; font-weight: 500; text-decoration: none; border-bottom: 2px solid #d6d0ff; }
+    [data-style="09-pastel"] strong { font-weight: 700; color: #6c5ce7; }
+    [data-style="09-pastel"] em { font-style: normal; background: #fff5d6; padding: 0 4px; border-radius: 4px; }
+    [data-style="09-pastel"] .s-quote { padding: 20px 24px; background: #f0eeff; border-radius: 16px; font-size: 16px; color: #5a4d75; }
+    [data-style="09-pastel"] .s-quote::before { content: "💭 "; }
+    [data-style="09-pastel"] .s-h2 { font-size: 22px; font-weight: 700; color: #6c5ce7; }
+    [data-style="09-pastel"] .s-pre { background: #2d2645; color: #ffe5ec; border-radius: 12px; font-family: "JetBrains Mono", monospace; font-size: 13px; }
+
+    /* =========================================================
+       10 · PLAIN TEXT
+       ========================================================= */
+    [data-style="10-plain"] {
+      background: #fff;
+      color: #000;
+      font-family: "Times New Roman", Times, serif;
+    }
+    [data-style="10-plain"] .preview-content { max-width: 640px; }
+    [data-style="10-plain"] .s-nav { font-size: 16px; }
+    [data-style="10-plain"] .s-nav__brand { font-weight: bold; }
+    [data-style="10-plain"] .s-nav a { color: #0000ee; text-decoration: underline; }
+    [data-style="10-plain"] .s-meta { font-size: 14px; color: #000; }
+    [data-style="10-plain"] .s-h1 { font-size: 28px; font-weight: bold; line-height: 1.2; }
+    [data-style="10-plain"] .s-lede { font-size: 16px; font-style: italic; }
+    [data-style="10-plain"] .s-p { font-size: 16px; line-height: 1.5; }
+    [data-style="10-plain"] .s-p a { color: #0000ee; text-decoration: underline; }
+    [data-style="10-plain"] .s-p a:visited { color: #551a8b; }
+    [data-style="10-plain"] strong { font-weight: bold; }
+    [data-style="10-plain"] em { font-style: italic; }
+    [data-style="10-plain"] .s-quote { padding-left: 32px; font-size: 16px; line-height: 1.5; }
+    [data-style="10-plain"] .s-h2 { font-size: 20px; font-weight: bold; }
+    [data-style="10-plain"] .s-pre { font-family: "Courier New", monospace; font-size: 14px; background: transparent; padding: 0 0 0 16px; }
+
+    /* ===== Mobile ===== */
+    @media (max-width: 640px) {
+      .preview-section { padding: 60px 16px; }
+      [data-style="06-swiss"] .s-h1 { font-size: 36px; }
+      [data-style="02-editorial"] .s-h1 { font-size: 36px; }
+      [data-style="08-newsprint"] .s-h1 { font-size: 30px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="picker-header">
+    <div class="picker-header__row">
+      <div>
+        <h1>Pick a style</h1>
+        <p>Scroll through 10 options. Tell me the number you want and I'll apply it to the whole site.</p>
+      </div>
+    </div>
+    <nav class="picker-toc" aria-label="Style options">
+      <a href="#s01"><span>01</span> Brutalist Mono</a>
+      <a href="#s02"><span>02</span> Editorial Serif</a>
+      <a href="#s03"><span>03</span> Terminal Green</a>
+      <a href="#s04"><span>04</span> Soft Modernist</a>
+      <a href="#s05"><span>05</span> Academic Paper</a>
+      <a href="#s06"><span>06</span> Swiss Grid</a>
+      <a href="#s07"><span>07</span> Neo-Dark Tech</a>
+      <a href="#s08"><span>08</span> Newsprint</a>
+      <a href="#s09"><span>09</span> Pastel Indie</a>
+      <a href="#s10"><span>10</span> Plain Text</a>
+    </nav>
+  </header>
+
+  <!-- ============== 01 BRUTALIST MONO ============== -->
+  <section class="preview-section" id="s01" data-style="01-brutalist">
+    <span class="preview-label">01 · BRUTALIST MONO</span>
+    <div class="preview-content">
+      <nav class="s-nav">
+        <span class="s-nav__brand">ARTHUR</span>
+        <a href="#">ABOUT</a><a href="#">EXPERIENCE</a><a href="#">BLOG</a>
+      </nav>
+      <p class="s-meta">2026·04·15 // 6 MIN</p>
+      <h1 class="s-h1">Plan–Define–Act: a workflow for agentic coding</h1>
+      <p class="s-lede">A simple three-phase loop that keeps multi-step LLM coding tasks tractable, debuggable, and able to recover from being wrong.</p>
+      <p class="s-p">Most LLM coding agents fail in one of three predictable ways: they jump in without a plan, they plan in words but never define <em>what done looks like</em>, or they "act" in tiny steps that lose the thread. I've been using a <strong>three-phase workflow</strong> — see <a href="#">the original notes</a> — that addresses all three.</p>
+      <blockquote class="s-quote">A good plan is one a colleague could read in 30 seconds and tell you which step is wrong.</blockquote>
+      <h2 class="s-h2">Plan</h2>
+      <p class="s-p">Before any tool call, the agent writes a discrete-step plan with explicit inputs and outputs.</p>
+      <pre class="s-pre"><code># PLAN
+1. Locate auth middleware
+2. Add requireRole('admin')
+3. Update tests</code></pre>
+    </div>
+  </section>
+
+  <!-- ============== 02 EDITORIAL SERIF ============== -->
+  <section class="preview-section" id="s02" data-style="02-editorial">
+    <span class="preview-label">02 · EDITORIAL SERIF</span>
+    <div class="preview-content">
+      <nav class="s-nav">
+        <span class="s-nav__brand">Arthur</span>
+        <a href="#">About</a><a href="#">Experience</a><a href="#">Blog</a>
+      </nav>
+      <p class="s-meta">April 15 · 6 min read</p>
+      <h1 class="s-h1">Plan–Define–Act: a workflow for agentic coding</h1>
+      <p class="s-lede">A simple three-phase loop that keeps multi-step LLM coding tasks tractable, debuggable, and able to recover from being wrong.</p>
+      <p class="s-p">Most LLM coding agents fail in one of three predictable ways: they jump in without a plan, they plan in words but never define <em>what done looks like</em>, or they "act" in tiny steps that lose the thread. I've been using a <strong>three-phase workflow</strong> — see <a href="#">the original notes</a> — that addresses all three.</p>
+      <blockquote class="s-quote">A good plan is one a colleague could read in 30 seconds and tell you which step is wrong.</blockquote>
+      <h2 class="s-h2">On the first phase</h2>
+      <p class="s-p">Before any tool call, the agent writes a discrete-step plan with explicit inputs and outputs.</p>
+      <pre class="s-pre"><code># PLAN
+1. Locate auth middleware
+2. Add requireRole('admin')
+3. Update tests</code></pre>
+    </div>
+  </section>
+
+  <!-- ============== 03 TERMINAL GREEN ============== -->
+  <section class="preview-section" id="s03" data-style="03-terminal">
+    <span class="preview-label">03 · TERMINAL GREEN</span>
+    <div class="preview-content">
+      <nav class="s-nav">
+        <span class="s-nav__brand">arthur</span>
+        <a href="#">about</a><a href="#">experience</a><a href="#">blog</a>
+      </nav>
+      <p class="s-meta">2026-04-15 · 6 min read</p>
+      <h1 class="s-h1">Plan–Define–Act: a workflow for agentic coding</h1>
+      <p class="s-lede">A simple three-phase loop that keeps multi-step LLM coding tasks tractable, debuggable, and able to recover from being wrong.</p>
+      <p class="s-p">Most LLM coding agents fail in one of three predictable ways: they jump in without a plan, they plan in words but never define <em>what done looks like</em>, or they "act" in tiny steps that lose the thread. I've been using a <strong>three-phase workflow</strong> — see <a href="#">the original notes</a> — that addresses all three.</p>
+      <blockquote class="s-quote">A good plan is one a colleague could read in 30 seconds and tell you which step is wrong.</blockquote>
+      <h2 class="s-h2">Plan</h2>
+      <p class="s-p">Before any tool call, the agent writes a discrete-step plan with explicit inputs and outputs.</p>
+      <pre class="s-pre"><code># PLAN
+1. Locate auth middleware
+2. Add requireRole('admin')
+3. Update tests</code></pre>
+    </div>
+  </section>
+
+  <!-- ============== 04 SOFT MODERNIST ============== -->
+  <section class="preview-section" id="s04" data-style="04-soft">
+    <span class="preview-label">04 · SOFT MODERNIST</span>
+    <div class="preview-content">
+      <nav class="s-nav">
+        <span class="s-nav__brand">Arthur</span>
+        <a href="#">About</a><a href="#">Experience</a><a href="#">Blog</a>
+      </nav>
+      <p class="s-meta">Apr 15, 2026 · 6 min read</p>
+      <h1 class="s-h1">Plan–Define–Act: a workflow for agentic coding</h1>
+      <p class="s-lede">A simple three-phase loop that keeps multi-step LLM coding tasks tractable, debuggable, and able to recover from being wrong.</p>
+      <p class="s-p">Most LLM coding agents fail in one of three predictable ways: they jump in without a plan, they plan in words but never define <em>what done looks like</em>, or they "act" in tiny steps that lose the thread. I've been using a <strong>three-phase workflow</strong> — see <a href="#">the original notes</a> — that addresses all three.</p>
+      <blockquote class="s-quote">A good plan is one a colleague could read in 30 seconds and tell you which step is wrong.</blockquote>
+      <h2 class="s-h2">Plan</h2>
+      <p class="s-p">Before any tool call, the agent writes a discrete-step plan with explicit inputs and outputs.</p>
+      <pre class="s-pre"><code># PLAN
+1. Locate auth middleware
+2. Add requireRole('admin')
+3. Update tests</code></pre>
+    </div>
+  </section>
+
+  <!-- ============== 05 ACADEMIC PAPER ============== -->
+  <section class="preview-section" id="s05" data-style="05-academic">
+    <span class="preview-label">05 · ACADEMIC PAPER</span>
+    <div class="preview-content">
+      <nav class="s-nav">
+        <span class="s-nav__brand">Arthur</span> ·
+        <a href="#">About</a> · <a href="#">Experience</a> · <a href="#">Blog</a>
+      </nav>
+      <p class="s-meta">15 April 2026</p>
+      <h1 class="s-h1">Plan–Define–Act: A Workflow for Agentic Coding</h1>
+      <p class="s-lede">A simple three-phase loop that keeps multi-step LLM coding tasks tractable, debuggable, and able to recover from being wrong.</p>
+      <p class="s-p">Most LLM coding agents fail in one of three predictable ways: they jump in without a plan, they plan in words but never define <em>what done looks like</em>, or they "act" in tiny steps that lose the thread. I've been using a <strong>three-phase workflow</strong> — see <a href="#">the original notes</a> — that addresses all three.</p>
+      <blockquote class="s-quote">A good plan is one a colleague could read in 30 seconds and tell you which step is wrong.</blockquote>
+      <h2 class="s-h2">1. Plan</h2>
+      <p class="s-p">Before any tool call, the agent writes a discrete-step plan with explicit inputs and outputs.</p>
+      <pre class="s-pre"><code># PLAN
+1. Locate auth middleware
+2. Add requireRole('admin')
+3. Update tests</code></pre>
+    </div>
+  </section>
+
+  <!-- ============== 06 SWISS GRID ============== -->
+  <section class="preview-section" id="s06" data-style="06-swiss">
+    <span class="preview-label">06 · SWISS GRID</span>
+    <div class="preview-content">
+      <nav class="s-nav">
+        <span class="s-nav__brand">Arthur</span>
+        <a href="#">About</a><a href="#">Experience</a><a href="#">Blog</a>
+      </nav>
+      <p class="s-meta">2026.04.15 / 6 MIN READ</p>
+      <h1 class="s-h1">Plan, Define, Act</h1>
+      <p class="s-lede">A simple three-phase loop that keeps multi-step LLM coding tasks tractable, debuggable, and able to recover from being wrong.</p>
+      <p class="s-p">Most LLM coding agents fail in one of three predictable ways: they jump in without a plan, they plan in words but never define <em>what done looks like</em>, or they "act" in tiny steps that lose the thread. I've been using a <strong>three-phase workflow</strong> — see <a href="#">the original notes</a> — that addresses all three.</p>
+      <blockquote class="s-quote">A good plan is one a colleague could read in 30 seconds and tell you which step is wrong.</blockquote>
+      <h2 class="s-h2">01 · Plan</h2>
+      <p class="s-p">Before any tool call, the agent writes a discrete-step plan with explicit inputs and outputs.</p>
+      <pre class="s-pre"><code># PLAN
+1. Locate auth middleware
+2. Add requireRole('admin')
+3. Update tests</code></pre>
+    </div>
+  </section>
+
+  <!-- ============== 07 NEO-DARK TECH ============== -->
+  <section class="preview-section" id="s07" data-style="07-neo-dark">
+    <span class="preview-label">07 · NEO-DARK TECH</span>
+    <div class="preview-content">
+      <nav class="s-nav">
+        <span class="s-nav__brand">Arthur</span>
+        <a href="#">About</a><a href="#">Experience</a><a href="#">Blog</a>
+      </nav>
+      <p class="s-meta">2026-04-15  ~  6 min read</p>
+      <h1 class="s-h1">Plan–Define–Act: a workflow for agentic coding</h1>
+      <p class="s-lede">A simple three-phase loop that keeps multi-step LLM coding tasks tractable, debuggable, and able to recover from being wrong.</p>
+      <p class="s-p">Most LLM coding agents fail in one of three predictable ways: they jump in without a plan, they plan in words but never define <em>what done looks like</em>, or they "act" in tiny steps that lose the thread. I've been using a <strong>three-phase workflow</strong> — see <a href="#">the original notes</a> — that addresses all three.</p>
+      <blockquote class="s-quote">A good plan is one a colleague could read in 30 seconds and tell you which step is wrong.</blockquote>
+      <h2 class="s-h2">Plan</h2>
+      <p class="s-p">Before any tool call, the agent writes a discrete-step plan with explicit inputs and outputs.</p>
+      <pre class="s-pre"><code># PLAN
+1. Locate auth middleware
+2. Add requireRole('admin')
+3. Update tests</code></pre>
+    </div>
+  </section>
+
+  <!-- ============== 08 NEWSPRINT ============== -->
+  <section class="preview-section" id="s08" data-style="08-newsprint">
+    <span class="preview-label">08 · NEWSPRINT</span>
+    <div class="preview-content">
+      <nav class="s-nav">
+        <span class="s-nav__brand">Arthur</span>
+        <br>
+        <a href="#">About</a> &nbsp; <a href="#">Experience</a> &nbsp; <a href="#">Blog</a>
+      </nav>
+      <p class="s-meta">Toronto · April 15, 2026 · 6 min read</p>
+      <h1 class="s-h1">Plan–Define–Act: A Workflow for Agentic Coding</h1>
+      <p class="s-lede">A simple three-phase loop that keeps multi-step LLM coding tasks tractable, debuggable, and able to recover from being wrong.</p>
+      <p class="s-p">Most LLM coding agents fail in one of three predictable ways: they jump in without a plan, they plan in words but never define <em>what done looks like</em>, or they "act" in tiny steps that lose the thread. I've been using a <strong>three-phase workflow</strong> — see <a href="#">the original notes</a> — that addresses all three.</p>
+      <blockquote class="s-quote">A good plan is one a colleague could read in 30 seconds and tell you which step is wrong.</blockquote>
+      <h2 class="s-h2">Plan</h2>
+      <p class="s-p">Before any tool call, the agent writes a discrete-step plan with explicit inputs and outputs.</p>
+      <pre class="s-pre"><code># PLAN
+1. Locate auth middleware
+2. Add requireRole('admin')
+3. Update tests</code></pre>
+    </div>
+  </section>
+
+  <!-- ============== 09 PASTEL INDIE ============== -->
+  <section class="preview-section" id="s09" data-style="09-pastel">
+    <span class="preview-label">09 · PASTEL INDIE</span>
+    <div class="preview-content">
+      <nav class="s-nav">
+        <span class="s-nav__brand">Arthur</span>
+        <a href="#">About</a><a href="#">Experience</a><a href="#">Blog</a>
+      </nav>
+      <p class="s-meta">Apr 15, 2026 · 6 min read ✨</p>
+      <h1 class="s-h1">Plan–Define–Act: a workflow for agentic coding</h1>
+      <p class="s-lede">A simple three-phase loop that keeps multi-step LLM coding tasks tractable, debuggable, and able to recover from being wrong.</p>
+      <p class="s-p">Most LLM coding agents fail in one of three predictable ways: they jump in without a plan, they plan in words but never define <em>what done looks like</em>, or they "act" in tiny steps that lose the thread. I've been using a <strong>three-phase workflow</strong> — see <a href="#">the original notes</a> — that addresses all three.</p>
+      <blockquote class="s-quote">A good plan is one a colleague could read in 30 seconds and tell you which step is wrong.</blockquote>
+      <h2 class="s-h2">Plan</h2>
+      <p class="s-p">Before any tool call, the agent writes a discrete-step plan with explicit inputs and outputs.</p>
+      <pre class="s-pre"><code># PLAN
+1. Locate auth middleware
+2. Add requireRole('admin')
+3. Update tests</code></pre>
+    </div>
+  </section>
+
+  <!-- ============== 10 PLAIN TEXT ============== -->
+  <section class="preview-section" id="s10" data-style="10-plain">
+    <span class="preview-label">10 · PLAIN TEXT</span>
+    <div class="preview-content">
+      <nav class="s-nav">
+        <span class="s-nav__brand">Arthur</span> |
+        <a href="#">about</a> | <a href="#">experience</a> | <a href="#">blog</a>
+      </nav>
+      <p class="s-meta">April 15, 2026</p>
+      <h1 class="s-h1">Plan–Define–Act: a workflow for agentic coding</h1>
+      <p class="s-lede">A simple three-phase loop that keeps multi-step LLM coding tasks tractable, debuggable, and able to recover from being wrong.</p>
+      <p class="s-p">Most LLM coding agents fail in one of three predictable ways: they jump in without a plan, they plan in words but never define <em>what done looks like</em>, or they "act" in tiny steps that lose the thread. I've been using a <strong>three-phase workflow</strong> — see <a href="#">the original notes</a> — that addresses all three.</p>
+      <blockquote class="s-quote">A good plan is one a colleague could read in 30 seconds and tell you which step is wrong.</blockquote>
+      <h2 class="s-h2">Plan</h2>
+      <p class="s-p">Before any tool call, the agent writes a discrete-step plan with explicit inputs and outputs.</p>
+      <pre class="s-pre"><code># PLAN
+1. Locate auth middleware
+2. Add requireRole('admin')
+3. Update tests</code></pre>
+    </div>
+  </section>
+
+  <footer class="footer-cta">
+    <h2>Ready to choose?</h2>
+    <p>Tell me the number — for example, <code>use style 5</code> or <code>let's go with the editorial one</code> — and I'll apply it across the home page, blog index, and both posts.</p>
+  </footer>
+
+</body>
+</html>

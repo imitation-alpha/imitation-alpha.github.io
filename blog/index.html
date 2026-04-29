@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog — Arthur</title>
+  <meta name="description" content="Notes on agentic systems, ML infrastructure, and tooling." />
+  <meta name="theme-color" content="#0a0e0a" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Blog — Arthur" />
+  <meta property="og:description" content="Notes on agentic systems, ML infrastructure, and tooling." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:creator" content="@imitation_alpha" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <nav class="nav" aria-label="Primary">
+    <div class="nav__inner">
+      <a class="nav__brand" href="../index.html">Arthur</a>
+      <button class="nav__toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links">
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#experience">Experience</a></li>
+        <li><a href="../index.html#projects">Projects</a></li>
+        <li><a href="index.html" class="active">Blog</a></li>
+        <li><a href="../index.html#publications">Publications</a></li>
+        <li><button class="nav__theme" aria-label="Toggle theme">◑</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="main">
+    <section class="section">
+      <h2 class="section__title"><span class="accent">·</span> Blog</h2>
+      <div class="section__body">
+        <p style="color: var(--fg-muted); margin: 0 0 32px;">Notes on agentic systems, ML infrastructure, and tooling.</p>
+        <ul class="post-list">
+          <li>
+            <a href="orchestrating-coding-agents.html">
+              <time>Apr 28, 2026</time>
+              <h3>My setup for running 10+ CLI coding agents at once</h3>
+              <p>tmux, Tailscale, Termius on iOS, and a small PWA panel — how I keep ~10 parallel coding agents tractable from desk or phone.</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <p>© <span id="year">2026</span> Arthur</p>
+      <p class="footer__links">
+        <a href="https://linkedin.com/in/arthur-yau" target="_blank" rel="noopener">LinkedIn</a> ·
+        <a href="https://github.com/imitation-alpha" target="_blank" rel="noopener">GitHub</a> ·
+        <a href="https://x.com/imitation_alpha" target="_blank" rel="noopener">X</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js" defer></script>
+</body>
+</html>

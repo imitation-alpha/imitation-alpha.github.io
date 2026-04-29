@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>同時駕馭 10+ 個 CLI 程式設計 agent 的設定方式 — Arthur</title>
+  <meta name="description" content="如何用 tmux、Tailscale、iOS 上的 Termius，加上一個小型 PWA 控制台，同時操控 10+ 個並行 CLI 程式設計 agent。" />
+  <meta name="theme-color" content="#0a0e0a" />
+  <meta name="author" content="Arthur Yau" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="同時駕馭 10+ 個 CLI 程式設計 agent 的設定方式" />
+  <meta property="og:description" content="tmux、Tailscale、iOS 上的 Termius，加上一個小型 PWA 控制台 — 同時駕馭 10+ 個並行程式設計 agent 的方法。" />
+  <meta property="og:locale" content="zh_Hant" />
+  <meta property="article:author" content="Arthur Yau" />
+  <meta property="article:published_time" content="2026-04-28" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@imitation_alpha" />
+  <meta name="twitter:title" content="同時駕馭 10+ 個 CLI 程式設計 agent 的設定方式" />
+  <meta name="twitter:description" content="tmux、Tailscale、iOS 上的 Termius，加上一個小型 PWA 控制台 — 同時駕馭 10+ 個並行程式設計 agent 的方法。" />
+  <link rel="alternate" hreflang="en" href="https://imitation-alpha.github.io/blog/orchestrating-coding-agents.html" />
+  <link rel="alternate" hreflang="zh-Hant" href="https://imitation-alpha.github.io/zh-Hant/blog/orchestrating-coding-agents.html" />
+  <link rel="alternate" hreflang="x-default" href="https://imitation-alpha.github.io/blog/orchestrating-coding-agents.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">略過導覽</a>
+  <div class="read-progress" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="主導覽">
+    <div class="nav__inner">
+      <a class="nav__brand" href="../../index.html">Arthur</a>
+      <button class="nav__toggle" aria-label="切換導覽" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links">
+        <li><a href="../../index.html#about" hreflang="en">About (EN)</a></li>
+        <li><a href="../../index.html#experience" hreflang="en">Experience (EN)</a></li>
+        <li><a href="../../index.html#projects" hreflang="en">Projects (EN)</a></li>
+        <li><a href="../../index.html#blog" hreflang="en" class="active">Blog (EN)</a></li>
+        <li><a href="../../index.html#publications" hreflang="en">Publications (EN)</a></li>
+        <li><button class="nav__theme" aria-label="切換主題">◑</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="post">
+    <a class="post__back" href="../../index.html#blog" hreflang="en">返回（首頁為英文）</a>
+
+    <aside class="post__toc" aria-label="目錄">
+      <p class="post__toc__label">目錄</p>
+      <ul>
+        <li><a href="#stack">技術組合</a></li>
+        <li><a href="#tmux">一個專案一個 tmux session</a></li>
+        <li><a href="#tailscale">Tailscale：自家主機、零對外曝險</a></li>
+        <li><a href="#termius">手機上的 Termius</a></li>
+        <li><a href="#gui">真的需要 GUI 的時候</a></li>
+        <li><a href="#panel">缺失的那塊：一個 agent 控制台</a></li>
+        <li><a href="#what-id-add">還想加上的東西</a></li>
+        <li><a href="#further-reading">延伸閱讀</a></li>
+        <li><a href="#configs">附錄：~/.vimrc</a></li>
+      </ul>
+    </aside>
+
+    <header class="post__header">
+      <h1>同時駕馭 10+ 個 CLI 程式設計 agent 的設定方式</h1>
+      <p class="post__lede">tmux、Tailscale、iOS 上的 Termius，加上一個小型 PWA 控制台 — 在桌面或火車上同時駕馭 10+ 個並行程式設計 agent 的方法。</p>
+      <p class="post__meta">
+        2026 年 4 月 28 日
+        <span class="dot">·</span>
+        <span data-reading-time>8 分鐘</span>
+        <span class="dot">·</span>
+        Arthur Yau
+        <span class="dot view-dot" hidden>·</span>
+        <span data-views data-views-label="次瀏覽" hidden></span>
+      </p>
+      <p class="post__lang">
+        本文為 LLM 自動翻譯，原文以
+        <a href="../../blog/orchestrating-coding-agents.html" hreflang="en" lang="en">English</a>
+        版本為準；如有不通順或誤譯處，建議參照原文。
+      </p>
+    </header>
+
+    <div class="post__body" id="main">
+    <p>
+      在一般的工作日，我會同時跑 10+ 個 CLI 程式設計 agent — <strong>Claude Code</strong>、<strong>Codex</strong>、<strong>Gemini CLI</strong> 混在一起用。
+      有的在開發功能，有的在跑資料攝取或訓練任務，有的在拉取個別結果好讓我逐一檢查，還有幾個在做雜事 —
+      commit、PR、code review、文件撰寫。幾個朋友問我怎麼讓這一切不會崩成一團混亂，所以這篇就把整套設定寫下來。
+    </p>
+
+    <h2 id="stack">技術組合</h2>
+    <p>
+      沒什麼花俏的：自家主機上跑 <code>tmux</code> + <code>vim</code>，Mac 用 iTerm 或 Ghostty，
+      <a href="https://tailscale.com" target="_blank" rel="noopener">Tailscale</a> 處理遠端連線，
+      手機用 Termius，再加上一個我自己寫的小型 PWA 當作控制台。有趣的不是任何單一工具 —
+      而是它們組合起來讓我在不同 agent 之間切換的成本有多低。
+    </p>
+
+    <h2 id="tmux">一個專案一個 tmux session</h2>
+    <p>
+      每個專案開一個 session（<code>tmux new -s &lt;project&gt;</code>），底下再依用途切成幾個 window：
+      一個跑 agent、一個 tail 測試或 logs、一個監控長時間的 pipeline、一個處理 git 操作。
+      長時程的任務指派下去就讓它跑著；我切走、指派下一個 agent，等到有狀況再輪回來看。
+    </p>
+
+    <p>我實際在用的 tmux 操作其實很少：</p>
+
+    <pre><code>tmux a                # attach 到 session
+tmux new -s &lt;name&gt;    # 開新 session
+&lt;C-b&gt; z               # 把當前 pane 放到全螢幕
+&lt;C-b&gt; s               # 挑 session
+&lt;C-b&gt; q               # 顯示 pane 編號 → 直接跳
+&lt;C-b&gt; &lt;n&gt;             # 跳到 window n</code></pre>
+
+    <p>就這樣。沒有外掛、沒有自訂設定 — 六個動作練成肌肉記憶就夠用。</p>
+
+    <p>
+      用熟之後想再深入，我長期擺在書籤裡的兩份備忘錄是
+      <a href="https://gist.github.com/MohamedAlaa/2961058" target="_blank" rel="noopener">MohamedAlaa 的 tmux cheatsheet gist</a>
+      （單頁，一眼掃完）以及
+      <a href="https://tmuxcheatsheet.com/" target="_blank" rel="noopener">tmuxcheatsheet.com</a>
+      （可搜尋、依操作分類）。兩份對照，幾乎所有 binding 都查得到，根本不需要打開 <code>man tmux</code>。
+    </p>
+
+    <h2 id="tailscale">Tailscale：自家主機、零對外曝險</h2>
+    <p>
+      我把這套東西在自己的「地端」（home box）跑，<strong>除了把 GPU 和磁碟塞滿之外，安全考量才是真正的原因</strong>。
+      我跑的東西有一半根本沒驗證機制，我可不想把它們暴露在公網上。
+      Tailscale 把筆電、手機、那台主機放在同一個私有 mesh 上，
+      不論在哪登入都連得上 SSH 與任何 prototype web server — 從來不需要走公網。
+    </p>
+
+    <h2 id="termius">手機上的 Termius</h2>
+    <p>
+      在外面的時候，我用 iOS 上的 Termius SSH 進去。Termius 真正讓 tmux 在手機上<em>能用</em>的關鍵
+      是它的 shortcut bar — esc、tab、ctrl、alt、方向鍵、shift+tab — 直接擺在鍵盤上方。
+      搭配 tmux prefix，我在火車上一隻手就能驅動一個 Claude Code session。
+    </p>
+
+    <figure>
+      <img src="../../blog/assets/termius-ios.jpg" alt="iPhone 上的 Termius 顯示 tmux 中的 Claude Code CLI session，shortcut bar（esc/tab/ctrl/alt/方向鍵）就在 iOS 鍵盤上方。" />
+      <figcaption>iOS 上的 Termius — tmux + Claude Code，全靠 shortcut bar 操作。</figcaption>
+    </figure>
+
+    <h2 id="gui">真的需要 GUI 的時候</h2>
+    <p>
+      大部分工作都在 terminal 裡，但偶爾還是會需要看到畫面 — 某個 agent 起的 dashboard、Jupyter UI，
+      或某個無法 headless 跑的工具。這種情況我會在自家主機上裝
+      <strong>Chrome Remote Desktop</strong> 與 <strong>VNC</strong> server。
+      CRD 比較簡單、瀏覽器就能用；VNC 也行，記得綁在 Tailscale interface 上以避免暴露在公網。
+      兩者都比 SSH 慢，但能應付那 5% 真的需要螢幕的工作。
+    </p>
+
+    <h2 id="panel">缺失的那塊：一個總覽所有 agent 的控制台</h2>
+    <p>
+      真正的摩擦點不是「打字進 session」，而是<em>找對那個 session</em>：
+      哪個 agent 跑完了、哪個在等輸入、哪個一聲不吭很久了。
+      開 Termius → attach 到 tmux → 跳到正確 session → scroll back — 這一連串大概要 20 秒，
+      而我一天要付這個稅幾十次。
+    </p>
+
+    <p>
+      所以我寫了一個小型 PWA，把每個正在跑的 CLI agent 攤成一張卡片，依「最後互動時間」排序。
+      每張卡片顯示狀態（<em>working</em>、<em>idle</em>、<em>waiting on input</em>）、
+      專案 tag，以及最新輸出。session 跑完或在等問題時會推播通知。
+      點卡片會打開一個聊天式介面，可以直接送下一條指令 — 不用 SSH、不用 tmux 切換。
+    </p>
+
+    <div class="figure-row">
+      <figure>
+        <img src="../../blog/assets/panel-list-view.jpg" alt="PWA 中所有 CLI agent session 以卡片呈現，依狀態分組 — idle、working、needs input、offline，每張卡片都有專案 tag。" />
+        <figcaption>列表視圖 — 所有 session 的狀態一目了然。</figcaption>
+      </figure>
+      <figure>
+        <img src="../../blog/assets/panel-session-view.jpg" alt="PWA 中打開單一 CLI agent session 的詳細視圖，包含訊息輸入框與一排終端機快捷鍵。" />
+        <figcaption>Session 視圖 — 不用 SSH 也能下指令。</figcaption>
+      </figure>
+    </div>
+
+    <p>
+      這是我今年對行動工作流最大的改進。我把這個更完整、開源版的計劃叫做
+      <a href="https://github.com/imitation-alpha/vmux" target="_blank" rel="noopener">vmux</a>。
+      目前 repo 只是個 placeholder — <strong>如果星數突破 100，我就會開始把它整理成可發佈的開源專案</strong>。
+      想投票就 star 那個 repo，第一版發佈時 GitHub 會自動通知你。
+    </p>
+
+    <h2 id="what-id-add">還想加上的東西</h2>
+    <p>
+      讓 agent 之間不用 copy-paste 就能讀彼此的輸出。
+      一個 broadcast 模式，可以對選定的一群 session 同時送同一個 prompt（控制台已經為這個保留位置）。
+      語音輸入 — 在公車上很需要。
+    </p>
+
+    <p>
+      核心心得很簡單：把「你」與「agent」之間的每一步都壓短，
+      同時駕馭十個 agent 就不再像一份工作。
+    </p>
+
+    <h2 id="further-reading">延伸閱讀</h2>
+    <p>
+      如果這篇有任何概念對你來說是新的 — shell 工具、vim、tmux、整套「住在 terminal 裡」的思維 —
+      我毫不猶豫推薦的一份資源是 MIT 的
+      <a href="https://missing.csail.mit.edu/2020/" target="_blank" rel="noopener">Missing Semester（2020 版）</a>。
+      這是每個 CS 系都該有但都沒有的一門課。另外還有一個
+      <a href="https://missing.csail.mit.edu/" target="_blank" rel="noopener">2026 版</a>
+      我自己還沒看完，但光是 2020 版，一週之內就會回本。
+    </p>
+
+    <hr />
+    <h2 id="configs">附錄：~/.vimrc</h2>
+    <p>
+      <code>~/.tmux.conf</code> 直接用 <a href="https://github.com/gpakosz/.tmux" target="_blank" rel="noopener">gpakosz/.tmux</a>
+      原樣 — 上游就是正解，貼 1900 行別人 repo 的內容沒意義。個人化覆蓋放進
+      <code>~/.tmux.conf.local</code>。值得貼出來的是下面這份 <code>.vimrc</code>，自己寫的，刻意精簡。
+    </p>
+
+    <h3>~/.vimrc</h3>
+    <pre><code>&quot; Comments in Vimscript start with a `&quot;`.
+
+&quot; If you open this file in Vim, it&#x27;ll be syntax highlighted for you.
+
+&quot; Vim is based on Vi. Setting `nocompatible` switches from the default
+&quot; Vi-compatibility mode and enables useful Vim functionality. This
+&quot; configuration option turns out not to be necessary for the file named
+&quot; &#x27;~/.vimrc&#x27;, because Vim automatically enters nocompatible mode if that file
+&quot; is present. But we&#x27;re including it here just in case this config file is
+&quot; loaded some other way (e.g. saved as `foo`, and then Vim started with
+&quot; `vim -u foo`).
+set nocompatible
+
+&quot; Turn on syntax highlighting.
+syntax on
+colorscheme delek
+
+&quot; Disable the default Vim startup message.
+set shortmess+=I
+
+&quot; Show line numbers.
+set number
+set nu
+set ai
+set tabstop=4
+set ls=2
+set autoindent
+
+&quot; This enables relative line numbering mode. With both number and
+&quot; relativenumber enabled, the current line shows the true line number, while
+&quot; all other lines (above and below) are numbered relative to the current line.
+&quot; This is useful because you can tell, at a glance, what count is needed to
+&quot; jump up or down to a particular line, by {count}k to go up or {count}j to go
+&quot; down.
+set relativenumber
+
+&quot; Always show the status line at the bottom, even if you only have one window open.
+set laststatus=2
+
+&quot; The backspace key has slightly unintuitive behavior by default. For example,
+&quot; by default, you can&#x27;t backspace before the insertion point set with &#x27;i&#x27;.
+&quot; This configuration makes backspace behave more reasonably, in that you can
+&quot; backspace over anything.
+set backspace=indent,eol,start
+
+&quot; By default, Vim doesn&#x27;t let you hide a buffer (i.e. have a buffer that isn&#x27;t
+&quot; shown in any window) that has unsaved changes. This is to prevent you from &quot;
+&quot; forgetting about unsaved changes and then quitting e.g. via `:qa!`. We find
+&quot; hidden buffers helpful enough to disable this protection. See `:help hidden`
+&quot; for more information on this.
+set hidden
+
+&quot; This setting makes search case-insensitive when all characters in the string
+&quot; being searched are lowercase. However, the search becomes case-sensitive if
+&quot; it contains any capital letters. This makes searching more convenient.
+set ignorecase
+set smartcase
+
+&quot; Enable searching as you type, rather than waiting till you press enter.
+set incsearch
+
+&quot; Unbind some useless/annoying default key bindings.
+nmap Q &lt;Nop&gt; &quot; &#x27;Q&#x27; in normal mode enters Ex mode. You almost never want this.
+
+&quot; Disable audible bell because it&#x27;s annoying.
+set noerrorbells visualbell t_vb=
+
+&quot; Enable mouse support. You should avoid relying on this too much, but it can
+&quot; sometimes be convenient.
+set mouse+=a
+
+&quot; Try to prevent bad habits like using the arrow keys for movement. This is
+&quot; not the only possible bad habit. For example, holding down the h/j/k/l keys
+&quot; for movement, rather than using more efficient movement commands, is also a
+&quot; bad habit. The former is enforceable through a .vimrc, while we don&#x27;t know
+&quot; how to prevent the latter.
+
+&quot; Do this in normal mode...
+nnoremap &lt;Left&gt;  :echoe &quot;Use h&quot;&lt;CR&gt;
+nnoremap &lt;Right&gt; :echoe &quot;Use l&quot;&lt;CR&gt;
+nnoremap &lt;Up&gt;    :echoe &quot;Use k&quot;&lt;CR&gt;
+nnoremap &lt;Down&gt;  :echoe &quot;Use j&quot;&lt;CR&gt;
+&quot; ...and in insert mode
+inoremap &lt;Left&gt;  &lt;ESC&gt;:echoe &quot;Use h&quot;&lt;CR&gt;
+inoremap &lt;Right&gt; &lt;ESC&gt;:echoe &quot;Use l&quot;&lt;CR&gt;
+inoremap &lt;Up&gt;    &lt;ESC&gt;:echoe &quot;Use k&quot;&lt;CR&gt;
+inoremap &lt;Down&gt;  &lt;ESC&gt;:echoe &quot;Use j&quot;&lt;CR&gt;
+</code></pre>
+
+    <hr />
+
+    <p>
+      有問題、想分享你自己的設定，或想搶先試用控制台？歡迎在 <a href="https://linkedin.com/in/arthur-yau" target="_blank" rel="noopener">LinkedIn</a> 或 <a href="https://x.com/imitation_alpha" target="_blank" rel="noopener">X</a> 上找我。
+    </p>
+    </div><!-- /.post__body -->
+  </article>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <p>© <span id="year">2026</span> Arthur</p>
+      <p class="footer__links">
+        <a href="https://linkedin.com/in/arthur-yau" target="_blank" rel="noopener">LinkedIn</a> ·
+        <a href="https://github.com/imitation-alpha" target="_blank" rel="noopener">GitHub</a> ·
+        <a href="https://x.com/imitation_alpha" target="_blank" rel="noopener">X</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js" defer></script>
+  <!-- GoatCounter pageview tracking (privacy-friendly, no cookies) -->
+  <script data-goatcounter="https://imitation-alpha.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

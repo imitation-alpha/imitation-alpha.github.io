@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pick a light mode — 5 options</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Inter", system-ui, sans-serif;
+      background: #1a1a1a;
+      color: #ddd;
+    }
+    .picker-header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(26,26,26,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid #333;
+      padding: 18px 28px;
+    }
+    .picker-header__row {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; flex-wrap: wrap;
+    }
+    .picker-header h1 { font-size: 16px; font-weight: 600; color: #fff; }
+    .picker-header p { font-size: 13px; color: #999; }
+    .picker-toc {
+      display: flex; gap: 6px; flex-wrap: wrap;
+      max-width: 1200px; margin: 12px auto 0;
+    }
+    .picker-toc a {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 4px 10px;
+      border: 1px solid #333; border-radius: 999px;
+      font-size: 12px; color: #ccc;
+      text-decoration: none; background: #222;
+      transition: all 0.15s ease;
+    }
+    .picker-toc a:hover { border-color: #6cff95; color: #6cff95; }
+    .picker-toc a span { font-family: "JetBrains Mono", monospace; font-size: 10px; opacity: 0.6; }
+
+    .preview-section {
+      position: relative;
+      min-height: 70vh;
+      padding: 60px 24px;
+      overflow: hidden;
+      font-family: "JetBrains Mono", monospace;
+      transition: background 0.2s ease;
+    }
+    .preview-label {
+      position: absolute;
+      top: 16px; right: 16px;
+      background: rgba(0,0,0,0.85);
+      color: #fff;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      padding: 6px 12px;
+      border-radius: 4px;
+      z-index: 10;
+      letter-spacing: 0.05em;
+    }
+    .preview-content {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* Shared sample structure */
+    .s-nav {
+      display: flex; gap: 18px;
+      font-size: 13px;
+      padding-bottom: 14px;
+      margin-bottom: 36px;
+      border-bottom: 1px solid;
+    }
+    .s-nav__brand { font-weight: 600; }
+    .s-nav__brand::before { content: "$ "; opacity: 0.6; font-weight: 400; }
+    .s-nav a { text-decoration: none; }
+    .s-meta { font-size: 12px; margin-bottom: 10px; }
+    .s-meta::before { content: "// "; opacity: 0.7; }
+    .s-h1 {
+      font-size: 28px; font-weight: 600;
+      line-height: 1.25; margin-bottom: 14px;
+      letter-spacing: -0.01em;
+    }
+    .s-h1::before { content: "# "; opacity: 0.5; font-weight: 400; }
+    .s-lede {
+      font-size: 14px; line-height: 1.6;
+      margin-bottom: 32px;
+      padding: 12px 16px;
+      border-left: 2px solid;
+    }
+    .s-p { font-size: 14px; line-height: 1.75; margin-bottom: 16px; }
+    .s-quote {
+      margin: 24px 0;
+      font-size: 14px; line-height: 1.7;
+      padding-left: 20px;
+      border-left: 2px solid;
+    }
+    .s-quote::before { content: "> "; font-weight: 600; margin-left: -16px; margin-right: 4px; }
+    .s-h2 {
+      font-size: 16px; font-weight: 600;
+      margin: 36px 0 12px;
+    }
+    .s-h2::before { content: "## "; opacity: 0.5; font-weight: 400; }
+    .s-pre {
+      padding: 12px 14px; font-size: 12px;
+      line-height: 1.55; overflow-x: auto;
+      margin: 14px 0;
+      border: 1px solid;
+    }
+    .s-pre code { white-space: pre; }
+    .s-tag {
+      display: inline-block;
+      font-size: 10px;
+      padding: 2px 8px;
+      border: 1px solid;
+      margin-right: 4px;
+    }
+    .s-tag::before { content: "["; opacity: 0.6; margin-right: 1px; }
+    .s-tag::after { content: "]"; opacity: 0.6; margin-left: 1px; }
+
+    /* =========================================================
+       A · SOLARIZED LIGHT
+       ========================================================= */
+    [data-light="a-solarized"] {
+      background: #fdf6e3;
+      color: #586e75;
+    }
+    [data-light="a-solarized"] .s-nav { border-color: #eee8d5; color: #93a1a1; }
+    [data-light="a-solarized"] .s-nav__brand { color: #073642; }
+    [data-light="a-solarized"] .s-nav a { color: #93a1a1; }
+    [data-light="a-solarized"] .s-meta { color: #93a1a1; }
+    [data-light="a-solarized"] .s-h1 { color: #073642; }
+    [data-light="a-solarized"] .s-lede { color: #586e75; border-color: #859900; background: rgba(133,153,0,0.06); }
+    [data-light="a-solarized"] .s-p { color: #586e75; }
+    [data-light="a-solarized"] .s-p strong { color: #073642; }
+    [data-light="a-solarized"] .s-p em { color: #b58900; font-style: normal; }
+    [data-light="a-solarized"] .s-p a { color: #859900; }
+    [data-light="a-solarized"] .s-quote { color: #586e75; border-color: #859900; }
+    [data-light="a-solarized"] .s-quote::before { color: #859900; }
+    [data-light="a-solarized"] .s-h2 { color: #073642; }
+    [data-light="a-solarized"] .s-pre { background: #eee8d5; border-color: #d6cfb4; color: #586e75; }
+    [data-light="a-solarized"] .s-tag { background: #eee8d5; border-color: #d6cfb4; color: #859900; }
+
+    /* =========================================================
+       B · PAPER WHITE
+       ========================================================= */
+    [data-light="b-paper-white"] {
+      background: #ffffff;
+      color: #1a1a1a;
+    }
+    [data-light="b-paper-white"] .s-nav { border-color: #e0e0e0; color: #6b6b6b; }
+    [data-light="b-paper-white"] .s-nav__brand { color: #000; }
+    [data-light="b-paper-white"] .s-nav a { color: #6b6b6b; }
+    [data-light="b-paper-white"] .s-meta { color: #6b6b6b; }
+    [data-light="b-paper-white"] .s-h1 { color: #000; }
+    [data-light="b-paper-white"] .s-lede { color: #1a1a1a; border-color: #0d4d22; background: rgba(13,77,34,0.04); }
+    [data-light="b-paper-white"] .s-p { color: #1a1a1a; }
+    [data-light="b-paper-white"] .s-p strong { color: #000; }
+    [data-light="b-paper-white"] .s-p em { color: #b8541b; font-style: normal; }
+    [data-light="b-paper-white"] .s-p a { color: #0d4d22; }
+    [data-light="b-paper-white"] .s-quote { color: #1a1a1a; border-color: #0d4d22; }
+    [data-light="b-paper-white"] .s-quote::before { color: #0d4d22; }
+    [data-light="b-paper-white"] .s-h2 { color: #000; }
+    [data-light="b-paper-white"] .s-pre { background: #f7f7f5; border-color: #e0e0e0; color: #1a1a1a; }
+    [data-light="b-paper-white"] .s-tag { background: #f7f7f5; border-color: #e0e0e0; color: #0d4d22; }
+
+    /* =========================================================
+       C · GITHUB LIGHT
+       ========================================================= */
+    [data-light="c-github"] {
+      background: #ffffff;
+      color: #1f2328;
+    }
+    [data-light="c-github"] .s-nav { border-color: #d0d7de; color: #656d76; }
+    [data-light="c-github"] .s-nav__brand { color: #0d1117; }
+    [data-light="c-github"] .s-nav a { color: #656d76; }
+    [data-light="c-github"] .s-meta { color: #656d76; }
+    [data-light="c-github"] .s-h1 { color: #0d1117; }
+    [data-light="c-github"] .s-lede { color: #1f2328; border-color: #0969da; background: rgba(9,105,218,0.04); }
+    [data-light="c-github"] .s-p { color: #1f2328; }
+    [data-light="c-github"] .s-p strong { color: #0d1117; }
+    [data-light="c-github"] .s-p em { color: #cf222e; font-style: normal; }
+    [data-light="c-github"] .s-p a { color: #0969da; }
+    [data-light="c-github"] .s-quote { color: #656d76; border-color: #d0d7de; }
+    [data-light="c-github"] .s-quote::before { color: #0969da; }
+    [data-light="c-github"] .s-h2 { color: #0d1117; }
+    [data-light="c-github"] .s-pre { background: #f6f8fa; border-color: #d0d7de; color: #1f2328; }
+    [data-light="c-github"] .s-tag { background: #ddf4ff; border-color: #b6e3ff; color: #0550ae; }
+
+    /* =========================================================
+       D · SLATE COOL
+       ========================================================= */
+    [data-light="d-slate"] {
+      background: #f3f4f6;
+      color: #374151;
+    }
+    [data-light="d-slate"] .s-nav { border-color: #d1d5db; color: #6b7280; }
+    [data-light="d-slate"] .s-nav__brand { color: #111827; }
+    [data-light="d-slate"] .s-nav a { color: #6b7280; }
+    [data-light="d-slate"] .s-meta { color: #6b7280; }
+    [data-light="d-slate"] .s-h1 { color: #111827; }
+    [data-light="d-slate"] .s-lede { color: #374151; border-color: #0891b2; background: rgba(8,145,178,0.05); }
+    [data-light="d-slate"] .s-p { color: #374151; }
+    [data-light="d-slate"] .s-p strong { color: #111827; }
+    [data-light="d-slate"] .s-p em { color: #d97706; font-style: normal; }
+    [data-light="d-slate"] .s-p a { color: #0891b2; }
+    [data-light="d-slate"] .s-quote { color: #374151; border-color: #0891b2; }
+    [data-light="d-slate"] .s-quote::before { color: #0891b2; }
+    [data-light="d-slate"] .s-h2 { color: #111827; }
+    [data-light="d-slate"] .s-pre { background: #ffffff; border-color: #d1d5db; color: #374151; }
+    [data-light="d-slate"] .s-tag { background: #ffffff; border-color: #d1d5db; color: #0891b2; }
+
+    /* =========================================================
+       E · NEWSPRINT OFF-WHITE
+       ========================================================= */
+    [data-light="e-newsprint"] {
+      background: #f6f3ed;
+      color: #2a2520;
+    }
+    [data-light="e-newsprint"] .s-nav { border-color: #d8d2c2; color: #5a554c; }
+    [data-light="e-newsprint"] .s-nav__brand { color: #000; }
+    [data-light="e-newsprint"] .s-nav a { color: #5a554c; }
+    [data-light="e-newsprint"] .s-meta { color: #5a554c; }
+    [data-light="e-newsprint"] .s-h1 { color: #000; }
+    [data-light="e-newsprint"] .s-lede { color: #2a2520; border-color: #b8341e; background: rgba(184,52,30,0.05); }
+    [data-light="e-newsprint"] .s-p { color: #2a2520; }
+    [data-light="e-newsprint"] .s-p strong { color: #000; }
+    [data-light="e-newsprint"] .s-p em { color: #8b6f1c; font-style: normal; }
+    [data-light="e-newsprint"] .s-p a { color: #b8341e; }
+    [data-light="e-newsprint"] .s-quote { color: #2a2520; border-color: #b8341e; }
+    [data-light="e-newsprint"] .s-quote::before { color: #b8341e; }
+    [data-light="e-newsprint"] .s-h2 { color: #000; }
+    [data-light="e-newsprint"] .s-pre { background: #fbf9f3; border-color: #d8d2c2; color: #2a2520; }
+    [data-light="e-newsprint"] .s-tag { background: #ede7d6; border-color: #d8d2c2; color: #b8341e; }
+
+    .footer-cta {
+      padding: 60px 24px 100px;
+      text-align: center;
+      background: #1a1a1a;
+      color: #ddd;
+    }
+    .footer-cta h2 { font-size: 22px; margin-bottom: 12px; font-weight: 500; color: #fff; }
+    .footer-cta p { color: #aaa; max-width: 540px; margin: 0 auto; line-height: 1.6; }
+    .footer-cta code { background: #2a2a2a; padding: 2px 8px; border-radius: 4px; font-family: "JetBrains Mono", monospace; font-size: 13px; color: #6cff95; }
+
+    @media (max-width: 640px) { .preview-section { padding: 40px 16px; } }
+  </style>
+</head>
+<body>
+
+  <header class="picker-header">
+    <div class="picker-header__row">
+      <div>
+        <h1>Pick a light mode</h1>
+        <p>Same terminal layout. Different palette. Tell me the letter and I'll swap it in.</p>
+      </div>
+    </div>
+    <nav class="picker-toc" aria-label="Light variants">
+      <a href="#a"><span>A</span> Solarized Light</a>
+      <a href="#b"><span>B</span> Paper White</a>
+      <a href="#c"><span>C</span> GitHub Light</a>
+      <a href="#d"><span>D</span> Slate Cool</a>
+      <a href="#e"><span>E</span> Newsprint</a>
+    </nav>
+  </header>
+
+  <!-- ============== A SOLARIZED ============== -->
+  <section class="preview-section" id="a" data-light="a-solarized">
+    <span class="preview-label">A · SOLARIZED LIGHT</span>
+    <div class="preview-content">
+      <nav class="s-nav">
+        <span class="s-nav__brand">arthur</span>
+        <a href="#">about</a><a href="#">experience</a><a href="#">writing</a>
+      </nav>
+      <p class="s-meta">2026-04-15 · 6 min read</p>
+      <h1 class="s-h1">Plan–Define–Act: a workflow for agentic coding</h1>
+      <p class="s-lede">A simple three-phase loop that keeps multi-step LLM coding tasks tractable, debuggable, and able to recover from being wrong.</p>
+      <p class="s-p">Most LLM coding agents fail in one of three predictable ways: they jump in without a plan, they plan in words but never define <em>what done looks like</em>, or they "act" in tiny steps that lose the thread. I've been using a <strong>three-phase workflow</strong> — see <a href="#">the original notes</a> — that addresses all three.</p>
+      <p style="margin: 16px 0;"><span class="s-tag">ML</span><span class="s-tag">RL</span><span class="s-tag">Agents</span></p>
+      <blockquote class="s-quote">A good plan is one a colleague could read in 30 seconds and tell you which step is wrong.</blockquote>
+      <h2 class="s-h2">Plan</h2>
+      <p class="s-p">Before any tool call, the agent writes a discrete-step plan with explicit inputs and outputs.</p>
+      <pre class="s-pre"><code># PLAN
+1. Locate auth middleware
+2. Add requireRole('admin')</code></pre>
+    </div>
+  </section>
+
+  <!-- ============== B PAPER WHITE ============== -->
+  <section class="preview-section" id="b" data-light="b-paper-white">
+    <span class="preview-label">B · PAPER WHITE</span>
+    <div class="preview-content">
+      <nav class="s-nav">
+        <span class="s-nav__brand">arthur</span>
+        <a href="#">about</a><a href="#">experience</a><a href="#">writing</a>
+      </nav>
+      <p class="s-meta">2026-04-15 · 6 min read</p>
+      <h1 class="s-h1">Plan–Define–Act: a workflow for agentic coding</h1>
+      <p class="s-lede">A simple three-phase loop that keeps multi-step LLM coding tasks tractable, debuggable, and able to recover from being wrong.</p>
+      <p class="s-p">Most LLM coding agents fail in one of three predictable ways: they jump in without a plan, they plan in words but never define <em>what done looks like</em>, or they "act" in tiny steps that lose the thread. I've been using a <strong>three-phase workflow</strong> — see <a href="#">the original notes</a> — that addresses all three.</p>
+      <p style="margin: 16px 0;"><span class="s-tag">ML</span><span class="s-tag">RL</span><span class="s-tag">Agents</span></p>
+      <blockquote class="s-quote">A good plan is one a colleague could read in 30 seconds and tell you which step is wrong.</blockquote>
+      <h2 class="s-h2">Plan</h2>
+      <p class="s-p">Before any tool call, the agent writes a discrete-step plan with explicit inputs and outputs.</p>
+      <pre class="s-pre"><code># PLAN
+1. Locate auth middleware
+2. Add requireRole('admin')</code></pre>
+    </div>
+  </section>
+
+  <!-- ============== C GITHUB LIGHT ============== -->
+  <section class="preview-section" id="c" data-light="c-github">
+    <span class="preview-label">C · GITHUB LIGHT</span>
+    <div class="preview-content">
+      <nav class="s-nav">
+        <span class="s-nav__brand">arthur</span>
+        <a href="#">about</a><a href="#">experience</a><a href="#">writing</a>
+      </nav>
+      <p class="s-meta">2026-04-15 · 6 min read</p>
+      <h1 class="s-h1">Plan–Define–Act: a workflow for agentic coding</h1>
+      <p class="s-lede">A simple three-phase loop that keeps multi-step LLM coding tasks tractable, debuggable, and able to recover from being wrong.</p>
+      <p class="s-p">Most LLM coding agents fail in one of three predictable ways: they jump in without a plan, they plan in words but never define <em>what done looks like</em>, or they "act" in tiny steps that lose the thread. I've been using a <strong>three-phase workflow</strong> — see <a href="#">the original notes</a> — that addresses all three.</p>
+      <p style="margin: 16px 0;"><span class="s-tag">ML</span><span class="s-tag">RL</span><span class="s-tag">Agents</span></p>
+      <blockquote class="s-quote">A good plan is one a colleague could read in 30 seconds and tell you which step is wrong.</blockquote>
+      <h2 class="s-h2">Plan</h2>
+      <p class="s-p">Before any tool call, the agent writes a discrete-step plan with explicit inputs and outputs.</p>
+      <pre class="s-pre"><code># PLAN
+1. Locate auth middleware
+2. Add requireRole('admin')</code></pre>
+    </div>
+  </section>
+
+  <!-- ============== D SLATE COOL ============== -->
+  <section class="preview-section" id="d" data-light="d-slate">
+    <span class="preview-label">D · SLATE COOL</span>
+    <div class="preview-content">
+      <nav class="s-nav">
+        <span class="s-nav__brand">arthur</span>
+        <a href="#">about</a><a href="#">experience</a><a href="#">writing</a>
+      </nav>
+      <p class="s-meta">2026-04-15 · 6 min read</p>
+      <h1 class="s-h1">Plan–Define–Act: a workflow for agentic coding</h1>
+      <p class="s-lede">A simple three-phase loop that keeps multi-step LLM coding tasks tractable, debuggable, and able to recover from being wrong.</p>
+      <p class="s-p">Most LLM coding agents fail in one of three predictable ways: they jump in without a plan, they plan in words but never define <em>what done looks like</em>, or they "act" in tiny steps that lose the thread. I've been using a <strong>three-phase workflow</strong> — see <a href="#">the original notes</a> — that addresses all three.</p>
+      <p style="margin: 16px 0;"><span class="s-tag">ML</span><span class="s-tag">RL</span><span class="s-tag">Agents</span></p>
+      <blockquote class="s-quote">A good plan is one a colleague could read in 30 seconds and tell you which step is wrong.</blockquote>
+      <h2 class="s-h2">Plan</h2>
+      <p class="s-p">Before any tool call, the agent writes a discrete-step plan with explicit inputs and outputs.</p>
+      <pre class="s-pre"><code># PLAN
+1. Locate auth middleware
+2. Add requireRole('admin')</code></pre>
+    </div>
+  </section>
+
+  <!-- ============== E NEWSPRINT ============== -->
+  <section class="preview-section" id="e" data-light="e-newsprint">
+    <span class="preview-label">E · NEWSPRINT</span>
+    <div class="preview-content">
+      <nav class="s-nav">
+        <span class="s-nav__brand">arthur</span>
+        <a href="#">about</a><a href="#">experience</a><a href="#">writing</a>
+      </nav>
+      <p class="s-meta">2026-04-15 · 6 min read</p>
+      <h1 class="s-h1">Plan–Define–Act: a workflow for agentic coding</h1>
+      <p class="s-lede">A simple three-phase loop that keeps multi-step LLM coding tasks tractable, debuggable, and able to recover from being wrong.</p>
+      <p class="s-p">Most LLM coding agents fail in one of three predictable ways: they jump in without a plan, they plan in words but never define <em>what done looks like</em>, or they "act" in tiny steps that lose the thread. I've been using a <strong>three-phase workflow</strong> — see <a href="#">the original notes</a> — that addresses all three.</p>
+      <p style="margin: 16px 0;"><span class="s-tag">ML</span><span class="s-tag">RL</span><span class="s-tag">Agents</span></p>
+      <blockquote class="s-quote">A good plan is one a colleague could read in 30 seconds and tell you which step is wrong.</blockquote>
+      <h2 class="s-h2">Plan</h2>
+      <p class="s-p">Before any tool call, the agent writes a discrete-step plan with explicit inputs and outputs.</p>
+      <pre class="s-pre"><code># PLAN
+1. Locate auth middleware
+2. Add requireRole('admin')</code></pre>
+    </div>
+  </section>
+
+  <footer class="footer-cta">
+    <h2>Pick a letter</h2>
+    <p>Tell me which one — for example, <code>use light B</code> or <code>go with solarized</code> — and I'll swap it into the site as the [data-theme="light"] variant. The dark terminal stays as the default.</p>
+  </footer>
+
+</body>
+</html>
