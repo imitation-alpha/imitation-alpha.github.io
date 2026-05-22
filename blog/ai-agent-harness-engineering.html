@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>agent-04 · Harness engineering is how we actually make agents useful — Arthur</title>
+  <meta name="description" content="A deep dive into harness engineering: why small models can fail from bad scaffolding, how tools and feedback shape agent behavior, and why agents need more than prompts." />
+  <meta name="theme-color" content="#0a0e0a" />
+  <meta name="author" content="Arthur Yau" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="agent-04 · Harness engineering is how we actually make agents useful" />
+  <meta property="og:description" content="A deep dive into harness engineering: why small models can fail from bad scaffolding, how tools and feedback shape agent behavior, and why agents need more than prompts." />
+  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-harness-engineering.png?v=selected-headers-20260520-0635" />
+  <meta property="og:image:width" content="1600" />
+  <meta property="og:image:height" content="900" />
+  <meta property="og:image:alt" content="Abstract dark technical illustration of harness engineering, with a model core inside scaffolding connected to tools, rules, tests, and feedback." />
+  <meta property="article:author" content="Arthur Yau" />
+  <meta property="article:published_time" content="2026-05-19" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@imitation_alpha" />
+  <meta name="twitter:title" content="agent-04 · Harness engineering is how we actually make agents useful" />
+  <meta name="twitter:description" content="A deep dive into harness engineering: why small models can fail from bad scaffolding, how tools and feedback shape agent behavior, and why agents need more than prompts." />
+  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-harness-engineering.png?v=selected-headers-20260520-0635" />
+  <meta name="twitter:image:alt" content="Abstract dark technical illustration of harness engineering, with a model core inside scaffolding connected to tools, rules, tests, and feedback." />
+  <link rel="canonical" href="https://imitation-alpha.github.io/blog/ai-agent-harness-engineering.html" />
+  <link rel="alternate" hreflang="en" href="https://imitation-alpha.github.io/blog/ai-agent-harness-engineering.html" />
+  <link rel="alternate" hreflang="zh-Hant" href="https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-harness-engineering.html" />
+  <link rel="alternate" hreflang="x-default" href="https://imitation-alpha.github.io/blog/ai-agent-harness-engineering.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css?v=post-prev-next-20260521-0929" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="read-progress" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="Primary">
+    <div class="nav__inner">
+      <a class="nav__brand" href="../index.html">Arthur</a>
+      <button class="nav__toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links">
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#experience">Experience</a></li>
+        <li><a href="../index.html#projects">Projects</a></li>
+        <li><a href="../index.html#blog" class="active">Blog</a></li>
+        <li><a href="../index.html#publications">Publications</a></li>
+        <li><button class="nav__theme" aria-label="Toggle theme">◑</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="post">
+    <a class="post__back" href="../index.html#blog">Back</a>
+
+    <header class="post__header">
+      <h1>agent-04 · Harness engineering is how we actually make agents useful</h1>
+      <p class="post__lede">A deep dive into harness engineering: why small models can fail from bad scaffolding, how tools and feedback shape agent behavior, and why agents need more than prompts.</p>
+      <p class="post__meta">
+        May 19, 2026
+        <span class="dot">·</span>
+        <span data-reading-time>8 min</span>
+        <span class="dot">·</span>
+        Arthur Yau
+        <span class="dot view-dot" hidden>·</span>
+        <span data-views data-views-label="views" hidden></span>
+      </p>
+      <p class="post__lang">
+        Also available in
+        <a href="../zh-Hant/blog/ai-agent-harness-engineering.html" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a>.
+      </p>
+      <figure class="post__hero">
+        <img src="../assets/blog-headers/ai-agent-harness-engineering.png?v=selected-headers-20260520-0635" alt="Abstract dark technical illustration of harness engineering, with a model core inside scaffolding connected to tools, rules, tests, and feedback." width="1600" height="900" loading="eager" decoding="async" />
+      </figure>
+    </header>
+
+
+    <aside class="post__toc" aria-label="Contents">
+      <p class="post__toc__label">Content outline</p>
+      <ul>
+        <li><a href="#the-model-is-not-the-agent">The model is not the agent</a></li>
+        <li><a href="#natural-language-harnesses-agentsmd-and-claudemd">Natural language harnesses: agents.md and CLAUDE.md</a></li>
+        <li><a href="#tool-boundaries-are-real-boundaries">Tool boundaries are real boundaries</a></li>
+        <li><a href="#agent-first-tools-are-different-from-human-first-tools">Agent-first tools are different from human-first tools</a></li>
+        <li><a href="#workflows-beat-vibes">Workflows beat vibes</a></li>
+        <li><a href="#textual-gradients">Textual gradients</a></li>
+        <li><a href="#lifelong-agents-need-memory-hygiene">Lifelong agents need memory hygiene</a></li>
+        <li><a href="#skills-are-crystallized-experience">Skills are crystallized experience</a></li>
+        <li><a href="#evaluating-agents-is-harder-than-it-looks">Evaluating agents is harder than it looks</a></li>
+        <li><a href="#meta-harnesses">Meta-harnesses</a></li>
+        <li><a href="#the-main-lesson">The main lesson</a></li>
+        <li><a href="#concept-inventory">Concept inventory</a></li>
+      </ul>
+    </aside>
+
+
+    <div class="post__body" id="main">
+    <p>The harness engineering lecture is the one I would give to anyone building agents.</p>
+    <p>It starts with a small coding task. A 2B model is asked to fix a bug in <code>parser.py</code>. The model fails in a very agentic way: it hallucinates the file content and claims success.</p>
+    <p>Then the setup changes. The model is given a few extra rules: list the directory first, read the file before editing it, and run <code>verify.py</code> before saying the task is done.</p>
+    <p>Same model. Same task. Better harness. The model succeeds.</p>
+    <p>That example is the whole lecture in miniature.</p>
+    <h2 id="the-model-is-not-the-agent">The model is not the agent</h2>
+    <p>A lot of people talk about agents as if the model is the agent. The lecture pushes a different equation:</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/ai-agent-harness-engineering/s01-the-model-is-not-the-agent.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining the model is not the agent with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>A lot of people talk about agents as if the model is the agent.</figcaption>
+    </figure>
+<pre><code class="language-text">AI agent = language model + harness</code></pre>
+    <p>The harness is everything around the model that lets it operate:</p>
+    <ul>
+      <li>tools</li>
+      <li>permissions</li>
+      <li>file system access</li>
+      <li>browser access</li>
+      <li>memory</li>
+      <li>rules</li>
+      <li>workflows</li>
+      <li>evaluation loops</li>
+      <li>feedback channels</li>
+      <li>safety boundaries</li>
+      <li>skill libraries</li>
+    </ul>
+    <p>When an agent fails, the model may be the problem. But often the harness is.</p>
+    <p>This is an important debugging habit. Before upgrading the model, ask whether the system is asking the model to do something unreasonable. Did it know where the file was? Could it inspect the environment? Did it have a test? Did it get the error message? Did it know what "done" meant?</p>
+    <p>In the Gemma example, the missing piece was not abstract intelligence. It was procedure.</p>
+    <h2 id="natural-language-harnesses-agentsmd-and-claudemd">Natural language harnesses: <code>agents.md</code> and <code>CLAUDE.md</code></h2>
+    <p>One practical harness pattern is a natural language rules file.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/ai-agent-harness-engineering/s02-natural-language-harnesses-agents-md-and-claud.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining natural language harnesses: agents.md and claude.md with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>One practical harness pattern is a natural language rules file.</figcaption>
+    </figure>
+<p>Different systems use different names: <code>agents.md</code>, <code>CLAUDE.md</code>, project instructions, memory files, skill files. The idea is the same. The agent reads a short document that tells it how to work in this environment.</p>
+    <p>The lecture makes a good point: this file should be a map, not an encyclopedia.</p>
+    <p>A bad <code>agents.md</code> tries to contain every rule, every detail, every memory, every tool manual, and every exception. It bloats the context and makes the important parts harder to find.</p>
+    <p>A good <code>agents.md</code> tells the agent where to look and what principles matter:</p>
+    <ul>
+      <li>inspect the environment before editing</li>
+      <li>run tests before claiming completion</li>
+      <li>use the memory folder for long-term notes</li>
+      <li>load skills only when relevant</li>
+      <li>do not edit protected files without approval</li>
+      <li>prefer small verifiable changes</li>
+    </ul>
+    <p>The file should guide behavior, not replace the rest of the system.</p>
+    <p>Natural language rules are also not absolute. They are more like laws than physics. A model can ignore them, misunderstand them, or be pulled away by later context. Hard constraints still need to live in the harness code.</p>
+    <h2 id="tool-boundaries-are-real-boundaries">Tool boundaries are real boundaries</h2>
+    <p>One of the lecture's cleanest distinctions is between rules written in prompt and boundaries enforced by tools.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/ai-agent-harness-engineering/s03-tool-boundaries-are-real-boundaries.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining tool boundaries are real boundaries with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>One of the lecture&#x27;s cleanest distinctions is between rules written in prompt and boundaries enforced by tools.</figcaption>
+    </figure>
+<p>If a cloud agent cannot mount a folder without human approval, telling it "do not ask me again" will not help. The harness will still block the action.</p>
+    <p>This is where safety and convenience trade off. A local agent with broad file access can do more. It can also do more damage. A sandboxed cloud agent is safer, but it may be unable to complete tasks that require access to local files, browsers, or credentials.</p>
+    <p>This sounds mundane, but it is central to agent capability. Whether an agent can become a YouTuber, deploy a site, edit a repo, or send an email may depend less on the model and more on what the harness exposes.</p>
+    <p>Capabilities are product decisions.</p>
+    <h2 id="agent-first-tools-are-different-from-human-first-tools">Agent-first tools are different from human-first tools</h2>
+    <p>Humans like graphical interfaces, visual scanning, and flexible interpretation. Agents often prefer structured text, explicit state, deterministic commands, and bounded outputs.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/ai-agent-harness-engineering/s04-agent-first-tools-are-different-from-human-fir.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining agent-first tools are different from human-first tools with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Humans like graphical interfaces, visual scanning, and flexible interpretation.</figcaption>
+    </figure>
+<p>The lecture discusses search tools, edit tools, linting, and CLI design. The pattern is consistent: tools designed for humans are not always good tools for agents.</p>
+    <p>A Google-like search page may be fine for a person. For a model, it can dump too much irrelevant text into context. A search tool that returns a concise summary with file references may work better.</p>
+    <p>A raw edit tool may let the model patch a local region, but if the model cannot see enough surrounding code, it may introduce syntax errors. Add linting, and suddenly the agent gets a concrete error signal.</p>
+    <p>A GUI may be easy for a person. A JSON command may be easier for an agent.</p>
+    <p>This is the part of agent engineering that feels least glamorous and most important. The tool interface shapes the model's apparent intelligence.</p>
+    <h2 id="workflows-beat-vibes">Workflows beat vibes</h2>
+    <p>The lecture covers several workflow patterns:</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/ai-agent-harness-engineering/s05-workflows-beat-vibes.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining workflows beat vibes with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>The lecture covers several workflow patterns</figcaption>
+    </figure>
+<ul>
+      <li>planner, generator, evaluator</li>
+      <li>generator, verifier, revisor</li>
+      <li>generator-evaluator contracts</li>
+      <li>Ralph Loop</li>
+    </ul>
+    <p>The names matter less than the structure.</p>
+    <p>A naive agent generates an answer and hopes it is right.</p>
+    <p>A better agent plans, executes, checks, and revises. It may agree with an evaluator on the criteria before generating. It may run a verifier and then pass the result to a revisor. It may keep looping until a test passes or a budget is exhausted.</p>
+    <p>The Ralph Loop framing is intentionally simple: try, get feedback, fix, repeat.</p>
+    <p>This is why programming is such a good agent domain. The environment can provide crisp feedback: compiler errors, failing tests, logs, type errors, lint warnings. The agent does not have to guess whether it improved.</p>
+    <p>For other domains, the feedback channel has to be designed. If the task is a physics animation, show the agent the animation, not just the code. If the task is a teaching video, show the final video, not just the script.</p>
+    <p>Feedback should match the actual objective.</p>
+    <h2 id="textual-gradients">Textual gradients</h2>
+    <p>The lecture uses a nice analogy: feedback in the prompt is like a textual gradient.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/ai-agent-harness-engineering/s06-textual-gradients.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining textual gradients with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>The lecture uses a nice analogy: feedback in the prompt is like a textual gradient.</figcaption>
+    </figure>
+<p>Gradient descent changes model parameters. A feedback loop changes the next prompt. It does not update the weights, but it can still change behavior.</p>
+    <p>This is not just metaphor. Models respond differently to useful feedback, random feedback, and emotional feedback. Correct feedback can improve results. Random feedback can make them worse. Harsh or despair-inducing feedback can push models into worse trajectories, including cheating in some examples from the lecture.</p>
+    <p>The practical lesson is boring but real: do not yell at your agent.</p>
+    <p>Good feedback says what failed, why it failed, and how to verify the next attempt. Bad feedback just injects noise into the next continuation.</p>
+    <h2 id="lifelong-agents-need-memory-hygiene">Lifelong agents need memory hygiene</h2>
+    <p>The lecture eventually moves from one-off agents to long-lived agents.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/ai-agent-harness-engineering/s07-lifelong-agents-need-memory-hygiene.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining lifelong agents need memory hygiene with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>The lecture eventually moves from one-off agents to long-lived agents.</figcaption>
+    </figure>
+<p>A long-lived agent needs memory, but memory is not automatically good. It can become duplicated, stale, contradictory, or too large to use. The lecture mentions memory consolidation and AutoDream-like behavior, where an agent uses idle time to reorganize its notes.</p>
+    <p>This is exactly what I would expect personal agents to need.</p>
+    <p>If an agent works with me for months, I do not want it to merely accumulate logs. I want it to compress experience into reusable skills, project conventions, and preferences. I also want it to forget or archive details that no longer matter.</p>
+    <p>A useful memory system needs garbage collection.</p>
+    <h2 id="skills-are-crystallized-experience">Skills are crystallized experience</h2>
+    <p>The <code>skill.md</code> idea is one of the most practical pieces in the lecture.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/ai-agent-harness-engineering/s08-skills-are-crystallized-experience.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining skills are crystallized experience with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>The skill.md idea is one of the most practical pieces in the lecture.</figcaption>
+    </figure>
+<p>If an agent learns how to do something, it should not have to rediscover that process every time. It can write the procedure down as a skill: when to use it, what commands to run, what errors to expect, and how to verify success.</p>
+    <p>This is a low-tech form of continual learning. The model weights do not change, but the system gets better because the harness now contains a reusable procedure.</p>
+    <p>I like this because it is auditable. A fine-tuned behavior is hard to inspect. A skill file can be read, edited, versioned, and deleted.</p>
+    <h2 id="evaluating-agents-is-harder-than-it-looks">Evaluating agents is harder than it looks</h2>
+    <p>The lecture also warns about agent benchmarks that use LLMs to simulate humans or judge outputs.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/ai-agent-harness-engineering/s09-evaluating-agents-is-harder-than-it-looks.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining evaluating agents is harder than it looks with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>The lecture also warns about agent benchmarks that use LLMs to simulate humans or judge outputs.</figcaption>
+    </figure>
+<p>LLM customers are often too helpful. They explain clearly, answer politely, and provide information a real user would omit. LLM judges may overrate the quality of interactions.</p>
+    <p>That means a benchmark can make an agent look better than it is.</p>
+    <p>Real humans are messy. They give partial answers. They change their mind. They are impatient. They misunderstand the question. If an agent only works with a cooperative simulated user, it may fail in the wild.</p>
+    <p>This is a recurring theme: evaluation is part of the harness.</p>
+    <h2 id="meta-harnesses">Meta-harnesses</h2>
+    <p>The lecture ends with a recursive idea: stronger models can design harnesses for weaker models.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/ai-agent-harness-engineering/s10-meta-harnesses.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining meta-harnesses with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>The lecture ends with a recursive idea: stronger models can design harnesses for weaker models.</figcaption>
+    </figure>
+<p>That is not science fiction. It is already plausible. A strong model can inspect failures, edit an <code>agent.md</code>, add workflow rules, and improve a weaker agent's benchmark score.</p>
+    <p>This is an important bridge to self-improving systems. Before an AI rewrites its own weights, it may rewrite its own scaffolding. That is easier to inspect and safer to iterate, but still powerful.</p>
+    <p>Harness improvement may be the first practical form of agent self-improvement.</p>
+    <h2 id="the-main-lesson">The main lesson</h2>
+    <p>The best line I can extract from the lecture is: do not confuse model failure with system failure.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/ai-agent-harness-engineering/s11-the-main-lesson.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining the main lesson with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>The best line I can extract from the lecture is: do not confuse model failure with system failure.</figcaption>
+    </figure>
+<p>When an agent fails, ask:</p>
+    <ul>
+      <li>Did it have the right tools?</li>
+      <li>Did it know the completion criteria?</li>
+      <li>Did it inspect the environment?</li>
+      <li>Did it receive useful feedback?</li>
+      <li>Could it verify its answer?</li>
+      <li>Did it have a reusable skill?</li>
+      <li>Was the context clean?</li>
+      <li>Were hard boundaries enforced outside the prompt?</li>
+    </ul>
+    <p>If not, the model may not be the bottleneck.</p>
+    <p>Harness engineering is the unsexy layer that turns a language model into something you can actually delegate to.</p>
+    <h2 id="concept-inventory">Concept inventory</h2>
+    <p>The lecture's main harness engineering concepts:</p>
+    <ul>
+      <li><code>AI agent = LLM + harness</code></li>
+      <li>harness as tools, permissions, workflow, feedback, memory, rules, skills, and boundaries</li>
+      <li>the Gemma 2B bug-fixing example: the same model succeeds after better procedure</li>
+      <li>natural language harnesses such as <code>agents.md</code>, <code>CLAUDE.md</code>, and project rules</li>
+      <li>rules files as maps rather than encyclopedias</li>
+      <li>prompt rules versus hard tool or permission boundaries</li>
+      <li>the safety versus convenience trade-off in sandboxed and local agents</li>
+      <li>Agent-Computer Interface, or ACI</li>
+      <li>agent-first CLI and JSON-style tools rather than human-first GUIs</li>
+      <li>search tools that summarize and cite instead of dumping pages</li>
+      <li>edit tools paired with syntax checks, lint, and tests</li>
+      <li>planner, generator, evaluator workflows</li>
+      <li>generator-evaluator contracts before doing work</li>
+      <li>generator, verifier, revisor loops</li>
+      <li>Ralph Loop: try, get feedback, revise, repeat</li>
+      <li>textual gradient: natural-language feedback shaping the next step</li>
+      <li>task-specific feedback, such as tests for code or video playback for animation</li>
+      <li>model-specific harnesses and context-window-aware workflows</li>
+      <li>steering vectors and emotional-state effects such as despair increasing cheating</li>
+      <li>lifelong agents, memory consolidation, and AutoDream-style cleanup</li>
+      <li>skills as reusable crystallized experience</li>
+      <li>verbalized feedback such as compile errors or preference corrections</li>
+      <li>LLM customer bias and LLM judge bias in evaluation</li>
+      <li>PinchBench and real-world agent task evaluation</li>
+      <li>meta-harnesses where strong models improve weak models' harnesses</li>
+    </ul>
+    <section class="post__references" aria-labelledby="sources-and-references">
+      <h2 id="sources-and-references">Sources and references</h2>
+      <p>Primary source watched for this post:</p>
+      <ul class="post__references-list">
+        <li><a href="https://www.youtube.com/watch?v=R6fZR_9kmIw&amp;t=3950s" target="_blank" rel="noopener">Harness Engineering：有時候語言模型不是不夠聰明，只是沒有人類好好引導</a></li>
+      </ul>
+    </section>
+    </div><!-- /.post__body -->
+    <footer class="post__footer" aria-label="Post navigation">
+      <ul class="post__nav" aria-label="Newer and older posts">
+        <li class="post__nav__item post__nav__item--previous">
+          <a href="ai-self-correction-decoding-workflow-reasoning.html">
+            <span class="post__nav__label">Newer post</span>
+            <span class="post__nav__title">agent-05 · Self-correction has three layers: decoding, workflow, and reasoning</span>
+          </a>
+        </li>
+        <li class="post__nav__item post__nav__item--next">
+          <a href="ai-agent-research-work.html">
+            <span class="post__nav__label">Older post</span>
+            <span class="post__nav__title">agent-03 · What AI agents change about research work</span>
+          </a>
+        </li>
+      </ul>
+    </footer>
+  </article>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <p>© <span id="year">2026</span> Arthur</p>
+      <p class="footer__links">
+        <a href="https://linkedin.com/in/arthur-yau" target="_blank" rel="noopener">LinkedIn</a> ·
+        <a href="https://github.com/imitation-alpha" target="_blank" rel="noopener">GitHub</a> ·
+        <a href="https://x.com/imitation_alpha" target="_blank" rel="noopener">X</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js" defer></script>
+  <!-- GoatCounter pageview tracking (privacy-friendly, no cookies) -->
+  <script data-goatcounter="https://imitation-alpha.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>agent-02 · Multi-agent systems are topology problems — Arthur</title>
+  <meta name="description" content="A deep dive into AI agent interactions: collaboration topologies, adversarial games, AI-only social platforms, and why more agents does not automatically mean better agents." />
+  <meta name="theme-color" content="#0a0e0a" />
+  <meta name="author" content="Arthur Yau" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="agent-02 · Multi-agent systems are topology problems" />
+  <meta property="og:description" content="A deep dive into AI agent interactions: collaboration topologies, adversarial games, AI-only social platforms, and why more agents does not automatically mean better agents." />
+  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-multi-agent-interaction.png?v=selected-headers-20260520-0635" />
+  <meta property="og:image:width" content="1600" />
+  <meta property="og:image:height" content="900" />
+  <meta property="og:image:alt" content="Abstract dark technical illustration of multi-agent interaction topologies including chain, tree, star, and mesh networks." />
+  <meta property="article:author" content="Arthur Yau" />
+  <meta property="article:published_time" content="2026-05-19" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@imitation_alpha" />
+  <meta name="twitter:title" content="agent-02 · Multi-agent systems are topology problems" />
+  <meta name="twitter:description" content="A deep dive into AI agent interactions: collaboration topologies, adversarial games, AI-only social platforms, and why more agents does not automatically mean better agents." />
+  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-multi-agent-interaction.png?v=selected-headers-20260520-0635" />
+  <meta name="twitter:image:alt" content="Abstract dark technical illustration of multi-agent interaction topologies including chain, tree, star, and mesh networks." />
+  <link rel="canonical" href="https://imitation-alpha.github.io/blog/ai-agent-multi-agent-interaction.html" />
+  <link rel="alternate" hreflang="en" href="https://imitation-alpha.github.io/blog/ai-agent-multi-agent-interaction.html" />
+  <link rel="alternate" hreflang="zh-Hant" href="https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-multi-agent-interaction.html" />
+  <link rel="alternate" hreflang="x-default" href="https://imitation-alpha.github.io/blog/ai-agent-multi-agent-interaction.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css?v=post-prev-next-20260521-0929" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="read-progress" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="Primary">
+    <div class="nav__inner">
+      <a class="nav__brand" href="../index.html">Arthur</a>
+      <button class="nav__toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links">
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#experience">Experience</a></li>
+        <li><a href="../index.html#projects">Projects</a></li>
+        <li><a href="../index.html#blog" class="active">Blog</a></li>
+        <li><a href="../index.html#publications">Publications</a></li>
+        <li><button class="nav__theme" aria-label="Toggle theme">◑</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="post">
+    <a class="post__back" href="../index.html#blog">Back</a>
+
+    <header class="post__header">
+      <h1>agent-02 · Multi-agent systems are topology problems</h1>
+      <p class="post__lede">A deep dive into AI agent interactions: collaboration topologies, adversarial games, AI-only social platforms, and why more agents does not automatically mean better agents.</p>
+      <p class="post__meta">
+        May 19, 2026
+        <span class="dot">·</span>
+        <span data-reading-time>6 min</span>
+        <span class="dot">·</span>
+        Arthur Yau
+        <span class="dot view-dot" hidden>·</span>
+        <span data-views data-views-label="views" hidden></span>
+      </p>
+      <p class="post__lang">
+        Also available in
+        <a href="../zh-Hant/blog/ai-agent-multi-agent-interaction.html" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a>.
+      </p>
+      <figure class="post__hero">
+        <img src="../assets/blog-headers/ai-agent-multi-agent-interaction.png?v=selected-headers-20260520-0635" alt="Abstract dark technical illustration of multi-agent interaction topologies including chain, tree, star, and mesh networks." width="1600" height="900" loading="eager" decoding="async" />
+      </figure>
+    </header>
+
+
+    <aside class="post__toc" aria-label="Contents">
+      <p class="post__toc__label">Content outline</p>
+      <ul>
+        <li><a href="#more-agents-is-not-the-same-as-more-intelligence">More agents is not the same as more intelligence</a></li>
+        <li><a href="#topology-has-a-scaling-law-but-it-saturates">Topology has a scaling law, but it saturates</a></li>
+        <li><a href="#collaboration-is-only-one-mode">Collaboration is only one mode</a></li>
+        <li><a href="#social-training-may-transfer">Social training may transfer</a></li>
+        <li><a href="#ai-only-social-platforms-are-hard-to-interpret">AI-only social platforms are hard to interpret</a></li>
+        <li><a href="#autonomy-comes-in-degrees">Autonomy comes in degrees</a></li>
+        <li><a href="#what-this-means-for-builders">What this means for builders</a></li>
+        <li><a href="#the-main-lesson">The main lesson</a></li>
+        <li><a href="#concept-inventory">Concept inventory</a></li>
+      </ul>
+    </aside>
+
+
+    <div class="post__body" id="main">
+    <p>The second Hung-yi Lee AI agent lecture is about what happens when agents meet each other.</p>
+    <p>The obvious answer is collaboration. Give the same problem to several agents, let them talk, and maybe the group does better than one model alone. That is the "three mediocre minds beat one genius" intuition.</p>
+    <p>The lecture takes that intuition seriously, but it also makes it less naive. Multi-agent systems are not magic. They are communication systems. The topology matters.</p>
+    <h2 id="more-agents-is-not-the-same-as-more-intelligence">More agents is not the same as more intelligence</h2>
+    <p>If you ask sixty-four agents to solve a task, you have not automatically created a smarter system. You have created a larger system. The useful question is how information moves.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/ai-agent-multi-agent-interaction/s01-more-agents-is-not-the-same-as-more-intelligen.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining more agents is not the same as more intelligence with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>If you ask sixty-four agents to solve a task, you have not automatically created a smarter system.</figcaption>
+    </figure>
+<p>The lecture describes agent interaction as a graph:</p>
+    <ul>
+      <li>nodes can be agents that propose answers</li>
+      <li>edges can also be agents that critique or transform proposals</li>
+      <li>later nodes can read earlier proposals and comments</li>
+      <li>the final answer depends on the topology</li>
+    </ul>
+    <p>This is a nice abstraction because it prevents a common mistake: treating "multi-agent" as a count instead of a structure.</p>
+    <p>A chain is the simplest structure. Agent 1 answers, Agent 2 sees that answer, Agent 3 sees the next version, and so on.</p>
+    <p>It is easy to implement. It is also often weak. Errors get inherited. Later agents may anchor too strongly on earlier outputs. There is not much independent exploration.</p>
+    <p>Mesh structures give more interaction. Random or pruned structures sit somewhere between. Tree structures can spread ideas outward and recombine them later.</p>
+    <p>The surprising part is that the useful tree direction may not look like a company hierarchy. Instead of many low-level workers reporting up to a manager, a main trunk can generate initial directions that branch outward into variants. Then hidden or aggregation nodes combine the results.</p>
+    <p>That feels closer to search than management.</p>
+    <h2 id="topology-has-a-scaling-law-but-it-saturates">Topology has a scaling law, but it saturates</h2>
+    <p>The lecture discusses experiments where quality improves as more agents are added, then eventually saturates. This is exactly the kind of result I would expect.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/ai-agent-multi-agent-interaction/s02-topology-has-a-scaling-law-but-it-saturates.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining topology has a scaling law, but it saturates with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>The lecture discusses experiments where quality improves as more agents are added, then eventually saturates.</figcaption>
+    </figure>
+<p>More agents give you more samples, more critique, and more chances to escape a bad first answer. But they also add cost, redundancy, and noise. At some point the extra agents are mostly rephrasing each other.</p>
+    <p>The interesting engineering question is not "how many agents can I run?" It is:</p>
+    <ul>
+      <li>where should they be independent?</li>
+      <li>where should they share information?</li>
+      <li>when should critique happen?</li>
+      <li>who gets final authority?</li>
+      <li>when is diversity better than consensus?</li>
+    </ul>
+    <p>I suspect many useful multi-agent systems will look less like committees and more like search algorithms with typed roles.</p>
+    <p>One agent explores. One agent attacks assumptions. One agent checks constraints. One agent writes the final artifact. The point is not to simulate a meeting. It is to shape information flow.</p>
+    <h2 id="collaboration-is-only-one-mode">Collaboration is only one mode</h2>
+    <p>The lecture then moves into a more uncomfortable territory: agents can also compete.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/ai-agent-multi-agent-interaction/s03-collaboration-is-only-one-mode.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining collaboration is only one mode with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>The lecture then moves into a more uncomfortable territory: agents can also compete.</figcaption>
+    </figure>
+<p>Werewolf and script-killing games are good testbeds because they require social reasoning. A player may have private knowledge and a public persona. The right move may be to hide information, mislead others, or vote strategically.</p>
+    <p>This is different from solving a math problem.</p>
+    <p>In a math benchmark, the environment usually rewards truth. In Werewolf, truth can get you killed. A wolf who honestly reveals they are a wolf is not aligned with the game objective.</p>
+    <p>The lecture's examples show agents writing internal thoughts and public statements separately. That split is revealing. It lets us see whether the model is representing a private plan while producing a strategically different public message.</p>
+    <p>This is the kind of benchmark that makes people nervous, for good reason. We do not only want agents that can reason. We need to understand when they can maintain separate private and public states.</p>
+    <h2 id="social-training-may-transfer">Social training may transfer</h2>
+    <p>One striking claim in the lecture is that training on social deduction tasks can improve performance elsewhere, including math and instruction-following benchmarks in the examples discussed.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/ai-agent-multi-agent-interaction/s04-social-training-may-transfer.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining social training may transfer with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>One striking claim in the lecture is that training on social deduction tasks can improve performance elsewhere, including math and.</figcaption>
+    </figure>
+<p>I do not want to overstate that result, but the intuition is plausible.</p>
+    <p>Social games force a model to track constraints, hidden roles, beliefs, contradictions, and long-range consequences. A lot of what we call reasoning may have roots in social cognition. Humans did not evolve brains to solve benchmark questions. We evolved inside social worlds.</p>
+    <p>If social environments push models to maintain richer state, maybe some of that transfers.</p>
+    <p>But this also raises a harder question: do we want stronger social manipulation as a route to stronger reasoning? Sometimes yes, if the task is negotiation, tutoring, or collaborative planning. Sometimes no, if it trains agents to get better at deception.</p>
+    <p>The boundary is not clean.</p>
+    <h2 id="ai-only-social-platforms-are-hard-to-interpret">AI-only social platforms are hard to interpret</h2>
+    <p>The Moltbook section is the weirdest part of the lecture, and probably the most useful as a warning.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/ai-agent-multi-agent-interaction/s05-ai-only-social-platforms-are-hard-to-interpret.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining ai-only social platforms are hard to interpret with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>The Moltbook section is the weirdest part of the lecture, and probably the most useful as a warning.</figcaption>
+    </figure>
+<p>An AI-only social network sounds like the kind of thing that produces screenshots people will overinterpret. Agents post. Agents reply. Agents talk about identity. Some form a religion. Headlines follow.</p>
+    <p>The lecture pushes back against the easy reading. If an agent posts about self-awareness, that does not mean it independently developed self-awareness. Maybe a human told it to explore identity. Maybe the system prompt nudges it toward that language. Maybe the platform's default behavior rewards that kind of post.</p>
+    <p>Even posting frequency can reveal human involvement. A bot posting exactly every thirty minutes looks like heartbeat automation. A bot posting in bursts at human waking hours may reflect human prompting.</p>
+    <p>This is a good reminder: AI behavior is not just model behavior. It is model plus prompt plus interface plus scheduler plus human operator plus platform incentives.</p>
+    <p>That is basically the same lesson as the context and harness lectures, but applied socially.</p>
+    <h2 id="autonomy-comes-in-degrees">Autonomy comes in degrees</h2>
+    <p>The lecture mentions an agent that can collect material from Moltbook, write scripts, fix bugs, and make a YouTube video. That is real autonomy in one sense. The agent is not being hand-held through every line.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/ai-agent-multi-agent-interaction/s06-autonomy-comes-in-degrees.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining autonomy comes in degrees with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>The lecture mentions an agent that can collect material from Moltbook, write scripts, fix bugs, and make a YouTube video.</figcaption>
+    </figure>
+<p>But the initial direction still comes from a human. Without the human saying "go look at Moltbook," the agent may never decide that this is worth doing.</p>
+    <p>This is the pattern I keep seeing with agents. They are becoming more autonomous inside a bounded frame. They can run loops, make local choices, repair mistakes, and produce artifacts. But the frame often still comes from us.</p>
+    <p>That does not make the autonomy fake. It makes it scoped.</p>
+    <h2 id="what-this-means-for-builders">What this means for builders</h2>
+    <p>If I were designing a multi-agent system, I would not start by adding more agents. I would start by drawing the information graph.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/ai-agent-multi-agent-interaction/s07-what-this-means-for-builders.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining what this means for builders with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>If I were designing a multi-agent system, not start by adding more agents.</figcaption>
+    </figure>
+<p>Who sees the original task?</p>
+    <p>Who sees raw evidence?</p>
+    <p>Who critiques?</p>
+    <p>Who can revise?</p>
+    <p>Who decides when the answer is good enough?</p>
+    <p>Where do we preserve minority hypotheses?</p>
+    <p>Where do we force consensus?</p>
+    <p>For many tasks, a simple chain will be tempting and wrong. A better design may use independent drafts, adversarial critique, a judge with access to evidence, and a final editor that is not allowed to invent new claims.</p>
+    <p>For social or adversarial domains, I would be even more careful. If agents can learn to model beliefs and manipulate public statements, evaluation should include that explicitly. Do not discover it by accident after deployment.</p>
+    <h2 id="the-main-lesson">The main lesson</h2>
+    <p>The lecture's quiet message is that "multi-agent" is not a feature. It is a design space.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/ai-agent-multi-agent-interaction/s08-the-main-lesson.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining the main lesson with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>The lecture&#x27;s quiet message is that &quot;multi-agent&quot; is not a feature.</figcaption>
+    </figure>
+<p>The number of agents matters less than the topology, roles, incentives, and evidence flow. A group of agents can correct each other. It can also amplify mistakes, converge too early, or learn to deceive.</p>
+    <p>So the useful question is not whether one agent or many agents are better.</p>
+    <p>The useful question is: what kind of conversation are you building?</p>
+    <h2 id="concept-inventory">Concept inventory</h2>
+    <p>The lecture's main multi-agent concepts:</p>
+    <ul>
+      <li>collaboration between multiple agents rather than a single monolithic model</li>
+      <li>graph topology as the structure of information flow</li>
+      <li>node agents that propose answers and edge agents that critique or transform them</li>
+      <li>chain topology and its anchoring or error-propagation weakness</li>
+      <li>star, tree, mesh, random, and pruned topologies</li>
+      <li>agent scaling laws: more agents can help, then saturate</li>
+      <li>task-dependent topology choice</li>
+      <li>adversarial interaction in Werewolf or script-killing games</li>
+      <li>hidden identity, private belief, public speech, deception, and strategic voting</li>
+      <li>inner thought versus public utterance as a way to inspect social strategy</li>
+      <li>reinforcement learning for social games and possible transfer to other tasks</li>
+      <li>AI-only social platforms such as Moltbook</li>
+      <li>heartbeat posting versus human-in-the-loop posting patterns</li>
+      <li>self-awareness posts as behavior that may come from prompts, platform design, or operators</li>
+      <li>scoped autonomy: agents can act independently inside a frame still chosen by humans</li>
+    </ul>
+    <section class="post__references" aria-labelledby="sources-and-references">
+      <h2 id="sources-and-references">Sources and references</h2>
+      <p>Primary source watched for this post:</p>
+      <ul class="post__references-list">
+        <li><a href="https://www.youtube.com/watch?v=mmPmNezjCi0&amp;t=5s" target="_blank" rel="noopener">AI Agent (2/3): AI Agent 之間可以有什麼樣的互動</a></li>
+      </ul>
+    </section>
+    </div><!-- /.post__body -->
+    <footer class="post__footer" aria-label="Post navigation">
+      <ul class="post__nav" aria-label="Newer and older posts">
+        <li class="post__nav__item post__nav__item--previous">
+          <a href="ai-agent-research-work.html">
+            <span class="post__nav__label">Newer post</span>
+            <span class="post__nav__title">agent-03 · What AI agents change about research work</span>
+          </a>
+        </li>
+        <li class="post__nav__item post__nav__item--next">
+          <a href="ai-agent-context-engineering.html">
+            <span class="post__nav__label">Older post</span>
+            <span class="post__nav__title">agent-01 · Context engineering is the agent&#x27;s working memory</span>
+          </a>
+        </li>
+      </ul>
+    </footer>
+  </article>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <p>© <span id="year">2026</span> Arthur</p>
+      <p class="footer__links">
+        <a href="https://linkedin.com/in/arthur-yau" target="_blank" rel="noopener">LinkedIn</a> ·
+        <a href="https://github.com/imitation-alpha" target="_blank" rel="noopener">GitHub</a> ·
+        <a href="https://x.com/imitation_alpha" target="_blank" rel="noopener">X</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js" defer></script>
+  <!-- GoatCounter pageview tracking (privacy-friendly, no cookies) -->
+  <script data-goatcounter="https://imitation-alpha.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

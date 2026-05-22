@@ -10,19 +10,25 @@
   <meta property="og:type" content="article" />
   <meta property="og:title" content="My setup for running 10+ CLI coding agents at once" />
   <meta property="og:description" content="tmux, Tailscale, Termius on iOS, and a small PWA panel — how I keep ~10 parallel coding agents tractable from desk or phone." />
+  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/orchestrating-coding-agents.png?v=selected-headers-20260520-0635" />
+  <meta property="og:image:width" content="1600" />
+  <meta property="og:image:height" content="900" />
+  <meta property="og:image:alt" content="Abstract dark technical illustration of orchestrating many CLI coding agents through a tmux-style grid and mobile control panel." />
   <meta property="article:author" content="Arthur Yau" />
   <meta property="article:published_time" content="2026-04-28" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:creator" content="@imitation_alpha" />
   <meta name="twitter:title" content="My setup for running 10+ CLI coding agents at once" />
   <meta name="twitter:description" content="tmux, Tailscale, Termius on iOS, and a small PWA panel — how I keep ~10 parallel coding agents tractable from desk or phone." />
+  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/orchestrating-coding-agents.png?v=selected-headers-20260520-0635" />
+  <meta name="twitter:image:alt" content="Abstract dark technical illustration of orchestrating many CLI coding agents through a tmux-style grid and mobile control panel." />
   <link rel="alternate" hreflang="en" href="https://imitation-alpha.github.io/blog/orchestrating-coding-agents.html" />
   <link rel="alternate" hreflang="zh-Hant" href="https://imitation-alpha.github.io/zh-Hant/blog/orchestrating-coding-agents.html" />
   <link rel="alternate" hreflang="x-default" href="https://imitation-alpha.github.io/blog/orchestrating-coding-agents.html" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/styles.css?v=post-prev-next-20260521-0929" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -48,22 +54,6 @@
   <article class="post">
     <a class="post__back" href="../index.html#blog">Back</a>
 
-    <aside class="post__toc" aria-label="Contents">
-      <p class="post__toc__label">Contents</p>
-      <ul>
-        <li><a href="#stack">The stack</a></li>
-        <li><a href="#tmux">One tmux session per project</a></li>
-        <li><a href="#tailscale">Tailscale: home box, zero public exposure</a></li>
-        <li><a href="#termius">Termius on the phone</a></li>
-        <li><a href="#gui">When you actually need the GUI</a></li>
-        <li><a href="#panel">The missing piece: a panel for all the agents</a></li>
-        <li><a href="#what-id-add">What I'd still add</a></li>
-        <li><a href="#further-reading">Further reading</a></li>
-        <li><a href="#install">Setup guide: tmux, Tailscale, Termius</a></li>
-        <li><a href="#configs">Appendix: ~/.vimrc</a></li>
-      </ul>
-    </aside>
-
     <header class="post__header">
       <h1>My setup for running 10+ CLI coding agents at once</h1>
       <p class="post__lede">tmux, Tailscale, Termius on iOS, and a small PWA panel — how I keep 10+ parallel coding agents tractable from the desk or the train.</p>
@@ -80,7 +70,28 @@
         Also available in
         <a href="../zh-Hant/blog/orchestrating-coding-agents.html" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a>.
       </p>
+      <figure class="post__hero">
+        <img src="../assets/blog-headers/orchestrating-coding-agents.png?v=selected-headers-20260520-0635" alt="Abstract dark technical illustration of orchestrating many CLI coding agents through a tmux-style grid and mobile control panel." width="1600" height="900" loading="eager" decoding="async" />
+      </figure>
     </header>
+
+
+    <aside class="post__toc" aria-label="Contents">
+      <p class="post__toc__label">Content outline</p>
+      <ul>
+        <li><a href="#stack">The stack</a></li>
+        <li><a href="#tmux">One tmux session per project</a></li>
+        <li><a href="#tailscale">Tailscale: home box, zero public exposure</a></li>
+        <li><a href="#termius">Termius on the phone</a></li>
+        <li><a href="#gui">When you actually need the GUI</a></li>
+        <li><a href="#panel">The missing piece: a panel for all the agents</a></li>
+        <li><a href="#what-id-add">What I'd still add</a></li>
+        <li><a href="#install">Setup guide: tmux, Tailscale, Termius</a></li>
+        <li><a href="#configs">Appendix: ~/.vimrc</a></li>
+        <li><a href="#further-reading">Further reading</a></li>
+      </ul>
+    </aside>
+
 
     <div class="post__body" id="main">
     <p>
@@ -99,8 +110,7 @@
       small PWA I've been building to act as a control panel. The interesting part isn't any single
       piece — it's how cheaply they let me jump between agents.
     </p>
-
-    <pre><code>  ┌──────────────┐                              ┌─ home box ──────────────────────┐
+<pre><code>  ┌──────────────┐                              ┌─ home box ──────────────────────┐
   │ Mac          │                              │ tmux                            │
   │ (iTerm /     │ ◀───────┐                    │  ├─ session: project-a          │
   │  Ghostty)    │         │                    │  │   ├─ window: Claude Code     │
@@ -121,7 +131,7 @@
       close the terminal, lose Wi-Fi, switch from laptop to phone, and your agents
       keep running. Reattach with one command and pick up where you were.
     </p>
-    <p>
+<p>
       My layout: a session per project (<code>tmux new -s &lt;project&gt;</code>),
       one window for the agent, one for tests/logs, one for a long pipeline, one for git ops.
       Long-horizon tasks get assigned and left running; I tab out, instruct the next agent,
@@ -139,16 +149,14 @@
       This matters more than it sounds: half of what I'm running has no auth, and I'd rather not
       think about that.
     </p>
-
-    <h2 id="termius">Termius on the phone</h2>
+<h2 id="termius">Termius on the phone</h2>
     <p>
       When I'm out, I SSH from Termius on iOS. What makes Termius actually <em>usable</em> for
       tmux is its shortcut bar — esc, tab, ctrl, alt, arrows, shift+tab — sitting right above the
       keyboard. With those plus the tmux prefix, I can drive a Claude Code session one-handed on a
       train.
     </p>
-
-    <figure>
+<figure>
       <img src="assets/termius-ios.jpg" alt="Termius on iPhone showing a Claude Code CLI session inside tmux, with the shortcut bar (esc/tab/ctrl/alt/arrows) above the iOS keyboard." />
       <figcaption>Termius on iOS — tmux + Claude Code, driven from the shortcut bar.</figcaption>
     </figure>
@@ -174,16 +182,14 @@ fi</code></pre>
       you bind it to the Tailscale interface so it's never on the public internet. Both are slower
       than SSH, but they cover the 5% of work that genuinely needs a screen.
     </p>
-
-    <h2 id="panel">The missing piece: a panel for all the agents</h2>
+<h2 id="panel">The missing piece: a panel for all the agents</h2>
     <p>
       The friction point isn't typing into a session. It's <em>finding the right one</em>: which
       agent finished, which is waiting on input, which has gone quiet. Opening Termius, attaching
       to tmux, hopping to the right session, scrolling back — that's a 20-second tax. Ten sessions ×
       dozens of checks × twenty seconds: the math made the build obvious.
     </p>
-
-    <p>
+<p>
       So I built a small PWA that surfaces every running CLI agent as a card, sorted by last
       interaction. Each card shows status (<em>working</em>, <em>idle</em>, <em>waiting on input</em>),
       the project tag, and the latest output. It pushes a notification when a session finishes or
@@ -216,29 +222,16 @@ fi</code></pre>
       the same prompt to a subset of sessions (the panel has a placeholder for this). Voice input,
       for buses.
     </p>
-
-    <p>
+<p>
       The core lesson is small: shorten every step between you and the agent, and orchestrating
       ten of them stops feeling like work.
     </p>
-
-    <h2 id="further-reading">Further reading</h2>
-    <p>
-      If any of this is new — shell tools, vim, tmux, the whole "live in the terminal" mindset — the
-      one resource I recommend without hesitation is MIT's
-      <a href="https://missing.csail.mit.edu/2020/" target="_blank" rel="noopener">Missing Semester (2020)</a>.
-      It's the class that should exist in every CS program and doesn't. There's also a
-      <a href="https://missing.csail.mit.edu/" target="_blank" rel="noopener">2026 edition</a>
-      I haven't worked through yet, but the 2020 version alone will compound for years.
-    </p>
-
-    <h2 id="install">Setup guide: tmux, Tailscale, Termius</h2>
+<h2 id="install">Setup guide: tmux, Tailscale, Termius</h2>
     <p>
       If you don't already have these three running, this is the 20-minute path
       from zero to "ready to follow along." Skip if you do.
     </p>
-
-    <h3>tmux</h3>
+<h3>tmux</h3>
     <p>
       Install: <code>brew install tmux</code> on macOS; via WSL on Windows; your package
       manager on Linux.
@@ -299,6 +292,10 @@ fi</code></pre>
     </p>
     <p><strong>Termius-side</strong> — Hosts → Edit → Startup Command:</p>
     <pre><code>tmux attach -t main || tmux new -s main</code></pre>
+    <p>
+      This snippet has a second job: it's also what gives <a href="#install-persistence">tmux-continuum</a>
+      a live server to restore into after a reboot.
+    </p>
 
     <h3>Smoke test</h3>
     <ol>
@@ -306,6 +303,57 @@ fi</code></pre>
       <li>Phone: open Termius, connect, <code>tmux a -t claude</code>. Type a message into the agent.</li>
       <li>You're now driving a desktop CLI agent from a phone over a private network. That's the whole stack.</li>
     </ol>
+
+    <h3 id="install-persistence">Persisting sessions across reboots</h3>
+    <p>
+      The tmux server lives in memory. Power cut, OS update, or a stray <code>killall tmux</code> wipes
+      every session — for a workflow built on long-running agents, that's hours of in-flight context gone.
+      Three plugins fix it: <strong>TPM</strong> (plugin manager),
+      <strong>tmux-resurrect</strong> (snapshot save/restore), and
+      <strong>tmux-continuum</strong> (auto-snapshot on a timer, auto-restore on tmux server start).
+    </p>
+    <p>Install TPM:</p>
+    <pre><code>git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm</code></pre>
+    <p>
+      Append to <code>~/.tmux.conf.local</code> (if you're on the gpakosz config from the appendix)
+      or <code>~/.tmux.conf</code> otherwise:
+    </p>
+    <pre><code># Plugins
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-continuum'
+
+# Capture pane scrollback so output is restored too
+set -g @resurrect-capture-pane-contents 'on'
+
+# Restore vim/nvim sessions and keep ssh panes alive
+set -g @resurrect-strategy-vim  'session'
+set -g @resurrect-strategy-nvim 'session'
+set -g @resurrect-processes 'ssh psql mysql sqlite3 "~vim-&gt;vim" "~nvim-&gt;nvim"'
+
+# Autosave every 15 min, auto-restore on tmux server start
+set -g @continuum-save-interval '15'
+set -g @continuum-restore 'on'
+
+# TPM init — must be the LAST line
+run '~/.tmux/plugins/tpm/tpm'
+</code></pre>
+    <p>
+      Reload (<code>tmux source-file ~/.tmux.conf</code>), then inside any session press
+      <kbd>prefix + I</kbd> to fetch the plugins. Continuum can only auto-restore if a tmux server
+      is alive on the box — the <a href="#install-auto-attach">auto-attach snippet above</a>
+      is what gives it one on every login.
+    </p>
+    <p>
+      Verify the loop: open a session, run a few commands, <kbd>prefix + Ctrl-s</kbd> to snapshot,
+      <code>killall tmux</code>, then start a new shell — continuum should restore the layout, working
+      directories, and (because of <code>capture-pane-contents</code>) the visible scrollback.
+    </p>
+    <p>
+      One caveat: <code>@resurrect-capture-pane-contents 'on'</code> writes pane scrollback to
+      <code>~/.local/share/tmux/resurrect/</code> in plain text. If your panes ever flash API keys
+      or other secrets, either drop that line or make sure FileVault / disk encryption is on.
+    </p>
 
     <hr />
     <h2 id="configs">Appendix: ~/.vimrc</h2>
@@ -411,7 +459,34 @@ inoremap &lt;Down&gt;  &lt;ESC&gt;:echoe &quot;Use j&quot;&lt;CR&gt;
     <p>
       Questions, your own setup to share, or want early access to the panel? Find me on <a href="https://linkedin.com/in/arthur-yau" target="_blank" rel="noopener">LinkedIn</a> or <a href="https://x.com/imitation_alpha" target="_blank" rel="noopener">X</a>.
     </p>
+    <section class="post__references" aria-labelledby="further-reading">
+      <h2 id="further-reading">Further reading</h2>
+    <p>
+      If any of this is new — shell tools, vim, tmux, the whole "live in the terminal" mindset — the
+      one resource I recommend without hesitation is MIT's
+      <a href="https://missing.csail.mit.edu/2020/" target="_blank" rel="noopener">Missing Semester (2020)</a>.
+      It's the class that should exist in every CS program and doesn't. There's also a
+      <a href="https://missing.csail.mit.edu/" target="_blank" rel="noopener">2026 edition</a>
+      I haven't worked through yet, but the 2020 version alone will compound for years.
+    </p>
+    </section>
     </div><!-- /.post__body -->
+    <footer class="post__footer" aria-label="Post navigation">
+      <ul class="post__nav" aria-label="Newer and older posts">
+        <li class="post__nav__item post__nav__item--previous">
+          <a href="ai-agent-systems-hung-yi-lee-summary.html">
+            <span class="post__nav__label">Newer post</span>
+            <span class="post__nav__title">agent-00 · The AI agent stack, as seen through Hung-yi Lee&#x27;s 2026 lectures</span>
+          </a>
+        </li>
+        <li class="post__nav__item post__nav__item--next">
+          <span class="post__nav__disabled" aria-disabled="true">
+            <span class="post__nav__label">Older post</span>
+            <span class="post__nav__title">Oldest post</span>
+          </span>
+        </li>
+      </ul>
+    </footer>
   </article>
 
   <footer class="footer">

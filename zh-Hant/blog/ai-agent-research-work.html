@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>agent-03 · AI agent 會如何改變研究工作 — Arthur</title>
+  <meta name="description" content="深入拆解李宏毅關於 AI agents 在學術研究中的課程：research assistants、idea generation、AI review，以及 human judgment 仍然重要的地方。" />
+  <meta name="theme-color" content="#0a0e0a" />
+  <meta name="author" content="Arthur Yau" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="agent-03 · AI agent 會如何改變研究工作" />
+  <meta property="og:description" content="深入拆解李宏毅關於 AI agents 在學術研究中的課程：research assistants、idea generation、AI review，以及 human judgment 仍然重要的地方。" />
+  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-research-work.png?v=selected-headers-20260520-0635" />
+  <meta property="og:image:width" content="1600" />
+  <meta property="og:image:height" content="900" />
+  <meta property="og:image:alt" content="抽象深色技術插圖，呈現 AI agents 在文獻、實驗、圖表與 review panels 中協助研究工作。" />
+  <meta property="og:locale" content="zh_Hant" />
+  <meta property="article:author" content="Arthur Yau" />
+  <meta property="article:published_time" content="2026-05-19" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@imitation_alpha" />
+  <meta name="twitter:title" content="agent-03 · AI agent 會如何改變研究工作" />
+  <meta name="twitter:description" content="深入拆解李宏毅關於 AI agents 在學術研究中的課程：research assistants、idea generation、AI review，以及 human judgment 仍然重要的地方。" />
+  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-research-work.png?v=selected-headers-20260520-0635" />
+  <meta name="twitter:image:alt" content="抽象深色技術插圖，呈現 AI agents 在文獻、實驗、圖表與 review panels 中協助研究工作。" />
+  <link rel="alternate" hreflang="en" href="https://imitation-alpha.github.io/blog/ai-agent-research-work.html" />
+  <link rel="alternate" hreflang="zh-Hant" href="https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-research-work.html" />
+  <link rel="alternate" hreflang="x-default" href="https://imitation-alpha.github.io/blog/ai-agent-research-work.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/styles.css?v=post-prev-next-20260521-0929" />
+</head>
+<body>
+  <a class="skip-link" href="#main">略過導覽</a>
+  <div class="read-progress" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="主導覽">
+    <div class="nav__inner">
+      <a class="nav__brand" href="../../index.html">Arthur</a>
+      <button class="nav__toggle" aria-label="切換導覽" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links">
+        <li><a href="../../index.html#about" hreflang="en">About (EN)</a></li>
+        <li><a href="../../index.html#experience" hreflang="en">Experience (EN)</a></li>
+        <li><a href="../../index.html#projects" hreflang="en">Projects (EN)</a></li>
+        <li><a href="index.html" class="active">文章</a></li>
+        <li><a href="../../index.html#publications" hreflang="en">Publications (EN)</a></li>
+        <li><button class="nav__theme" aria-label="切換主題">◑</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="post">
+    <a class="post__back" href="index.html">返回文章列表</a>
+
+    <header class="post__header">
+      <h1>agent-03 · AI agent 會如何改變研究工作</h1>
+      <p class="post__lede">深入拆解李宏毅關於 AI agents 在學術研究中的課程：research assistants、idea generation、AI review，以及 human judgment 仍然重要的地方。</p>
+      <p class="post__meta">
+        2026 年 5 月 19 日
+        <span class="dot">·</span>
+        <span data-reading-time>7 分鐘</span>
+        <span class="dot">·</span>
+        Arthur Yau
+        <span class="dot view-dot" hidden>·</span>
+        <span data-views data-views-label="次瀏覽" hidden></span>
+      </p>
+      <p class="post__lang">
+        本文為 LLM 自動翻譯，原文以
+        <a href="../../blog/ai-agent-research-work.html" hreflang="en" lang="en">English</a>
+        版本為準；如有不通順或誤譯處，建議參照原文。
+      </p>
+      <figure class="post__hero">
+        <img src="../../assets/blog-headers/ai-agent-research-work.png?v=selected-headers-20260520-0635" alt="抽象深色技術插圖，呈現 AI agents 在文獻、實驗、圖表與 review panels 中協助研究工作。" width="1600" height="900" loading="eager" decoding="async" />
+      </figure>
+    </header>
+
+
+    <aside class="post__toc" aria-label="目錄">
+      <p class="post__toc__label">內容大綱</p>
+      <ul>
+        <li><a href="#from-tool-to-coworker-to-worker">從 tool 到 coworker，再到 worker</a></li>
+        <li><a href="#the-100x-research-assistant-example">100x research assistant 的例子</a></li>
+        <li><a href="#research-is-not-one-task">研究不是單一 task</a></li>
+        <li><a href="#the-feasibility-bottleneck">Feasibility bottleneck</a></li>
+        <li><a href="#ai-reviewers-are-coming-but-that-is-not-the-real-issue">AI reviewers 會到來，但真正的問題不在這裡</a></li>
+        <li><a href="#deadline-aware-review-is-an-underrated-idea">Deadline-aware review 是被低估的想法</a></li>
+        <li><a href="#ai-agent-for-science-and-the-partial-loop">AI Agent for Science 與 partial loop</a></li>
+        <li><a href="#the-human-job-moves-around">人的工作位置會移動</a></li>
+        <li><a href="#what-i-would-change-in-my-own-workflow">我會如何改變自己的 workflow</a></li>
+        <li><a href="#the-main-lesson">主要教訓</a></li>
+        <li><a href="#concept-inventory">概念盤點</a></li>
+      </ul>
+    </aside>
+
+
+    <div class="post__body" id="main">
+    <p>李宏毅 AI agent 系列的第三堂課是最具體的一堂。它問的是 agents 會如何影響工作，然後以學術研究作為例子。</p>
+    <p>答案不是「AI 寫論文，人類回家」。那太簡單了。更好的答案是：研究會被拆解，而 pipeline 的不同部分會以不同速度改變。</p>
+    <p>有些部分已經開始變便宜。有些仍然頑固地屬於人類。</p>
+    <h2 id="from-tool-to-coworker-to-worker">從 tool 到 coworker，再到 worker</h2>
+    <p>這堂課一開始提出一個有用的演進序列。</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/ai-agent-research-work/s01-from-tool-to-coworker-to-worker.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="解釋從 tool 到 coworker 再到 worker 的極簡深色技術圖，包含標籤文字、方框與示意圖元素。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>這堂課一開始提出一個有用的演進序列。</figcaption>
+    </figure>
+<p>一開始，AI 是 tool。你給一個 command，它做一件事。</p>
+    <p>接著 AI 變成 collaborator。你們討論、iterate，並共同產出。</p>
+    <p>現在 agents 開始像是在有界 tasks 裡工作的 workers。給它們一個 goal、一個 repo、一些 tools，也許還有一份 paper draft，它們就可以自己跑一段時間。</p>
+    <p>最後這一步改變了工作的形狀。要求 model 摘要一篇 paper 是一回事。要求 agent 檢查 dataset、修改 code、重跑 experiment、寫下結果，並檢查 output 是否符合原始問題，是另一回事。</p>
+    <p>第二種版本不只是 generation。它是一個 workflow。</p>
+    <h2 id="the-100x-research-assistant-example">100x research assistant 的例子</h2>
+    <p>這堂課中的一個例子，是 Claude Code 使用既有論文的方法和新資料，寫出類似論文的分析。結果並不完美。它至少犯了一個 data mistake。但成本與時間的比較很驚人：大約一小時加上一點錢，對比一位 human research assistant 花上更久時間。</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/ai-agent-research-work/s02-the-100x-research-assistant-example.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="解釋 100x research assistant 例子的極簡深色技術圖，包含標籤文字、方框與示意圖元素。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>這堂課中的一個例子，是 Claude Code 使用既有論文的方法和新資料，寫出類似論文的分析。</figcaption>
+    </figure>
+<p>教訓不是 AI 結果自動比較好。</p>
+    <p>教訓是，許多研究 tasks 的 first draft 正在變得便宜很多。</p>
+    <p>這改變了經濟問題。與其比較「AI alone」和「human alone」，更相關的 workflow 可能是：</p>
+    <pre><code class="language-text">AI generates first pass
+human checks errors
+AI revises
+human decides if it matters</code></pre>
+    <p>如果 checking cost 夠低，這會勝過全部手動做。如果 checking cost 很高，或錯誤很 subtle 且危險，那就不一定。</p>
+    <p>這個區分很重要。Agents 不會消除 verification。它們會讓 verification 更核心。</p>
+    <h2 id="research-is-not-one-task">研究不是單一 task</h2>
+    <p>這堂課以明示與暗示的方式，把研究拆成幾個部分：</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/ai-agent-research-work/s03-research-is-not-one-task.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="解釋研究不是單一 task 的極簡深色技術圖，包含標籤文字、方框與示意圖元素。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>這堂課以明示與暗示的方式，把研究拆成幾個部分。</figcaption>
+    </figure>
+<ul>
+      <li>尋找文獻</li>
+      <li>理解 prior work</li>
+      <li>提出 ideas</li>
+      <li>設計 experiments</li>
+      <li>寫 code</li>
+      <li>執行 models</li>
+      <li>分析 data</li>
+      <li>撰寫 paper</li>
+      <li>review paper</li>
+      <li>教學成果</li>
+    </ul>
+    <p>AI 並不是對所有這些事情都同樣擅長。</p>
+    <p>它已經在 literature triage、code edits、drafts 與 analysis 上很有用。Autoresearch loops 會讓 agents 修改 training scripts、跑 experiments、查看 results，然後再試一次。這是真實的 leverage。</p>
+    <p>但 idea generation 更難。</p>
+    <p>這堂課討論了一些工作：LLM 產生的 research ideas 在 novelty、excitement 與 overall impression 上得分不錯，但 feasibility 較差。這正是我會預期看到的 failure mode。Language models 很擅長把概念組合成聽起來新的東西。真正的測試是 idea 接觸 implementation 之後能不能活下來。</p>
+    <p>一個美麗但無法執行、測量或證偽的 research idea，大多只是裝飾。</p>
+    <h2 id="the-feasibility-bottleneck">Feasibility bottleneck</h2>
+    <p>這可能是這堂課最重要的部分。</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/ai-agent-research-work/s04-the-feasibility-bottleneck.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="解釋 feasibility bottleneck 的極簡深色技術圖，包含標籤文字、方框與示意圖元素。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>這可能是這堂課最重要的部分。</figcaption>
+    </figure>
+<p>AI 可以產生很多 ideas。有些看起來很 novel。有些甚至真的有用。但 feasibility 是 human taste 仍然重要的地方。</p>
+    <p>這個 experiment 真的跑得起來嗎？</p>
+    <p>dataset 拿得到嗎？</p>
+    <p>metric 會回答這個問題嗎？</p>
+    <p>預期 effect 大到足以偵測嗎？</p>
+    <p>這是真問題，還只是把詞彙 clever 地重組？</p>
+    <p>這些問題需要 domain judgment，而不只是 fluency。</p>
+    <p>這堂課的後續例子是個很好的警告：AI ideas 被實作成短 papers 之後，看起來反而更差。Idea quality 不能只在 pitch stage 判斷。Execution 才會揭露這個 idea 是否有骨架。</p>
+    <h2 id="ai-reviewers-are-coming-but-that-is-not-the-real-issue">AI reviewers 會到來，但真正的問題不在這裡</h2>
+    <p>接著這堂課轉向 AI review。AAAI 2026 被提到作為一個例子：AI reviewers 與 AI meta-reviewers 會成為流程的一部分。</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/ai-agent-research-work/s05-ai-reviewers-are-coming-but-that-is-not-the-re.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="解釋 AI reviewers 會到來但真正問題不在這裡的極簡深色技術圖，包含標籤文字、方框與示意圖元素。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>接著這堂課轉向 AI review。</figcaption>
+    </figure>
+<p>這會讓人憤怒，但這堂課的立場比「AI review 很糟」更 nuanced。</p>
+    <p>糟糕的 review 就是糟糕。</p>
+    <p>如果 human reviewer 貼上一份偷懶的 AI-generated review，而且誤解了 paper，那很糟，因為它沒用。如果 AI reviewer 指出真正的缺陷、給出具體建議，並幫助作者改進作品，那就有用。</p>
+    <p>問題不是文字是否來自 AI。問題是 review 有沒有完成它該做的工作。</p>
+    <p>話雖如此，系統需要 accountability。Review process 不能變成一串 agents 產出 confident artifacts，卻沒有人負責。必須有人決定批評是否有效。</p>
+    <h2 id="deadline-aware-review-is-an-underrated-idea">Deadline-aware review 是被低估的想法</h2>
+    <p>我最喜歡的實務例子之一，是一個會根據 deadline 來 review 學生 papers 的 lab agent。</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/ai-agent-research-work/s06-deadline-aware-review-is-an-underrated-idea.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="解釋 deadline-aware review 是被低估想法的極簡深色技術圖，包含標籤文字、方框與示意圖元素。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>我最喜歡的實務例子之一，是一個會根據 deadline 來 review 學生 papers 的 lab agent。</figcaption>
+    </figure>
+<p>如果 deadline 還很遠，它可以建議更多 experiments。</p>
+    <p>如果 deadline 是明天，「run three new ablations」就沒有幫助。Agent 應該專注在 clarity、framing、related work，以及 submission 前真正來得及改的地方。</p>
+    <p>這是一個小例子，但它抓到了良好 agent design 的樣子。Agent 不是在抽象地 evaluation。它是在 human workflow 裡 evaluation。</p>
+    <p>一個技術上正確的建議，如果忽略時間，也可能完全沒用。</p>
+    <h2 id="ai-agent-for-science-and-the-partial-loop">AI Agent for Science 與 partial loop</h2>
+    <p>這堂課也討論 AI Agent for Science：一個 AI 是主要貢獻者，且 AI review 也是流程一部分的實驗設置。</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/ai-agent-research-work/s07-ai-agent-for-science-and-the-partial-loop.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="解釋 AI Agent for Science 與 partial loop 的極簡深色技術圖，包含標籤文字、方框與示意圖元素。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>這堂課也討論 AI Agent for Science：一個 AI 是主要貢獻者，且 AI review 也是流程一部分的實驗設置。</figcaption>
+    </figure>
+<p>這指向一種可能的研究 loop：</p>
+    <pre><code class="language-text">AI proposes
+AI experiments
+AI writes
+AI reviews
+AI revises</code></pre>
+    <p>把它稱為科學進步的 closed loop 很誘人。</p>
+    <p>但細節很重要。被接受的工作看起來在早期階段仍然涉及更多 human input：idea selection 與 experiment design。AI 在 data analysis 與 writing 上更強。</p>
+    <p>這個分工感覺合理。後期 tasks 有更明確的 local feedback。早期的 research taste 比較難被 specify。</p>
+    <h2 id="the-human-job-moves-around">人的工作位置會移動</h2>
+    <p>這堂課最強的版本，不是說人類變得不重要，而是說人的工作會移動。</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/ai-agent-research-work/s08-the-human-job-moves-around.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="解釋人的工作位置會移動的極簡深色技術圖，包含標籤文字、方框與示意圖元素。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>這堂課最強的版本，不是說人類變得不重要。</figcaption>
+    </figure>
+<p>如果 AI 讓 drafts、code edits 與 routine analysis 變便宜，那人類價值就會轉向：</p>
+    <ul>
+      <li>選擇問題</li>
+      <li>設定 research taste</li>
+      <li>設計 experiments</li>
+      <li>檢查 validity</li>
+      <li>決定什麼值得 publish</li>
+      <li>為 errors 承擔責任</li>
+    </ul>
+    <p>這不一定令人安心。有些工作就是建立在執行那些 AI 正在變便宜的部分上。但這比說「researchers 被取代」更準確。</p>
+    <p>Research 從來不只是寫 papers。最好的 research，是選擇好問題，然後逼現實回答它們。</p>
+    <h2 id="what-i-would-change-in-my-own-workflow">我會如何改變自己的 workflow</h2>
+    <p>聽完這堂課後，我會更積極地讓 agents 做 first passes，但不會更信任它們。</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/ai-agent-research-work/s09-what-i-would-change-in-my-own-workflow.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="解釋我會如何改變自己 workflow 的極簡深色技術圖，包含標籤文字、方框與示意圖元素。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>聽完這堂課後，我會更積極地讓 agents 做 first passes，但不會更信任它們。</figcaption>
+    </figure>
+<p>這聽起來矛盾。其實不是。</p>
+    <p>我會讓 agent：</p>
+    <ul>
+      <li>summarize 一組 literature cluster</li>
+      <li>draft experiment code</li>
+      <li>建立 baseline implementation</li>
+      <li>產生 tables 與 plots</li>
+      <li>撰寫 related-work section 的 first draft</li>
+      <li>review 一篇 paper，找出 obvious gaps</li>
+      <li>submission 前跑 checklist</li>
+    </ul>
+    <p>但我會把 human control 保留在：</p>
+    <ul>
+      <li>什麼問題重要</li>
+      <li>experiment 是否測試了 claim</li>
+      <li>result 是否真實</li>
+      <li>paper 是否應該存在</li>
+    </ul>
+    <p>重點是少花人類時間轉動曲柄，多花人類時間決定哪個曲柄值得轉。</p>
+    <h2 id="the-main-lesson">主要教訓</h2>
+    <p>AI agents 不是一波平均打到所有研究工作的單一衝擊。它們是一組 tools，會讓某些步驟變得便宜很多，也讓其他步驟暴露為真正的 bottlenecks。</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/ai-agent-research-work/s10-the-main-lesson.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="解釋主要教訓的極簡深色技術圖，包含標籤文字、方框與示意圖元素。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>AI agents 不是一波平均打到所有研究工作的單一衝擊。</figcaption>
+    </figure>
+<p>便宜的部分會擴張。我們會產出更多 drafts、更多 experiments、更多 reviews、更多 plots、更多 candidate ideas。</p>
+    <p>這會讓 taste 更重要，而不是更不重要。</p>
+    <p>當 output 變便宜，judgment 就會變成稀缺資源。</p>
+    <h2 id="concept-inventory">概念盤點</h2>
+    <p>這堂課涵蓋的主要 research-work 概念：</p>
+    <ul>
+      <li>AI 的角色從 tool，到 collaborator，再到有界自主 worker 的轉變</li>
+      <li>Claude Code 風格的 research assistance，用於 data analysis 與 paper drafting</li>
+      <li>100x research assistant 觀念：更便宜的 first passes 加上 human verification</li>
+      <li>AI generation 變便宜後，human verification 變成 bottleneck</li>
+      <li>autoresearch loops：修改 training scripts、跑 experiments、觀察 results，然後再試一次</li>
+      <li>AI-generated research ideas 具有高 novelty 或 excitement，但 feasibility 較低</li>
+      <li>surface novelty 與 executable research design 之間的 gap</li>
+      <li>conference workflows 中的 AI reviewers 與 AI meta-reviewers</li>
+      <li>review quality 才是關鍵，不是 reviewer 是否使用 AI</li>
+      <li>deadline-aware review：根據剩餘時間改變建議</li>
+      <li>AI Agent for Science 風格 loops，包含 AI authorship 與 AI review</li>
+      <li>四個研究階段：idea、experiment design、data analysis 與 paper writing</li>
+      <li>AI 在後期階段更強，在 problem selection 或 experiment design 上較弱</li>
+      <li>人類價值轉向 taste、feasibility judgment、quality control 與 responsibility</li>
+    </ul>
+    <section class="post__references" aria-labelledby="sources-and-references">
+      <h2 id="sources-and-references">來源與參考資料</h2>
+      <p>本文觀看的主要來源：</p>
+      <ul class="post__references-list">
+        <li><a href="https://www.youtube.com/watch?v=VqB8zMujdjM&amp;t=2s" target="_blank" rel="noopener">AI Agent (3/3): AI Agent 對於工作帶來的衝擊 - 以學術研究為例</a></li>
+      </ul>
+    </section>
+    </div><!-- /.post__body -->
+    <footer class="post__footer" aria-label="文章導覽">
+      <ul class="post__nav" aria-label="較新與較舊文章">
+        <li class="post__nav__item post__nav__item--previous">
+          <a href="ai-agent-harness-engineering.html">
+            <span class="post__nav__label">較新文章</span>
+            <span class="post__nav__title">agent-04 · Harness engineering 才是讓 agent 真正有用的關鍵</span>
+          </a>
+        </li>
+        <li class="post__nav__item post__nav__item--next">
+          <a href="ai-agent-multi-agent-interaction.html">
+            <span class="post__nav__label">較舊文章</span>
+            <span class="post__nav__title">agent-02 · Multi-agent systems 是拓樸問題</span>
+          </a>
+        </li>
+      </ul>
+    </footer>
+  </article>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <p>© <span id="year">2026</span> Arthur</p>
+      <p class="footer__links">
+        <a href="https://linkedin.com/in/arthur-yau" target="_blank" rel="noopener">LinkedIn</a> ·
+        <a href="https://github.com/imitation-alpha" target="_blank" rel="noopener">GitHub</a> ·
+        <a href="https://x.com/imitation_alpha" target="_blank" rel="noopener">X</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js" defer></script>
+  <!-- GoatCounter pageview tracking (privacy-friendly, no cookies) -->
+  <script data-goatcounter="https://imitation-alpha.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

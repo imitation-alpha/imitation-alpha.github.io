@@ -578,9 +578,12 @@ em { color: var(--accent-warm); font-style: normal; }
    POST PAGE
    ============================================ */
 .post {
-  max-width: 720px;
+  --post-wide: min(1180px, calc(100vw - 48px));
+  --post-readable: min(100%, 104ch);
+  width: var(--post-wide);
+  max-width: none;
   margin: 0 auto;
-  padding: 80px 24px 64px;
+  padding: 80px 0 72px;
 }
 
 .post__back {
@@ -596,7 +599,27 @@ em { color: var(--accent-warm); font-style: normal; }
 .post__back::before { content: "$ cd .."; margin-right: 6px; color: var(--fg-subtle); }
 .post__back:hover { color: var(--accent); }
 
-.post__header { margin: 0 0 40px; }
+.post__back,
+.post__toc,
+.post__body,
+.post__footer {
+  max-width: var(--post-readable);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.post__header {
+  max-width: var(--post-wide);
+  margin: 0 0 30px;
+}
+.post__header > h1,
+.post__header > .post__lede,
+.post__header > .post__meta,
+.post__header > .post__lang {
+  max-width: var(--post-readable);
+  margin-left: auto;
+  margin-right: auto;
+}
 .post__meta {
   font-size: 12px;
   color: var(--fg-muted);
@@ -626,8 +649,37 @@ em { color: var(--accent-warm); font-style: normal; }
   background: color-mix(in srgb, var(--accent) 4%, transparent);
 }
 
+.post__hero {
+  margin: 28px 0 0;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  box-shadow: 0 22px 80px rgba(0, 0, 0, 0.22), 0 0 0 1px color-mix(in srgb, var(--accent) 12%, transparent);
+}
+.post__hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.05), transparent 22%, rgba(0,0,0,0.18)),
+    radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 36%);
+  mix-blend-mode: screen;
+  opacity: 0.55;
+}
+.post .post__hero img {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  object-fit: contain;
+  border: 0;
+  filter: none;
+}
+
 /* Body typography */
-.post__body { font-size: 15px; line-height: 1.75; color: var(--fg); }
+.post__body { font-size: 16px; line-height: 1.72; color: var(--fg); }
 .post__body > p:first-of-type::first-letter { /* drop cap removed for terminal feel */
   font-size: inherit;
   float: none;
@@ -663,8 +715,8 @@ em { color: var(--accent-warm); font-style: normal; }
 }
 
 .post p {
-  font-size: 15px;
-  line-height: 1.75;
+  font-size: 16px;
+  line-height: 1.72;
   color: var(--fg);
   margin: 0 0 18px;
 }
@@ -677,8 +729,8 @@ em { color: var(--accent-warm); font-style: normal; }
 .post em { color: var(--accent-warm); font-style: normal; }
 
 .post ul, .post ol {
-  font-size: 15px;
-  line-height: 1.75;
+  font-size: 16px;
+  line-height: 1.72;
   color: var(--fg);
   padding-left: 0;
   list-style: none;
@@ -839,24 +891,38 @@ em { color: var(--accent-warm); font-style: normal; }
 .post__nav {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 14px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-.post__nav li { padding-left: 0; }
-.post__nav li::before { content: ""; }
-.post__nav a {
-  display: block;
-  padding: 14px 16px;
+.post__nav li {
+  padding-left: 0;
+  margin: 0;
+}
+.post__nav li::before {
+  content: "";
+  display: none;
+}
+.post__nav a,
+.post__nav__disabled {
+  min-height: 88px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 16px 18px;
   border: 1px solid var(--border);
-  background: var(--bg-elevated);
+  border-radius: 14px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent) 5%, transparent), transparent 46%),
+    var(--bg-elevated);
   color: var(--fg);
-  transition: border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
 }
 .post__nav a:hover {
   border-color: var(--accent);
   box-shadow: 0 0 0 1px var(--accent), 0 0 24px rgba(108, 255, 149, 0.06);
+  transform: translateY(-1px);
 }
 .post__nav__label {
   font-size: 10px;
@@ -866,14 +932,53 @@ em { color: var(--accent-warm); font-style: normal; }
   display: block;
   margin: 0 0 6px;
 }
+.post__nav__item--previous .post__nav__label::before { content: "← "; }
+.post__nav__item--next .post__nav__label::after { content: " →"; }
 .post__nav__title {
   font-size: 13px;
+  line-height: 1.45;
   font-weight: 600;
   color: var(--fg-bright);
   display: block;
 }
-.post__nav li:nth-child(2) a { text-align: right; }
-.post__nav li.disabled a { opacity: 0.35; pointer-events: none; }
+.post__nav__item--next a,
+.post__nav__item--next .post__nav__disabled {
+  text-align: right;
+  align-items: flex-end;
+}
+.post__nav li.disabled .post__nav__disabled {
+  opacity: 0.38;
+}
+
+/* Bottom source/reference block */
+.post__references {
+  margin: 56px 0 0;
+  padding: 22px 24px;
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent);
+  border-radius: 16px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent) 7%, transparent), transparent 44%),
+    color-mix(in srgb, var(--bg-elevated) 82%, transparent);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.14);
+}
+.post__references h2 {
+  margin-top: 0;
+}
+.post__references p:last-child,
+.post__references ul:last-child,
+.post__references ol:last-child {
+  margin-bottom: 0;
+}
+.post__references-list {
+  columns: 1;
+}
+.post__references a {
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+}
+.post__references a:hover {
+  border-bottom-color: var(--accent);
+}
 
 /* Inline figures (used in ten-cli post) */
 .post figure { margin: 24px 0; text-align: center; }
@@ -889,6 +994,26 @@ em { color: var(--accent-warm); font-style: normal; }
   margin-top: 8px;
 }
 .post figcaption::before { content: "// "; opacity: 0.6; }
+.post .post__concept-figure {
+  margin: 30px 0 34px;
+  text-align: left;
+}
+.post .post__concept-figure img {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  object-fit: contain;
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, var(--border));
+  box-shadow: 0 18px 70px rgba(0, 0, 0, 0.24), 0 0 0 1px rgba(108, 255, 149, 0.04) inset;
+  filter: none;
+}
+.post .post__concept-figure figcaption {
+  max-width: 64ch;
+  margin: 10px auto 0;
+  text-align: center;
+}
 .post .figure-row {
   display: flex;
   gap: 12px;
@@ -952,7 +1077,11 @@ em { color: var(--accent-warm); font-style: normal; }
   .job__date { text-align: left; }
   .post-list a { grid-template-columns: 1fr; gap: 4px; }
   .post__nav { grid-template-columns: 1fr; }
-  .post__nav li:nth-child(2) a { text-align: left; }
+  .post__nav__item--next a,
+  .post__nav__item--next .post__nav__disabled {
+    text-align: left;
+    align-items: flex-start;
+  }
   .footer__inner { flex-direction: column; align-items: flex-start; }
 }
 
@@ -965,60 +1094,109 @@ em { color: var(--accent-warm); font-style: normal; }
 }
 
 /* ============================================
-   Post sidebar TOC — sticks beside .post__body on wide viewports
+   Post content outline — shown before the body, not as a side rail
    ============================================ */
 .post__toc {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--fg-muted);
-  border-left: 1px solid var(--border);
-  padding: 0 0 0 16px;
-  margin: 0 0 32px;
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent);
+  border-radius: 16px;
+  padding: 20px 22px 18px;
+  margin-top: 0;
+  margin-bottom: 42px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent) 8%, transparent), transparent 42%),
+    color-mix(in srgb, var(--bg-elevated) 86%, transparent);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.16);
 }
 .post__toc__label {
   font-size: 11px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   color: var(--fg-subtle);
   text-transform: uppercase;
-  margin: 0 0 8px;
+  margin: 0 0 14px;
 }
-.post__toc ul { list-style: none; padding: 0; margin: 0; }
-.post__toc li { margin: 0 0 4px; }
+.post__toc__label::before {
+  content: "$ ";
+  color: var(--accent);
+  opacity: 0.85;
+}
+.post__toc ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: post-toc;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 8px 18px;
+}
+.post__toc li {
+  margin: 0;
+  padding-left: 0;
+  counter-increment: post-toc;
+}
+.post .post__toc li::before {
+  content: "";
+  display: none;
+}
 .post__toc a {
   color: var(--fg-muted);
   border-bottom: none;
-  display: block;
-  padding: 2px 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  column-gap: 10px;
+  padding: 8px 10px;
+  line-height: 1.42;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: color-mix(in srgb, var(--bg) 42%, transparent);
+}
+.post__toc a::before {
+  content: counter(post-toc, decimal-leading-zero);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.8ch;
+  padding: 1px 4px;
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, transparent);
+  border-radius: 999px;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  font-size: 10px;
   line-height: 1.5;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  opacity: 0.9;
 }
 .post__toc a:hover,
 .post__toc a.is-active {
-  color: var(--accent);
-}
-.post__toc a.is-active::before {
-  content: "› ";
-  color: var(--accent);
-  margin-right: -2px;
+  color: var(--fg-bright);
+  border-color: color-mix(in srgb, var(--accent) 28%, transparent);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
 }
 
-@media (min-width: 1100px) {
+@media (min-width: 1400px) {
   .post {
-    display: grid;
-    grid-template-columns: 200px minmax(0, 1fr);
-    gap: 48px;
-    max-width: 1000px;
+    --post-wide: min(1320px, calc(100vw - 96px));
+    --post-readable: min(100%, 112ch);
   }
-  .post__back,
-  .post__header,
-  .post__body {
-    grid-column: 2;
-    min-width: 0;  /* allow children with overflow-x to shrink below intrinsic width */
+}
+
+@media (max-width: 720px) {
+  .post {
+    --post-wide: calc(100vw - 32px);
+    --post-readable: 100%;
+    padding: 72px 0 56px;
   }
   .post__toc {
-    grid-column: 1;
-    grid-row: 2 / span 2;
-    position: sticky;
-    top: 96px;
-    align-self: start;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 34px;
+  }
+  .post__toc ul {
+    grid-template-columns: 1fr;
   }
 }
 

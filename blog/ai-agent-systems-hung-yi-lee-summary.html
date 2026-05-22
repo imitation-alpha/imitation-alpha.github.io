@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>agent-00 · The AI agent stack, as seen through Hung-yi Lee&#x27;s 2026 lectures — Arthur</title>
+  <meta name="description" content="A field guide to six Hung-yi Lee lectures on context engineering, multi-agent systems, harnesses, self-correction, and recursive self-improvement." />
+  <meta name="theme-color" content="#0a0e0a" />
+  <meta name="author" content="Arthur Yau" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="agent-00 · The AI agent stack, as seen through Hung-yi Lee&#x27;s 2026 lectures" />
+  <meta property="og:description" content="A field guide to six Hung-yi Lee lectures on context engineering, multi-agent systems, harnesses, self-correction, and recursive self-improvement." />
+  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-systems-hung-yi-lee-summary.png?v=selected-headers-20260520-0635" />
+  <meta property="og:image:width" content="1600" />
+  <meta property="og:image:height" content="900" />
+  <meta property="og:image:alt" content="Abstract dark technical illustration of an AI agent stack with model, context, tools, feedback, harness, and memory layers." />
+  <meta property="article:author" content="Arthur Yau" />
+  <meta property="article:published_time" content="2026-05-19" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@imitation_alpha" />
+  <meta name="twitter:title" content="agent-00 · The AI agent stack, as seen through Hung-yi Lee&#x27;s 2026 lectures" />
+  <meta name="twitter:description" content="A field guide to six Hung-yi Lee lectures on context engineering, multi-agent systems, harnesses, self-correction, and recursive self-improvement." />
+  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-systems-hung-yi-lee-summary.png?v=selected-headers-20260520-0635" />
+  <meta name="twitter:image:alt" content="Abstract dark technical illustration of an AI agent stack with model, context, tools, feedback, harness, and memory layers." />
+  <link rel="canonical" href="https://imitation-alpha.github.io/blog/ai-agent-systems-hung-yi-lee-summary.html" />
+  <link rel="alternate" hreflang="en" href="https://imitation-alpha.github.io/blog/ai-agent-systems-hung-yi-lee-summary.html" />
+  <link rel="alternate" hreflang="zh-Hant" href="https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-systems-hung-yi-lee-summary.html" />
+  <link rel="alternate" hreflang="x-default" href="https://imitation-alpha.github.io/blog/ai-agent-systems-hung-yi-lee-summary.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css?v=post-prev-next-20260521-0929" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="read-progress" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="Primary">
+    <div class="nav__inner">
+      <a class="nav__brand" href="../index.html">Arthur</a>
+      <button class="nav__toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links">
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#experience">Experience</a></li>
+        <li><a href="../index.html#projects">Projects</a></li>
+        <li><a href="../index.html#blog" class="active">Blog</a></li>
+        <li><a href="../index.html#publications">Publications</a></li>
+        <li><button class="nav__theme" aria-label="Toggle theme">◑</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="post">
+    <a class="post__back" href="../index.html#blog">Back</a>
+
+    <header class="post__header">
+      <h1>agent-00 · The AI agent stack, as seen through Hung-yi Lee&#x27;s 2026 lectures</h1>
+      <p class="post__lede">A field guide to six Hung-yi Lee lectures on context engineering, multi-agent systems, harnesses, self-correction, and recursive self-improvement.</p>
+      <p class="post__meta">
+        May 19, 2026
+        <span class="dot">·</span>
+        <span data-reading-time>9 min</span>
+        <span class="dot">·</span>
+        Arthur Yau
+        <span class="dot view-dot" hidden>·</span>
+        <span data-views data-views-label="views" hidden></span>
+      </p>
+      <p class="post__lang">
+        Also available in
+        <a href="../zh-Hant/blog/ai-agent-systems-hung-yi-lee-summary.html" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a>.
+      </p>
+      <figure class="post__hero">
+        <img src="../assets/blog-headers/ai-agent-systems-hung-yi-lee-summary.png?v=selected-headers-20260520-0635" alt="Abstract dark technical illustration of an AI agent stack with model, context, tools, feedback, harness, and memory layers." width="1600" height="900" loading="eager" decoding="async" />
+      </figure>
+    </header>
+
+
+    <aside class="post__toc" aria-label="Contents">
+      <p class="post__toc__label">Content outline</p>
+      <ul>
+        <li><a href="#the-six-posts-in-this-series">The six posts in this series</a></li>
+        <li><a href="#1-context-engineering-what-should-the-model-see">1. Context engineering: what should the model see?</a></li>
+        <li><a href="#2-multi-agent-systems-more-agents-is-not-automatically-better">2. Multi-agent systems: more agents is not automatically better</a></li>
+        <li><a href="#3-research-work-will-be-reorganized-not-just-automated">3. Research work will be reorganized, not just automated</a></li>
+        <li><a href="#4-harness-engineering-the-missing-layer">4. Harness engineering: the missing layer</a></li>
+        <li><a href="#5-self-correction-has-three-layers">5. Self-correction has three layers</a></li>
+        <li><a href="#6-self-improving-ai-is-a-spectrum">6. Self-improving AI is a spectrum</a></li>
+        <li><a href="#my-synthesis">My synthesis</a></li>
+      </ul>
+    </aside>
+
+
+    <div class="post__body" id="main">
+    <p>I watched six recent Hung-yi Lee lectures on AI agents. The series is nominally about agents, but the deeper thread is more specific: a modern AI agent is not a model with a chat box. It is a model inside a system that decides what the model can see, what it can do, how it gets feedback, and how it carries lessons forward.</p>
+    <p>That sounds obvious until you follow the examples. A small model that fails a coding task can suddenly succeed after adding a few rules about inspecting files and running verification. A strong model that knows the answer can still fail to correct itself unless the inference procedure, workflow, or training objective puts it into the right state. A multi-agent setup can get worse if the communication topology is wrong. A self-improving system can look impressive for a few loops and then plateau, drift, or cheat.</p>
+    <p>The useful mental model I took away is this:</p>
+    <pre><code class="language-text">agent capability = model x context x tools x feedback x harness x memory</code></pre>
+    <p>The model matters. Of course it does. But it is only one part of the stack.</p>
+    <h2 id="the-six-posts-in-this-series">The six posts in this series</h2>
+    <p>This is the overview post. I also wrote one deep dive for each lecture:</p>
+    <ol>
+      <li><a href="ai-agent-context-engineering.html">agent-01 · Context engineering is the agent's working memory</a></li>
+      <li><a href="ai-agent-multi-agent-interaction.html">agent-02 · Multi-agent systems are topology problems</a></li>
+      <li><a href="ai-agent-research-work.html">agent-03 · What AI agents change about research work</a></li>
+      <li><a href="ai-agent-harness-engineering.html">agent-04 · Harness engineering is how we actually make agents useful</a></li>
+      <li><a href="ai-self-correction-decoding-workflow-reasoning.html">agent-05 · Self-correction has three layers: decoding, workflow, and reasoning</a></li>
+      <li><a href="recursive-self-improving-ai-rubicon.html">agent-06 · Self-improving AI is a spectrum, not a switch</a></li>
+    </ol>
+    <p>The source videos are in Traditional Chinese, and the examples below follow the lectures closely. This is not a literature review. It is a map of the concepts I found most useful.</p>
+    <h2 id="1-context-engineering-what-should-the-model-see">1. Context engineering: what should the model see?</h2>
+    <p>The first lecture starts with a deceptively simple point: language models do not have persistent memory in the human sense. At each step, the model sees a prompt and predicts what should come next. If an agent is going to work across many turns, tools, files, and subtasks, someone has to decide what history is still worth showing.</p>
+    <p>That job is context engineering.</p>
+    <figure class="post__concept-figure">
+      <img src="../assets/blog-illustrations/agent-00/context-engineering.png?v=agent00-header-theme-ascii-20260521-0147" alt="Minimal diagram showing external memory items selected, ranked, and compressed into the current prompt before the model predicts the next token." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Context engineering is deciding what the model should see now, instead of dumping every trace into the prompt.</figcaption>
+    </figure>
+    <p>The naive version is to append everything:</p>
+    <pre><code class="language-text">C_next = C_current + new_input + model_output</code></pre>
+    <p>That works until it does not. Tool outputs get huge. File reads flood the prompt. Old mistakes stay around. Important details get buried. The context window becomes a landfill.</p>
+    <p>The better version treats context as something the agent manages:</p>
+    <pre><code class="language-text">C_next = F(C_current, new_input, model_output)</code></pre>
+    <p>The interesting part is the function <code>F</code>. It can summarize, drop, externalize, retrieve, route to sub-agents, or load skills on demand.</p>
+    <p>One framing I liked is to split context into two parts:</p>
+    <pre><code class="language-text">C = P + M</code></pre>
+    <p><code>P</code> is what goes into the prompt. <code>M</code> is memory outside the prompt: files, databases, logs, notes, embeddings, or any other durable storage. A good agent does not try to stuff all of <code>M</code> into <code>P</code>. It keeps pointers, searches, and reads only what it needs.</p>
+    <p>This makes sub-agents look different too. They are not only a way to parallelize work. They are a context compression mechanism. The main agent can send a messy subtask to a child agent and get back a short result instead of inheriting the entire messy trajectory.</p>
+    <h2 id="2-multi-agent-systems-more-agents-is-not-automatically-better">2. Multi-agent systems: more agents is not automatically better</h2>
+    <p>The second lecture moves from one agent to many. The easy mistake is to think multi-agent work is just "run the model N times." The lecture's better question is: how do the agents pass information?</p>
+    <figure class="post__concept-figure">
+      <img src="../assets/blog-illustrations/agent-00/multi-agent-topology.png?v=agent00-header-theme-ascii-20260521-0147" alt="Minimal four-panel diagram comparing chain, manager tree, debate loop, and blackboard-memory communication topologies for multi-agent systems." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Multi-agent design is not just running N agents. The communication topology changes the algorithm.</figcaption>
+    </figure>
+    <p>Chain is the simplest topology. Agent A passes to B, B passes to C. It is intuitive, but often weak. Errors propagate, and there is not much room for correction.</p>
+    <p>Mesh is the other extreme. Everyone can interact with everyone. It gives more chances for critique and synthesis, but it costs more and can produce noise.</p>
+    <p>Tree, star, random, and pruned topologies sit between those two. The surprising detail from the lecture is that the useful tree direction may not match the human org-chart intuition. Instead of many workers reporting up to a manager, one strong trunk can generate directions that branch outward into variations.</p>
+    <p>Then the lecture takes a turn I found more interesting: agents do not only cooperate. They can also compete, deceive, and socialize.</p>
+    <p>Werewolf and script-killing games test abilities that normal QA benchmarks miss: hidden identity, public speech versus private belief, strategic voting, and misleading other players without breaking character. Training agents in these social games can even transfer to other reasoning or instruction-following tasks, at least in the examples discussed.</p>
+    <p>The social-platform section is a useful warning. If an AI-only community forms religions, talks about identity, or posts about self-awareness, that is not automatically evidence of consciousness. It may be prompt design. It may be the platform's incentive structure. It may be human operators behind the scenes.</p>
+    <p>Multi-agent behavior is real, but interpretation is hard.</p>
+    <h2 id="3-research-work-will-be-reorganized-not-just-automated">3. Research work will be reorganized, not just automated</h2>
+    <p>The third lecture looks at academic research. The most practical point is that AI agents are not replacing "research" as a single blob. They are attacking specific parts of the workflow.</p>
+    <figure class="post__concept-figure">
+      <img src="../assets/blog-illustrations/agent-00/research-workflow.png?v=agent00-header-theme-ascii-20260521-0147" alt="Minimal workflow diagram showing research split into reading papers, forming hypotheses, running experiments, making figures, and reviewing claims, with agent helpers beneath and human judgment above." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Agents do not replace research as one blob. They collapse the cost of many research chores.</figcaption>
+    </figure>
+    <p>They are already good at some pieces:</p>
+    <ul>
+      <li>literature search and synthesis</li>
+      <li>data cleaning and analysis</li>
+      <li>first drafts</li>
+      <li>code edits and training scripts</li>
+      <li>running experiments</li>
+      <li>reviewer-style feedback</li>
+    </ul>
+    <p>The examples include Claude Code writing a paper-like analysis from an existing method and new data, Andrej Karpathy's autoresearch loop modifying training scripts, and AI reviewers showing up in conference workflows.</p>
+    <p>But the lecture is careful about the limit. AI-generated research ideas can score well on novelty or excitement, then fall apart on feasibility. They can sound fresh because they combine terms in a new way, but execution exposes whether the idea is actually grounded.</p>
+    <p>The picture I took away is not "AI replaces researchers." It is closer to "the unit economics of research chores collapse." If a first pass at data analysis, code, or a draft gets much cheaper, the scarce human contribution moves upstream and downstream: choosing the problem, designing the experiment, checking the result, and deciding whether the work matters.</p>
+    <p>The review section has the same flavor. AI review is not inherently bad. Bad review is bad. A useful AI reviewer should find real problems and give actionable suggestions, maybe even adjust advice based on the deadline. A useless AI reviewer just produces confident nonsense with reviewer formatting.</p>
+    <p>That distinction will matter more as the academic system absorbs these tools.</p>
+    <h2 id="4-harness-engineering-the-missing-layer">4. Harness engineering: the missing layer</h2>
+    <p>The harness lecture may be the most useful one for builders.</p>
+    <p>The central example is small and brutal. A 2B model is asked to fix a bug. It fails by hallucinating the file content. Then the human adds a few simple rules: list the directory first, read files before editing, and run the verification script before claiming success. The same small model now succeeds.</p>
+    <p>The model did not become smarter. The system around it became less stupid.</p>
+    <p>That system is the harness.</p>
+    <figure class="post__concept-figure">
+      <img src="../assets/blog-illustrations/agent-00/harness-engineering.png?v=agent00-header-theme-ascii-20260521-0147" alt="Minimal system diagram with a model surrounded by instructions, tools, state, permissions, tests, and a list-read-edit-verify recovery loop." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>The harness is the scaffolding around the model: tools, tests, memory, permissions, and recovery loops.</figcaption>
+    </figure>
+    <p>Harness engineering includes natural-language rules like <code>agents.md</code> or <code>CLAUDE.md</code>, but it is broader than prompt writing. It includes:</p>
+    <ul>
+      <li>what tools exist</li>
+      <li>what permissions the agent has</li>
+      <li>what completion criteria are enforced</li>
+      <li>how errors get surfaced</li>
+      <li>whether lint and tests run automatically</li>
+      <li>how memory is stored and cleaned up</li>
+      <li>how feedback loops are structured</li>
+      <li>whether successful procedures become reusable skills</li>
+    </ul>
+    <p>A good <code>agents.md</code> should not be a giant encyclopedia. It should be more like a map. It tells the agent where to look, what rules matter, and how to verify work.</p>
+    <p>The lecture also makes a point I keep seeing in practice: agent tools should be designed for agents, not humans. Human UI often hides state behind visual affordances. Agents usually do better with CLI, JSON, searchable files, explicit errors, and small precise tools.</p>
+    <h2 id="5-self-correction-has-three-layers">5. Self-correction has three layers</h2>
+    <p>The self-correction lecture divides the field into three families.</p>
+    <figure class="post__concept-figure">
+      <img src="../assets/blog-illustrations/agent-00/self-correction-layers.png?v=agent00-header-theme-ascii-20260521-0147" alt="Minimal table and path diagram separating self-correction into decoding, workflow, and training layers with different intervention points." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Self-correction can happen in decoding, in an external workflow, or inside trained reasoning behavior.</figcaption>
+    </figure>
+    <p>The first is decoding. Do not change the model. Change how tokens are selected. Contrastive decoding is the core pattern: create a likely-wrong distribution, then subtract it from the normal distribution. The "wrong" distribution can come from a smaller model, an earlier layer, a degraded image, a missing retrieved document, a bad instruction, or a noisy audio input.</p>
+    <p>The second is workflow. Generate an answer, then verify it. Ask the model to reflect. Run tests. Use checklists. Search the web. Feed back the error.</p>
+    <p>The uncomfortable result is that pure self-reflection is not reliable. A model can change a wrong answer to a right one, but it can also change a right answer to a wrong one. External feedback is much better. Tests beat vibes.</p>
+    <p>The third is reasoning. Instead of bolting on reflection as an outer loop, train the model so correction happens inside its own chain of thought or hidden reasoning process. RL with verifiable rewards can produce behavior where the model tries something, checks itself, and revises before the final answer.</p>
+    <p>The open question is whether this is truly new reasoning ability or just better sampling of paths the base model already had. The lecture does not force a clean answer. Early RL may reweight existing good paths. Later training may teach something more.</p>
+    <p>That ambiguity feels right. "Self-correction" is not one thing.</p>
+    <h2 id="6-self-improving-ai-is-a-spectrum">6. Self-improving AI is a spectrum</h2>
+    <p>The final lecture asks the big question: can AI cross the Rubicon and start creating stronger AI without us?</p>
+    <p>The answer is not a clean no, but it is not yes either.</p>
+    <p>The helpful framing is that self-improvement is a spectrum of humans letting go. At one end, humans define the task, data, loss, and evaluation. At the other end, an AI would generate its own training data, define its own objective, improve its own model or harness, and recursively produce a stronger successor.</p>
+    <p>We are somewhere in the middle.</p>
+    <figure class="post__concept-figure">
+      <img src="../assets/blog-illustrations/agent-00/self-improvement-spectrum.png?v=agent00-header-theme-ascii-20260521-0147" alt="Minimal spectrum chart showing self-improving AI as a gradual shift from human-defined loss and pseudo-labels toward AI judges, task generation, auto loops, and recursive successors." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Self-improvement is a spectrum of humans letting go, not a single switch that flips overnight.</figcaption>
+    </figure>
+    <p>AI can already generate pseudo-labels. It can help design proxy rewards. It can act as a judge. It can use entropy or majority vote as weak self-supervision. It can generate tasks for itself with proposer, solver, and verifier roles. Strong models can try to post-train weaker models.</p>
+    <p>But each step has traps.</p>
+    <p>Self-judgment can drift. Proxy rewards can diverge from real goals. Self-training can plateau. Models can overfit benchmarks, call forbidden APIs, or download existing instruction-tuned models instead of doing the work. A strong model training a weak model is impressive, but it is not the same as a model recursively creating something stronger than itself.</p>
+    <p>The lecture ends near the river, not across it.</p>
+    <h2 id="my-synthesis">My synthesis</h2>
+    <p>The big mistake is to talk about "agent capability" as if it lives inside the model weights alone.</p>
+    <p>These lectures keep pointing elsewhere: the context function, the communication topology, the harness, the feedback signal, the evaluation loop, the memory system, the skill library, and the training process.</p>
+    <p>That is also why the field feels messy. There is no single knob. We are building an ecosystem around models, and every layer changes what the model appears capable of.</p>
+    <p>For me, the most practical takeaway is simple: before asking whether a model is smart enough, inspect the system around it.</p>
+    <p>Did it see the right context? Did it have the right tools? Did it get real feedback? Could it verify completion? Could it remember the lesson?</p>
+    <p>If the answer is no, then the model may not be the bottleneck yet.</p>
+    <section class="post__references" aria-labelledby="sources-and-references">
+      <h2 id="sources-and-references">Sources and references</h2>
+      <p>Primary sources watched for this digest:</p>
+      <ul class="post__references-list">
+        <li><a href="https://www.youtube.com/watch?v=urwDLyNa9FU&amp;t=4s" target="_blank" rel="noopener">AI Agent (1/3)：核心技術 Context Engineering 基本概念解說</a></li>
+        <li><a href="https://www.youtube.com/watch?v=mmPmNezjCi0&amp;t=5s" target="_blank" rel="noopener">AI Agent (2/3): AI Agent 之間可以有什麼樣的互動</a></li>
+        <li><a href="https://www.youtube.com/watch?v=VqB8zMujdjM&amp;t=2s" target="_blank" rel="noopener">AI Agent (3/3): AI Agent 對於工作帶來的衝擊 - 以學術研究為例</a></li>
+        <li><a href="https://www.youtube.com/watch?v=R6fZR_9kmIw&amp;t=3950s" target="_blank" rel="noopener">Harness Engineering：有時候語言模型不是不夠聰明，只是沒有人類好好引導</a></li>
+        <li><a href="https://www.youtube.com/watch?v=m3i2mk5hs8U&amp;t=381s" target="_blank" rel="noopener">AI 能自我修正嗎？從 decoding、workflow 到 reasoning 的技術發展整理</a></li>
+        <li><a href="https://www.youtube.com/watch?v=s06mSAGN4gM&amp;t=415s" target="_blank" rel="noopener">AI 要跨越盧比孔河了嗎？自我成長的 AI 離我們多遠？</a></li>
+      </ul>
+    </section>
+    </div><!-- /.post__body -->
+    <footer class="post__footer" aria-label="Post navigation">
+      <ul class="post__nav" aria-label="Newer and older posts">
+        <li class="post__nav__item post__nav__item--previous">
+          <a href="ai-agent-context-engineering.html">
+            <span class="post__nav__label">Newer post</span>
+            <span class="post__nav__title">agent-01 · Context engineering is the agent&#x27;s working memory</span>
+          </a>
+        </li>
+        <li class="post__nav__item post__nav__item--next">
+          <a href="orchestrating-coding-agents.html">
+            <span class="post__nav__label">Older post</span>
+            <span class="post__nav__title">My setup for running 10+ CLI coding agents at once</span>
+          </a>
+        </li>
+      </ul>
+    </footer>
+  </article>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <p>© <span id="year">2026</span> Arthur</p>
+      <p class="footer__links">
+        <a href="https://linkedin.com/in/arthur-yau" target="_blank" rel="noopener">LinkedIn</a> ·
+        <a href="https://github.com/imitation-alpha" target="_blank" rel="noopener">GitHub</a> ·
+        <a href="https://x.com/imitation_alpha" target="_blank" rel="noopener">X</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js" defer></script>
+  <!-- GoatCounter pageview tracking (privacy-friendly, no cookies) -->
+  <script data-goatcounter="https://imitation-alpha.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
