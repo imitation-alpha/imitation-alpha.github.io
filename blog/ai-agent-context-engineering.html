@@ -4,24 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>agent-01 · Context engineering is the agent&#x27;s working memory — Arthur</title>
-  <meta name="description" content="A deep dive into Hung-yi Lee&#x27;s lecture on context engineering: prompt versus context, memory, compression, sub-agents, and agentic context management." />
+  <meta name="description" content="A practical taxonomy for agent context: prompt-visible workspace, external memory, compression, bounded observations, sub-agents, and on-demand skills." />
   <meta name="theme-color" content="#0a0e0a" />
   <meta name="author" content="Arthur Yau" />
   <meta property="og:type" content="article" />
   <meta property="og:title" content="agent-01 · Context engineering is the agent&#x27;s working memory" />
-  <meta property="og:description" content="A deep dive into Hung-yi Lee&#x27;s lecture on context engineering: prompt versus context, memory, compression, sub-agents, and agentic context management." />
-  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-context-engineering.png?v=selected-headers-20260520-0635" />
+  <meta property="og:description" content="A practical taxonomy for agent context: prompt-visible workspace, external memory, compression, bounded observations, sub-agents, and on-demand skills." />
+  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-context-engineering-xpost-cover.png?v=agent-series-x-long-form-cover-20260523-01" />
   <meta property="og:image:width" content="1600" />
   <meta property="og:image:height" content="900" />
-  <meta property="og:image:alt" content="Abstract dark technical illustration of context engineering, with document shards compressed into a prompt window and routed to memory stores." />
+  <meta property="og:image:alt" content="Dark campaign cover reading Context Engineering Is Working Memory, with a technical memory and retrieval pipeline diagram." />
   <meta property="article:author" content="Arthur Yau" />
   <meta property="article:published_time" content="2026-05-19" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:creator" content="@imitation_alpha" />
   <meta name="twitter:title" content="agent-01 · Context engineering is the agent&#x27;s working memory" />
-  <meta name="twitter:description" content="A deep dive into Hung-yi Lee&#x27;s lecture on context engineering: prompt versus context, memory, compression, sub-agents, and agentic context management." />
-  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-context-engineering.png?v=selected-headers-20260520-0635" />
-  <meta name="twitter:image:alt" content="Abstract dark technical illustration of context engineering, with document shards compressed into a prompt window and routed to memory stores." />
+  <meta name="twitter:description" content="A practical taxonomy for agent context: prompt-visible workspace, external memory, compression, bounded observations, sub-agents, and on-demand skills." />
+  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-context-engineering-xpost-cover.png?v=agent-series-x-long-form-cover-20260523-01" />
+  <meta name="twitter:image:alt" content="Dark campaign cover reading Context Engineering Is Working Memory, with a technical memory and retrieval pipeline diagram." />
   <link rel="canonical" href="https://imitation-alpha.github.io/blog/ai-agent-context-engineering.html" />
   <link rel="alternate" hreflang="en" href="https://imitation-alpha.github.io/blog/ai-agent-context-engineering.html" />
   <link rel="alternate" hreflang="zh-Hant" href="https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-context-engineering.html" />
@@ -57,7 +57,7 @@
 
     <header class="post__header">
       <h1>agent-01 · Context engineering is the agent&#x27;s working memory</h1>
-      <p class="post__lede">A deep dive into Hung-yi Lee&#x27;s lecture on context engineering: prompt versus context, memory, compression, sub-agents, and agentic context management.</p>
+      <p class="post__lede">A practical taxonomy for agent context: prompt-visible workspace, external memory, compression, bounded observations, sub-agents, and on-demand skills.</p>
       <p class="post__meta">
         May 19, 2026
         <span class="dot">·</span>
@@ -72,7 +72,7 @@
         <a href="../zh-Hant/blog/ai-agent-context-engineering.html" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a>.
       </p>
       <figure class="post__hero">
-        <img src="../assets/blog-headers/ai-agent-context-engineering.png?v=selected-headers-20260520-0635" alt="Abstract dark technical illustration of context engineering, with document shards compressed into a prompt window and routed to memory stores." width="1600" height="900" loading="eager" decoding="async" />
+        <img src="../assets/blog-headers/ai-agent-context-engineering-xpost-cover.png?v=agent-series-x-long-form-cover-20260523-01" alt="Dark campaign cover reading Context Engineering Is Working Memory, with a technical memory and retrieval pipeline diagram." width="1600" height="900" loading="eager" decoding="async" />
       </figure>
     </header>
 
@@ -80,6 +80,7 @@
     <aside class="post__toc" aria-label="Contents">
       <p class="post__toc__label">Content outline</p>
       <ul>
+        <li><a href="#the-practical-context-stack">The practical context stack</a></li>
         <li><a href="#the-naive-agent-just-appends-everything">The naive agent just appends everything</a></li>
         <li><a href="#prompt-is-not-context">Prompt is not context</a></li>
         <li><a href="#compression-is-necessary-but-dangerous">Compression is necessary, but dangerous</a></li>
@@ -97,11 +98,24 @@
     <p>The first lecture in Hung-yi Lee's AI agent series is about context engineering. That sounds like a narrow infrastructure topic. It is not. It is one of the cleanest explanations I have seen of why agents are hard to make reliable.</p>
     <p>A language model does not wake up in the morning remembering what happened yesterday. It receives a prompt and predicts what comes next. If you want it to act like a long-running worker, you need a system around it that chooses what goes into the next prompt.</p>
     <p>That system is the agent's working memory.</p>
+    <blockquote><p><strong>Builder takeaway:</strong> when an agent fails, inspect the context stack before blaming the model. Did it see the right prompt-visible workspace? Could it retrieve the right memory? Did tool output flood the prompt? Did compression drop the deciding detail?</p></blockquote>
+    <h2 id="the-practical-context-stack">The practical context stack</h2>
+    <p>The useful way to read this lecture is as a taxonomy, not a single trick. Context engineering is the layer that decides what the model can see, what remains outside the prompt, what gets compressed, and what evidence survives long enough to be checked.</p>
+    <p>For agent builders, I would split the stack like this:</p>
+    <ul>
+      <li><strong>Prompt-visible workspace:</strong> the small active set the model sees right now.</li>
+      <li><strong>External memory:</strong> files, logs, notes, vector stores, playbooks, and other state outside the prompt.</li>
+      <li><strong>Compression:</strong> summaries, markers, and pointers that keep long histories usable without pretending nothing was lost.</li>
+      <li><strong>Bounded observations:</strong> tool results shaped before they enter the model context.</li>
+      <li><strong>Sub-agent interfaces:</strong> messy branches that return concise conclusions plus verifiable handles.</li>
+      <li><strong>On-demand skills:</strong> tool and procedure descriptions loaded when relevant, not carried in every step.</li>
+    </ul>
+    <p>That taxonomy is also a debugging checklist. If a coding agent loops, hallucinates, misses a file, or confidently says "done" without evidence, the failure may be in one of these context interfaces rather than in the base model alone.</p>
     <h2 id="the-naive-agent-just-appends-everything">The naive agent just appends everything</h2>
     <p>The simplest agent loop is easy to imagine. A user says something. The model replies. The tool returns an observation. The agent appends all of it to the next prompt.</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../assets/blog-illustrations/ai-agent-context-engineering/s01-the-naive-agent-just-appends-everything.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining the naive agent just appends everything with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>The simplest agent loop is easy to imagine.</figcaption>
+      <img src="../assets/blog-illustrations/ai-agent-context-engineering/s01-the-naive-agent-just-appends-everything.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="Dark blueprint-style diagram explaining The naive agent appends everything, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>The simplest agent loop is easy to imagine, but the prompt quickly fills with noise.</figcaption>
     </figure>
 <p>In rough form:</p>
     <pre><code class="language-text">C_next = C_current + input + output</code></pre>
@@ -116,8 +130,8 @@
     <h2 id="prompt-is-not-context">Prompt is not context</h2>
     <p>One of the most useful distinctions in the lecture is prompt versus context.</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../assets/blog-illustrations/ai-agent-context-engineering/s02-prompt-is-not-context.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining prompt is not context with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>One of the most useful distinctions in the lecture is prompt versus context.</figcaption>
+      <img src="../assets/blog-illustrations/ai-agent-context-engineering/s02-prompt-is-not-context.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="Dark blueprint-style diagram explaining Prompt is not context, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Prompt is the current working set. Context includes the outside systems that decide what enters it.</figcaption>
     </figure>
 <p>The prompt is what the model sees right now.</p>
     <p>Context is broader. It includes what the agent has experienced, what it can retrieve, what is stored on disk, what skills exist, what logs were written, and what memories may become relevant later.</p>
@@ -130,8 +144,8 @@
     <h2 id="compression-is-necessary-but-dangerous">Compression is necessary, but dangerous</h2>
     <p>Once history gets long, compression is unavoidable. You can summarize old turns, mask observations, or store long tool outputs as files and leave behind a pointer.</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../assets/blog-illustrations/ai-agent-context-engineering/s03-compression-is-necessary-but-dangerous.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining compression is necessary, but dangerous with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>Once history gets long, compression is unavoidable.</figcaption>
+      <img src="../assets/blog-illustrations/ai-agent-context-engineering/s03-compression-is-necessary-but-dangerous.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="Dark blueprint-style diagram explaining Compression is necessary, but dangerous, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Compression is unavoidable once history gets long, but lossy summaries can erase the deciding detail.</figcaption>
     </figure>
 <p>The lecture discusses a few patterns:</p>
     <ul>
@@ -148,8 +162,8 @@
     <h2 id="observation-is-the-real-context-killer">Observation is the real context killer</h2>
     <p>A subtle point in the lecture: the model's own reasoning and actions are not always the biggest source of context growth. Observations are.</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../assets/blog-illustrations/ai-agent-context-engineering/s04-observation-is-the-real-context-killer.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining observation is the real context killer with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>A subtle point in the lecture: the model&#x27;s own reasoning and actions are not always the biggest source of context growth.</figcaption>
+      <img src="../assets/blog-illustrations/ai-agent-context-engineering/s04-observation-is-the-real-context-killer.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="Dark blueprint-style diagram explaining Observation is the real context killer, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>The model&#x27;s own reasoning is not always the biggest source of context growth; observations are.</figcaption>
     </figure>
 <p>A shell command returns 500 lines. A file read dumps a whole module. A browser scrape returns a page. A test run prints a giant stack trace. Now the model has to decide inside a swamp of text.</p>
     <p>That suggests a different place to intervene. Instead of summarizing everything after the fact, prevent bad observations from entering the prompt in the first place.</p>
@@ -165,8 +179,8 @@
     <h2 id="sub-agents-are-compression-devices">Sub-agents are compression devices</h2>
     <p>The lecture's framing of sub-agents is useful because it cuts through some of the hype.</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../assets/blog-illustrations/ai-agent-context-engineering/s05-sub-agents-are-compression-devices.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining sub-agents are compression devices with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>The lecture&#x27;s framing of sub-agents is useful because it cuts through some of the hype.</figcaption>
+      <img src="../assets/blog-illustrations/ai-agent-context-engineering/s05-sub-agents-are-compression-devices.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="Dark blueprint-style diagram explaining Sub-agents are compression devices, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Sub-agents are not only parallel workers; they are also context compression devices.</figcaption>
     </figure>
 <p>A sub-agent is not only a miniature coworker. It is a way to keep the main context clean.</p>
     <p>The main agent can say: go inspect these files, compare these papers, or test this hypothesis. The sub-agent accumulates all the messy intermediate context. When it returns, the main agent receives a short answer: what was found, what failed, what matters.</p>
@@ -176,8 +190,8 @@
     <h2 id="tool-descriptions-should-not-all-live-in-the-system-prompt">Tool descriptions should not all live in the system prompt</h2>
     <p>Another practical point: tool descriptions are themselves context.</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../assets/blog-illustrations/ai-agent-context-engineering/s06-tool-descriptions-should-not-all-live-in-the-s.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining tool descriptions should not all live in the system prompt with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>Another practical point: tool descriptions are themselves context.</figcaption>
+      <img src="../assets/blog-illustrations/ai-agent-context-engineering/s06-tool-descriptions-should-not-all-live-in-the-s.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="Dark blueprint-style diagram explaining Tool descriptions belong on demand, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Tool descriptions are context too, so agents should load them when needed.</figcaption>
     </figure>
 <p>If you expose a large tool library to a model by dumping every tool description into the prompt, the tool manual becomes a tax on every single step. It also makes tool selection harder.</p>
     <p>The lecture mentions approaches like MCP-Zero and on-demand skill loading. The idea is straightforward: keep tool and skill descriptions searchable, then load only what is relevant.</p>
@@ -186,8 +200,8 @@
     <h2 id="agentic-context-engineering">Agentic context engineering</h2>
     <p>The final step is to let the model help manage its own context.</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../assets/blog-illustrations/ai-agent-context-engineering/s07-agentic-context-engineering.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining agentic context engineering with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>The final step is to let the model help manage its own context.</figcaption>
+      <img src="../assets/blog-illustrations/ai-agent-context-engineering/s07-agentic-context-engineering.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="Dark blueprint-style diagram explaining Agentic context engineering, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>The final step is to let the model help manage its own context under clear rules.</figcaption>
     </figure>
 <p>The lecture calls this agentic context engineering. Instead of humans hard-coding all of <code>F</code>, the agent can maintain a cheatsheet, update a playbook, decide what to store, or search external memory by itself.</p>
     <p>Examples include:</p>
@@ -199,21 +213,21 @@
     <p>This is powerful and uncomfortable for the same reason. If the agent can edit its own working notes, it can improve. It can also write bad rules, preserve wrong lessons, or delete the one constraint that mattered.</p>
     <p>So the system boundary matters. I would not let an agent casually rewrite its root identity or safety rules. But letting it maintain task-level notes, project conventions, and reusable tactics seems not only reasonable but necessary.</p>
     <h2 id="what-i-would-actually-use">What I would actually use</h2>
-    <p>If I were designing an agent after this lecture, I would start with a few boring rules:</p>
+    <p>If I were designing an agent after this lecture, I would turn the taxonomy into a context checklist:</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../assets/blog-illustrations/ai-agent-context-engineering/s08-what-i-would-actually-use.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining what i would actually use with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>If I were designing an agent after this lecture, start with a few boring rules</figcaption>
+      <img src="../assets/blog-illustrations/ai-agent-context-engineering/s08-what-i-would-actually-use.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="Dark blueprint-style diagram explaining What I would actually use, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Start with boring context rules: read before editing, keep pointers, summarize traces, and verify.</figcaption>
     </figure>
 <ol>
-      <li>Keep the active prompt small.</li>
-      <li>Store raw outputs externally.</li>
-      <li>Put pointers in the prompt, not giant blobs.</li>
-      <li>Make tools return structured, bounded observations.</li>
-      <li>Use sub-agents for messy branches.</li>
-      <li>Require sub-agents to return verifiable handles.</li>
-      <li>Load tools and skills on demand.</li>
-      <li>Treat summaries as lossy and test them.</li>
-      <li>Let the agent maintain a playbook, but keep root rules protected.</li>
+      <li><strong>Keep the active prompt small:</strong> make the model work in a clean workspace, not a transcript dump.</li>
+      <li><strong>Store raw outputs externally:</strong> preserve logs, diffs, traces, and long reads outside the prompt.</li>
+      <li><strong>Put pointers in the prompt:</strong> use file paths, line numbers, commands, timestamps, and source URLs instead of giant blobs.</li>
+      <li><strong>Bound every observation:</strong> make tools return structured summaries, relevant ranges, and handles for deeper inspection.</li>
+      <li><strong>Use sub-agents for messy branches:</strong> isolate exploratory context, then return only the claim, evidence, and reproduction path.</li>
+      <li><strong>Require verifiable handoffs:</strong> do not accept "done" without a path, diff, test result, or other anchor.</li>
+      <li><strong>Load tools and skills on demand:</strong> keep tool manuals searchable instead of making every step pay the full context tax.</li>
+      <li><strong>Treat summaries as lossy:</strong> test whether compression preserves the facts future steps need.</li>
+      <li><strong>Let the agent maintain a playbook:</strong> allow task-level learning while keeping root rules and safety boundaries protected.</li>
     </ol>
     <p>None of this is glamorous. That is probably why it is important.</p>
     <p>A lot of agent failures look like reasoning failures from the outside. Sometimes they are. But after this lecture, I would first ask a more basic question: did the agent have the right working memory?</p>
@@ -254,7 +268,7 @@
         <li class="post__nav__item post__nav__item--next">
           <a href="ai-agent-systems-hung-yi-lee-summary.html">
             <span class="post__nav__label">Older post</span>
-            <span class="post__nav__title">agent-00 · The AI agent stack, as seen through Hung-yi Lee&#x27;s 2026 lectures</span>
+            <span class="post__nav__title">agent-00 · The AI agent is a computer system around an LLM processor</span>
           </a>
         </li>
       </ul>

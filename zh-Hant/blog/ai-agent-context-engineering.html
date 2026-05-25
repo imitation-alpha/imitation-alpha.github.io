@@ -4,25 +4,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>agent-01 · Context engineering 是 agent 的工作記憶 — Arthur</title>
-  <meta name="description" content="深入解讀李宏毅關於 context engineering 的課程：prompt 與 context 的差異、memory、壓縮、sub-agents，以及 agentic context 管理。" />
+  <meta name="description" content="面向 agent builders 的 context taxonomy：prompt-visible workspace、external memory、compression、bounded observations、sub-agents 與 on-demand skills。" />
   <meta name="theme-color" content="#0a0e0a" />
   <meta name="author" content="Arthur Yau" />
   <meta property="og:type" content="article" />
   <meta property="og:title" content="agent-01 · Context engineering 是 agent 的工作記憶" />
-  <meta property="og:description" content="深入解讀李宏毅關於 context engineering 的課程：prompt 與 context 的差異、memory、壓縮、sub-agents，以及 agentic context 管理。" />
-  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-context-engineering.png?v=selected-headers-20260520-0635" />
+  <meta property="og:description" content="面向 agent builders 的 context taxonomy：prompt-visible workspace、external memory、compression、bounded observations、sub-agents 與 on-demand skills。" />
+  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-context-engineering-xpost-cover.png?v=agent-series-x-long-form-cover-20260523-01" />
   <meta property="og:image:width" content="1600" />
   <meta property="og:image:height" content="900" />
-  <meta property="og:image:alt" content="抽象深色技術插圖，呈現 context engineering：文件碎片被壓縮進 prompt window，並路由到 memory stores。" />
+  <meta property="og:image:alt" content="深色 campaign cover，標題為 Context Engineering Is Working Memory，並呈現技術化的 memory 與 retrieval pipeline 圖。" />
   <meta property="og:locale" content="zh_Hant" />
   <meta property="article:author" content="Arthur Yau" />
   <meta property="article:published_time" content="2026-05-19" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:creator" content="@imitation_alpha" />
   <meta name="twitter:title" content="agent-01 · Context engineering 是 agent 的工作記憶" />
-  <meta name="twitter:description" content="深入解讀李宏毅關於 context engineering 的課程：prompt 與 context 的差異、memory、壓縮、sub-agents，以及 agentic context 管理。" />
-  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-context-engineering.png?v=selected-headers-20260520-0635" />
-  <meta name="twitter:image:alt" content="抽象深色技術插圖，呈現 context engineering：文件碎片被壓縮進 prompt window，並路由到 memory stores。" />
+  <meta name="twitter:description" content="面向 agent builders 的 context taxonomy：prompt-visible workspace、external memory、compression、bounded observations、sub-agents 與 on-demand skills。" />
+  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-context-engineering-xpost-cover.png?v=agent-series-x-long-form-cover-20260523-01" />
+  <meta name="twitter:image:alt" content="深色 campaign cover，標題為 Context Engineering Is Working Memory，並呈現技術化的 memory 與 retrieval pipeline 圖。" />
+  <link rel="canonical" href="https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-context-engineering.html" />
   <link rel="alternate" hreflang="en" href="https://imitation-alpha.github.io/blog/ai-agent-context-engineering.html" />
   <link rel="alternate" hreflang="zh-Hant" href="https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-context-engineering.html" />
   <link rel="alternate" hreflang="x-default" href="https://imitation-alpha.github.io/blog/ai-agent-context-engineering.html" />
@@ -57,7 +58,7 @@
 
     <header class="post__header">
       <h1>agent-01 · Context engineering 是 agent 的工作記憶</h1>
-      <p class="post__lede">深入解讀李宏毅關於 context engineering 的課程：prompt 與 context 的差異、memory、壓縮、sub-agents，以及 agentic context 管理。</p>
+      <p class="post__lede">面向 agent builders 的 context taxonomy：prompt-visible workspace、external memory、compression、bounded observations、sub-agents 與 on-demand skills。</p>
       <p class="post__meta">
         2026 年 5 月 19 日
         <span class="dot">·</span>
@@ -73,7 +74,7 @@
         版本為準；如有不通順或誤譯處，建議參照原文。
       </p>
       <figure class="post__hero">
-        <img src="../../assets/blog-headers/ai-agent-context-engineering.png?v=selected-headers-20260520-0635" alt="抽象深色技術插圖，呈現 context engineering：文件碎片被壓縮進 prompt window，並路由到 memory stores。" width="1600" height="900" loading="eager" decoding="async" />
+        <img src="../../assets/blog-headers/ai-agent-context-engineering-xpost-cover.png?v=agent-series-x-long-form-cover-20260523-01" alt="深色 campaign cover，標題為 Context Engineering Is Working Memory，並呈現技術化的 memory 與 retrieval pipeline 圖。" width="1600" height="900" loading="eager" decoding="async" />
       </figure>
     </header>
 
@@ -81,6 +82,7 @@
     <aside class="post__toc" aria-label="目錄">
       <p class="post__toc__label">內容大綱</p>
       <ul>
+        <li><a href="#the-practical-context-stack">實用的 context stack</a></li>
         <li><a href="#the-naive-agent-just-appends-everything">天真的 agent 只是把所有東西往後附加</a></li>
         <li><a href="#prompt-is-not-context">Prompt 不等於 context</a></li>
         <li><a href="#compression-is-necessary-but-dangerous">壓縮是必要的，但也很危險</a></li>
@@ -98,11 +100,24 @@
     <p>李宏毅 AI agent 系列的第一堂課談的是 context engineering。這聽起來像一個很窄的 infrastructure 主題。但並不是。這是我看過最清楚的解釋之一，說明為什麼 agents 很難做得可靠。</p>
     <p>Language model 不會像人一樣早上醒來還記得昨天發生什麼。它接收一段 prompt，然後預測接下來會出現什麼。如果你想讓它像一個長時間運作的 worker，就需要在它周圍有一套系統，負責選擇哪些東西要放進下一個 prompt。</p>
     <p>那套系統就是 agent 的工作記憶。</p>
+    <blockquote><p><strong>Builder takeaway：</strong>agent 失敗時，先檢查 context stack，再怪 model。它有看到正確的 prompt-visible workspace 嗎？能 retrieve 正確 memory 嗎？Tool output 是否淹沒 prompt？Compression 是否丟掉決定性細節？</p></blockquote>
+    <h2 id="the-practical-context-stack">實用的 context stack</h2>
+    <p>這堂課最有用的讀法，是把它當成 taxonomy，而不是單一技巧。Context engineering 是決定 model 能看見什麼、什麼留在 prompt 之外、什麼被壓縮，以及哪些 evidence 能保存到足以被檢查的 layer。</p>
+    <p>對 agent builders，我會把 stack 拆成這幾層：</p>
+    <ul>
+      <li><strong>Prompt-visible workspace：</strong>model 眼前看到的小型 active set。</li>
+      <li><strong>External memory：</strong>prompt 外部的 files、logs、notes、vector stores、playbooks 與其他 state。</li>
+      <li><strong>Compression：</strong>讓 long history 可用的 summaries、markers 與 pointers，但不能假裝沒有資訊損失。</li>
+      <li><strong>Bounded observations：</strong>tool results 在進入 model context 前先被 shaping。</li>
+      <li><strong>Sub-agent interfaces：</strong>messy branches 回傳 concise conclusions 加上可驗證 handles。</li>
+      <li><strong>On-demand skills：</strong>tool 與 procedure descriptions 只在 relevant 時載入，而不是每一步都帶著。</li>
+    </ul>
+    <p>這個 taxonomy 也是 debugging checklist。Coding agent 如果 loop、hallucinate、漏看 file，或沒有 evidence 就自信地說「完成」，failure 可能在這些 context interfaces，而不只是 base model。</p>
     <h2 id="the-naive-agent-just-appends-everything">天真的 agent 只是把所有東西往後附加</h2>
     <p>最簡單的 agent loop 很容易想像。User 說了一句話。Model 回覆。Tool 回傳 observation。Agent 把所有東西都 append 到下一個 prompt。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/ai-agent-context-engineering/s01-the-naive-agent-just-appends-everything.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，說明天真的 agent 只是把所有東西附加進 context，包含標註文字、方框與示意元素。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>最簡單的 agent loop 很容易想像。</figcaption>
+      <img src="../../assets/blog-illustrations/ai-agent-context-engineering/s01-the-naive-agent-just-appends-everything.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 The naive agent appends everything，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>最簡單的 agent loop 很容易想像，但 prompt 很快就會被 noise 填滿。</figcaption>
     </figure>
 <p>粗略來說：</p>
     <pre><code class="language-text">C_next = C_current + input + output</code></pre>
@@ -117,8 +132,8 @@
     <h2 id="prompt-is-not-context">Prompt 不等於 context</h2>
     <p>課程中最有用的區分之一，是 prompt 與 context 的差異。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/ai-agent-context-engineering/s02-prompt-is-not-context.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，說明 prompt 不等於 context，包含標註文字、方框與示意元素。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>課程中最有用的區分之一，是 prompt 與 context 的差異。</figcaption>
+      <img src="../../assets/blog-illustrations/ai-agent-context-engineering/s02-prompt-is-not-context.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Prompt is not context，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Prompt 是當前 working set；context 包含決定什麼能進入 prompt 的外部系統。</figcaption>
     </figure>
 <p>Prompt 是 model 眼前正在看到的東西。</p>
     <p>Context 更廣。它包含 agent 經歷過什麼、能 retrieve 什麼、disk 上存了什麼、有哪些 skills、寫過哪些 logs，以及哪些 memories 之後可能變得相關。</p>
@@ -131,8 +146,8 @@
     <h2 id="compression-is-necessary-but-dangerous">壓縮是必要的，但也很危險</h2>
     <p>History 一旦變長，compression 就不可避免。你可以 summarize 舊 turns、mask observations，或把長 tool outputs 存成 files，只在 prompt 裡留下 pointer。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/ai-agent-context-engineering/s03-compression-is-necessary-but-dangerous.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，說明壓縮是必要的但也很危險，包含標註文字、方框與示意元素。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>History 一旦變長，compression 就不可避免。</figcaption>
+      <img src="../../assets/blog-illustrations/ai-agent-context-engineering/s03-compression-is-necessary-but-dangerous.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Compression is necessary, but dangerous，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>History 一旦變長，compression 就不可避免，但 lossy summary 可能抹掉決定性細節。</figcaption>
     </figure>
 <p>課程討論了幾種 patterns：</p>
     <ul>
@@ -149,8 +164,8 @@
     <h2 id="observation-is-the-real-context-killer">Observation 才是真正的 context 殺手</h2>
     <p>課程裡一個細緻的點是：model 自己的 reasoning 與 actions 不一定是 context 成長的最大來源。Observations 才是。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/ai-agent-context-engineering/s04-observation-is-the-real-context-killer.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，說明 observation 才是真正的 context 殺手，包含標註文字、方框與示意元素。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>課程裡一個細緻的點是：model 自己的 reasoning 與 actions 不一定是 context 成長的最大來源。</figcaption>
+      <img src="../../assets/blog-illustrations/ai-agent-context-engineering/s04-observation-is-the-real-context-killer.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Observation is the real context killer，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Model 自己的 reasoning 不一定是 context 成長的最大來源；observations 才常常是。</figcaption>
     </figure>
 <p>一個 shell command 回傳 500 行。一個 file read dump 出整個 module。Browser scrape 回傳一整頁。Test run 印出巨大 stack trace。現在 model 必須在文字沼澤裡做決策。</p>
     <p>這提示了另一個介入位置。與其事後 summarize 所有東西，不如一開始就阻止糟糕的 observations 進入 prompt。</p>
@@ -166,8 +181,8 @@
     <h2 id="sub-agents-are-compression-devices">Sub-agents 是壓縮裝置</h2>
     <p>課程對 sub-agents 的 framing 很有用，因為它切穿了一些 hype。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/ai-agent-context-engineering/s05-sub-agents-are-compression-devices.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，說明 sub-agents 是壓縮裝置，包含標註文字、方框與示意元素。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>課程對 sub-agents 的 framing 很有用，因為它切穿了一些 hype。</figcaption>
+      <img src="../../assets/blog-illustrations/ai-agent-context-engineering/s05-sub-agents-are-compression-devices.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Sub-agents are compression devices，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Sub-agents 不只是 parallel workers；它們也是 context compression devices。</figcaption>
     </figure>
 <p>Sub-agent 不只是小型 coworker。它是一種保持 main context 乾淨的方法。</p>
     <p>Main agent 可以說：去檢查這些 files、比較這些 papers，或測試這個 hypothesis。Sub-agent 會累積所有混亂的 intermediate context。當它回來時，main agent 收到的是短答案：找到了什麼、什麼失敗了、什麼重要。</p>
@@ -177,8 +192,8 @@
     <h2 id="tool-descriptions-should-not-all-live-in-the-system-prompt">Tool descriptions 不應該全都塞在 system prompt 裡</h2>
     <p>另一個實用點：tool descriptions 本身也是 context。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/ai-agent-context-engineering/s06-tool-descriptions-should-not-all-live-in-the-s.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，說明 tool descriptions 不應該全都存在 system prompt 裡，包含標註文字、方框與示意元素。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>另一個實用點：tool descriptions 本身也是 context。</figcaption>
+      <img src="../../assets/blog-illustrations/ai-agent-context-engineering/s06-tool-descriptions-should-not-all-live-in-the-s.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Tool descriptions belong on demand，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Tool descriptions 也是 context，所以 agents 應該在需要時才載入它們。</figcaption>
     </figure>
 <p>如果你把每個 tool description 都 dump 進 prompt，藉此把大型 tool library 暴露給 model，那 tool manual 就會變成每一步都要付的稅。它也會讓 tool selection 更困難。</p>
     <p>課程提到 MCP-Zero 與 on-demand skill loading 之類的方法。想法很直接：讓 tool 與 skill descriptions 可被搜尋，然後只載入相關的部分。</p>
@@ -187,8 +202,8 @@
     <h2 id="agentic-context-engineering">Agentic context engineering</h2>
     <p>最後一步，是讓 model 幫忙管理自己的 context。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/ai-agent-context-engineering/s07-agentic-context-engineering.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，說明 agentic context engineering，包含標註文字、方框與示意元素。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>最後一步，是讓 model 幫忙管理自己的 context。</figcaption>
+      <img src="../../assets/blog-illustrations/ai-agent-context-engineering/s07-agentic-context-engineering.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Agentic context engineering，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>最後一步，是在明確規則下讓 model 幫忙管理自己的 context。</figcaption>
     </figure>
 <p>課程稱之為 agentic context engineering。與其由 humans hard-code 整個 <code>F</code>，agent 可以維護 cheatsheet、更新 playbook、決定要儲存什麼，或自行搜尋 external memory。</p>
     <p>例子包括：</p>
@@ -202,8 +217,8 @@
     <h2 id="what-i-would-actually-use">我實際會採用什麼做法</h2>
     <p>如果要根據這堂課設計 agent，我會先從幾條無聊規則開始：</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/ai-agent-context-engineering/s08-what-i-would-actually-use.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，說明我實際會採用什麼做法，包含標註文字、方框與示意元素。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>如果要根據這堂課設計 agent，我會先從幾條無聊規則開始。</figcaption>
+      <img src="../../assets/blog-illustrations/ai-agent-context-engineering/s08-what-i-would-actually-use.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 What I would actually use，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>先從無聊的 context rules 開始：編輯前先讀、保留 pointers、summarize traces，並且 verify。</figcaption>
     </figure>
 <ol>
       <li>讓 active prompt 保持小。</li>
@@ -255,7 +270,7 @@
         <li class="post__nav__item post__nav__item--next">
           <a href="ai-agent-systems-hung-yi-lee-summary.html">
             <span class="post__nav__label">較舊文章</span>
-            <span class="post__nav__title">agent-00 · 從李宏毅 2026 年課程看 AI agent stack</span>
+            <span class="post__nav__title">agent-00 · AI agent 是圍繞 LLM processor 建成的 computer system</span>
           </a>
         </li>
       </ul>

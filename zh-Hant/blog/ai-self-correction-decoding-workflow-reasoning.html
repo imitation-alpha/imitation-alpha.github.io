@@ -4,25 +4,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>agent-05 · Self-correction 有三層：decoding、workflow 與 reasoning — Arthur</title>
-  <meta name="description" content="深入討論 AI self-correction：從 contrastive decoding、外部 feedback loop，到以可驗證 reward 訓練出的 reasoning。" />
+  <meta name="description" content="AI self-correction 的實用地圖：decoding tricks、workflow feedback、trained reasoning 都需要真實 signal，而不只是 reflection。" />
   <meta name="theme-color" content="#0a0e0a" />
   <meta name="author" content="Arthur Yau" />
   <meta property="og:type" content="article" />
   <meta property="og:title" content="agent-05 · Self-correction 有三層：decoding、workflow 與 reasoning" />
-  <meta property="og:description" content="深入討論 AI self-correction：從 contrastive decoding、外部 feedback loop，到以可驗證 reward 訓練出的 reasoning。" />
-  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-self-correction-decoding-workflow-reasoning.png?v=selected-headers-20260520-0635" />
+  <meta property="og:description" content="AI self-correction 的實用地圖：decoding tricks、workflow feedback、trained reasoning 都需要真實 signal，而不只是 reflection。" />
+  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-self-correction-decoding-workflow-reasoning-xpost-cover.png?v=agent-series-cover-badge-fix-20260525-05" />
   <meta property="og:image:width" content="1600" />
   <meta property="og:image:height" content="900" />
-  <meta property="og:image:alt" content="抽象深色技術插圖，呈現 AI self-correction 跨越 decoding、workflow 與 reasoning 的 feedback loop。" />
+  <meta property="og:image:alt" content="深色 campaign cover，標題為 Self-Correction Needs A Signal，並呈現紅色技術 feedback-system layout。" />
   <meta property="og:locale" content="zh_Hant" />
   <meta property="article:author" content="Arthur Yau" />
   <meta property="article:published_time" content="2026-05-19" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:creator" content="@imitation_alpha" />
   <meta name="twitter:title" content="agent-05 · Self-correction 有三層：decoding、workflow 與 reasoning" />
-  <meta name="twitter:description" content="深入討論 AI self-correction：從 contrastive decoding、外部 feedback loop，到以可驗證 reward 訓練出的 reasoning。" />
-  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-self-correction-decoding-workflow-reasoning.png?v=selected-headers-20260520-0635" />
-  <meta name="twitter:image:alt" content="抽象深色技術插圖，呈現 AI self-correction 跨越 decoding、workflow 與 reasoning 的 feedback loop。" />
+  <meta name="twitter:description" content="AI self-correction 的實用地圖：decoding tricks、workflow feedback、trained reasoning 都需要真實 signal，而不只是 reflection。" />
+  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-self-correction-decoding-workflow-reasoning-xpost-cover.png?v=agent-series-cover-badge-fix-20260525-05" />
+  <meta name="twitter:image:alt" content="深色 campaign cover，標題為 Self-Correction Needs A Signal，並呈現紅色技術 feedback-system layout。" />
+  <link rel="canonical" href="https://imitation-alpha.github.io/zh-Hant/blog/ai-self-correction-decoding-workflow-reasoning.html" />
   <link rel="alternate" hreflang="en" href="https://imitation-alpha.github.io/blog/ai-self-correction-decoding-workflow-reasoning.html" />
   <link rel="alternate" hreflang="zh-Hant" href="https://imitation-alpha.github.io/zh-Hant/blog/ai-self-correction-decoding-workflow-reasoning.html" />
   <link rel="alternate" hreflang="x-default" href="https://imitation-alpha.github.io/blog/ai-self-correction-decoding-workflow-reasoning.html" />
@@ -57,7 +58,7 @@
 
     <header class="post__header">
       <h1>agent-05 · Self-correction 有三層：decoding、workflow 與 reasoning</h1>
-      <p class="post__lede">深入討論 AI self-correction：從 contrastive decoding、外部 feedback loop，到以可驗證 reward 訓練出的 reasoning。</p>
+      <p class="post__lede">AI self-correction 的實用地圖：decoding tricks、workflow feedback、trained reasoning 都需要真實 signal，而不只是 reflection。</p>
       <p class="post__meta">
         2026 年 5 月 19 日
         <span class="dot">·</span>
@@ -73,7 +74,7 @@
         版本為準；如有不通順或誤譯處，建議參照原文。
       </p>
       <figure class="post__hero">
-        <img src="../../assets/blog-headers/ai-self-correction-decoding-workflow-reasoning.png?v=selected-headers-20260520-0635" alt="抽象深色技術插圖，呈現 AI self-correction 跨越 decoding、workflow 與 reasoning 的 feedback loop。" width="1600" height="900" loading="eager" decoding="async" />
+        <img src="../../assets/blog-headers/ai-self-correction-decoding-workflow-reasoning-xpost-cover.png?v=agent-series-cover-badge-fix-20260525-05" alt="深色 campaign cover，標題為 Self-Correction Needs A Signal，並呈現紅色技術 feedback-system layout。" width="1600" height="900" loading="eager" decoding="async" />
       </figure>
     </header>
 
@@ -108,11 +109,12 @@
     </ol>
     <p>這個分類很有用，因為人們常把三者都壓成一個模糊詞：self-correction。</p>
     <p>它們不是同一件事。</p>
+    <blockquote><p><strong>Builder takeaway：</strong>self-correction 需要 signal。先用 tests、verifiers、retrieved evidence、contrastive baselines 或 trained rewards，再相信 model 自己覺得已經修好。</p></blockquote>
     <h2 id="layer-1-decoding">第 1 層：decoding</h2>
     <p>第一類方法不改變 model weights，而是改變下一個 token 的選擇方式。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s01-layer-1-decoding.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，透過標註文字、方框與示意元素說明第 1 層：decoding。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>第一類方法不改變 model weights。</figcaption>
+      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s01-layer-1-decoding.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Layer 1: decoding，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>第一個 self-correction family 改變 decoding，而不是 model weights。</figcaption>
     </figure>
 <p>核心想法是 contrastive decoding。</p>
     <p>一般 language model 會產生下一個 token 的機率分布。Contrastive decoding 會建立另一個分布，代表比較糟或更容易出錯的狀態，然後把壞分布從好分布中扣掉。</p>
@@ -127,8 +129,8 @@
     <h2 id="the-cost-problem">成本問題</h2>
     <p>Contrastive decoding 往往需要額外 inference。你可能需要跑兩次 model：一次正常，一次在降級條件下。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s02-the-cost-problem.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，透過標註文字、方框與示意元素說明成本問題。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>Contrastive decoding 往往需要額外 inference。</figcaption>
+      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s02-the-cost-problem.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 The cost problem，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Contrastive decoding 通常用額外 inference cost 換取品質。</figcaption>
     </figure>
 <p>這很昂貴。</p>
     <p>這堂課討論 minimum test-time intervention，或 MTI，作為降低成本的方法。不要在每個 token 都套用 contrastive decoding。只在 model 不確定時使用，例如 entropy 很高的時候。</p>
@@ -137,8 +139,8 @@
     <h2 id="layer-2-workflow">第 2 層：workflow</h2>
     <p>第二類方法把 model 包在一個流程裡。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s03-layer-2-workflow.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，透過標註文字、方框與示意元素說明第 2 層：workflow。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>第二類方法把 model 包在一個流程裡。</figcaption>
+      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s03-layer-2-workflow.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Layer 2: workflow，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Workflow layer 把 model 包在一個能捕捉 errors 的 process 裡。</figcaption>
     </figure>
 <p>先生成答案，再要求 model 檢查它。也許請它 reflect。也許跑測試。也許用 checklist。也許對外搜尋。也許把輸出送給 verifier。</p>
     <p>這是最熟悉的 self-correction 形式，因為它看起來就像人們使用 chat model 的方式：</p>
@@ -155,8 +157,8 @@ Revise the answer.</code></pre>
     <h2 id="reflection-has-a-compute-baseline">reflection 有 compute baseline</h2>
     <p>這堂課最好的提醒之一，是關於 majority vote。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s04-reflection-has-a-compute-baseline.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，透過標註文字、方框與示意元素說明 reflection 有 compute baseline。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>這堂課最好的提醒之一，是關於 majority vote。</figcaption>
+      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s04-reflection-has-a-compute-baseline.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Reflection has a baseline，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Reflection 不是免費魔法；它必須勝過一般 extra-compute baselines。</figcaption>
     </figure>
 <p>假設你的 self-reflection workflow 需要三次 model call：generate、reflect、revise。公平的比較不是一個原始答案。公平的比較可能是抽樣三個獨立答案，然後取 majority 或最好的那個。</p>
     <p>如果 reflection 贏不了它，也許不值得花那些 compute。</p>
@@ -165,8 +167,8 @@ Revise the answer.</code></pre>
     <h2 id="the-four-outcomes-of-revision">revision 的四種結果</h2>
     <p>這堂課對 revision outcome 的拆解很簡單，也很清楚：</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s05-the-four-outcomes-of-revision.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，透過標註文字、方框與示意元素說明 revision 的四種結果。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>這堂課對 revision outcome 的拆解很簡單，也很清楚。</figcaption>
+      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s05-the-four-outcomes-of-revision.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Four outcomes of revision，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Revision 有四種結果，其中兩種是壞的。</figcaption>
     </figure>
 <ul>
       <li>wrong to right</li>
@@ -186,8 +188,8 @@ Revise the answer.</code></pre>
     <h2 id="layer-3-reasoning">第 3 層：reasoning</h2>
     <p>第三類方法試圖把 correction 內化到 model 裡。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s06-layer-3-reasoning.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，透過標註文字、方框與示意元素說明第 3 層：reasoning。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>第三類方法試圖把 correction 內化到 model 裡。</figcaption>
+      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s06-layer-3-reasoning.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Layer 3: reasoning，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Reasoning layer 會在 final answer 前把 correction 內化。</figcaption>
     </figure>
 <p>與其外接一個 workflow 告訴它「現在 reflect」，不如訓練 model，讓檢查與修改發生在它自己的 reasoning process 裡。</p>
     <p>這就是 RL with verifiable rewards 變得相關的地方。對數學或 code 而言，最終答案可以被檢查。model 產生 reasoning tokens 和答案。答案正確就得到 positive reward；錯誤就得到 negative reward。</p>
@@ -197,8 +199,8 @@ Revise the answer.</code></pre>
     <h2 id="knowing-the-fact-is-not-enough">知道事實還不夠</h2>
     <p>這堂課給了一個重要的概念提醒：model 內部擁有正確知識，並不等於會用它來修正自己。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s07-knowing-the-fact-is-not-enough.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，透過標註文字、方框與示意元素說明知道事實還不夠。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>這堂課給了一個重要的概念提醒：model 內部擁有正確知識，並不等於會用它來修正自己。</figcaption>
+      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s07-knowing-the-fact-is-not-enough.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Knowing the fact is not enough，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Model 內部有事實，不等於它會用這個事實修正答案。</figcaption>
     </figure>
 <p>model 可能在孤立情境下知道某個事實，但在回答另一個問題時無法套用它。知識存在於 weights 的某處。self-correction behavior 關乎控制：何時 retrieve 這個 fact、何時懷疑當前路徑、何時 revise。</p>
     <p>這個區分很重要，因為很多人談 reasoning 時，好像唯一問題是 model 是否「知道」得夠多。</p>
@@ -206,8 +208,8 @@ Revise the answer.</code></pre>
     <h2 id="revise-and-the-distribution-shift-problem">REVISE 與 distribution shift 問題</h2>
     <p>這堂課討論 REVISE，它把 error detection 和 error correction 分開。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s08-revise-and-the-distribution-shift-problem.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，透過標註文字、方框與示意元素說明 REVISE 與 distribution shift 問題。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>這堂課討論 REVISE，它把 error detection 和 error correction 分開。</figcaption>
+      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s08-revise-and-the-distribution-shift-problem.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 REVISE and distribution shift，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>REVISE 把 error detection 與 correction 分開，也暴露 distribution-shift risk。</figcaption>
     </figure>
 <p>model 先學會偵測答案是否需要 refinement。如果需要，它會發出特殊 refine token。接著它再學會產生修正後的答案。</p>
     <p>這種拆解很合理。偵測錯誤和修正錯誤是不同技能。</p>
@@ -216,8 +218,8 @@ Revise the answer.</code></pre>
     <h2 id="did-rl-learn-something-new">RL 學到了新東西嗎？</h2>
     <p>這堂課最後談到一個我覺得很重要的爭論。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s09-did-rl-learn-something-new.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，透過標註文字、方框與示意元素說明 RL 是否學到了新東西。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>這堂課最後談到一個我覺得很重要的爭論。</figcaption>
+      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s09-did-rl-learn-something-new.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Did RL learn something new?，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>開放問題是 RL 教了新 reasoning，還是主要重新加權既有 paths。</figcaption>
     </figure>
 <p>當 RL 改善 reasoning 時，到底改變了什麼？</p>
     <p>一種看法是，base model 原本就有好的 reasoning paths，只是機率很低。RL 只是把它們 upweight。支持證據來自 pass@k：如果從 base model 多抽樣幾次，它最後也可能產生正確路徑。</p>
@@ -227,8 +229,8 @@ Revise the answer.</code></pre>
     <h2 id="my-practical-takeaway">我的實務 takeaway</h2>
     <p>如果我想讓 agent 修正自己，我不會從「reflect on your answer」開始。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s10-my-practical-takeaway.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，透過標註文字、方框與示意元素說明我的實務 takeaway。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>如果我想讓 agent 修正自己，我不會從「reflect on your answer」開始。</figcaption>
+      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s10-my-practical-takeaway.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Practical takeaway，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>對 practical agents，先從 tests 與 feedback 開始，而不是 pure self-reflection。</figcaption>
     </figure>
 <p>我會用這個階梯：</p>
     <ol>
@@ -242,7 +244,7 @@ Revise the answer.</code></pre>
     <h2 id="the-main-lesson">核心教訓</h2>
     <p>Self-correction 不是單一機制。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s11-the-main-lesson.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，透過標註文字、方框與示意元素說明核心教訓。" width="1600" height="900" loading="lazy" decoding="async" />
+      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s11-the-main-lesson.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 The main lesson，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
       <figcaption>Self-correction 不是單一機制。</figcaption>
     </figure>
 <p>在 decoding layer，我們把 token probabilities 導離估計出的 error states。</p>

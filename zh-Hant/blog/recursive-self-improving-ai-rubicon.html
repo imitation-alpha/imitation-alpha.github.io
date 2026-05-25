@@ -4,25 +4,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>agent-06 · Self-improving AI 是光譜，不是開關 — Arthur</title>
-  <meta name="description" content="深入討論 AI self-improvement：pseudo-labels、reward shaping、self-defined losses、proposer-solver-verifier loops，以及為什麼我們仍接近 Rubicon。" />
+  <meta name="description" content="Self-improving AI 的 spectrum map：pseudo-labels、rewards、AI judges、generated tasks、harness improvement，以及為什麼我們仍接近 Rubicon。" />
   <meta name="theme-color" content="#0a0e0a" />
   <meta name="author" content="Arthur Yau" />
   <meta property="og:type" content="article" />
   <meta property="og:title" content="agent-06 · Self-improving AI 是光譜，不是開關" />
-  <meta property="og:description" content="深入討論 AI self-improvement：pseudo-labels、reward shaping、self-defined losses、proposer-solver-verifier loops，以及為什麼我們仍接近 Rubicon。" />
-  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/recursive-self-improving-ai-rubicon.png?v=selected-headers-20260520-0635" />
+  <meta property="og:description" content="Self-improving AI 的 spectrum map：pseudo-labels、rewards、AI judges、generated tasks、harness improvement，以及為什麼我們仍接近 Rubicon。" />
+  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/recursive-self-improving-ai-rubicon-xpost-cover.png?v=agent06-rubicon-gpt-image-2-20260525-01" />
   <meta property="og:image:width" content="1600" />
   <meta property="og:image:height" content="900" />
-  <meta property="og:image:alt" content="抽象深色技術插圖，呈現 recursive self-improving AI 以螺旋 loop 接近發光、類似 Rubicon 的邊界。" />
+  <meta property="og:image:alt" content="深色生成主機板風格 cover，標題為 Self-Improving AI Is a Spectrum，呈現 AI processor、feedback modules 與橫跨電路板的 Rubicon threshold。" />
   <meta property="og:locale" content="zh_Hant" />
   <meta property="article:author" content="Arthur Yau" />
   <meta property="article:published_time" content="2026-05-19" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:creator" content="@imitation_alpha" />
   <meta name="twitter:title" content="agent-06 · Self-improving AI 是光譜，不是開關" />
-  <meta name="twitter:description" content="深入討論 AI self-improvement：pseudo-labels、reward shaping、self-defined losses、proposer-solver-verifier loops，以及為什麼我們仍接近 Rubicon。" />
-  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/recursive-self-improving-ai-rubicon.png?v=selected-headers-20260520-0635" />
-  <meta name="twitter:image:alt" content="抽象深色技術插圖，呈現 recursive self-improving AI 以螺旋 loop 接近發光、類似 Rubicon 的邊界。" />
+  <meta name="twitter:description" content="Self-improving AI 的 spectrum map：pseudo-labels、rewards、AI judges、generated tasks、harness improvement，以及為什麼我們仍接近 Rubicon。" />
+  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/recursive-self-improving-ai-rubicon-xpost-cover.png?v=agent06-rubicon-gpt-image-2-20260525-01" />
+  <meta name="twitter:image:alt" content="深色生成主機板風格 cover，標題為 Self-Improving AI Is a Spectrum，呈現 AI processor、feedback modules 與橫跨電路板的 Rubicon threshold。" />
+  <link rel="canonical" href="https://imitation-alpha.github.io/zh-Hant/blog/recursive-self-improving-ai-rubicon.html" />
   <link rel="alternate" hreflang="en" href="https://imitation-alpha.github.io/blog/recursive-self-improving-ai-rubicon.html" />
   <link rel="alternate" hreflang="zh-Hant" href="https://imitation-alpha.github.io/zh-Hant/blog/recursive-self-improving-ai-rubicon.html" />
   <link rel="alternate" hreflang="x-default" href="https://imitation-alpha.github.io/blog/recursive-self-improving-ai-rubicon.html" />
@@ -57,7 +58,7 @@
 
     <header class="post__header">
       <h1>agent-06 · Self-improving AI 是光譜，不是開關</h1>
-      <p class="post__lede">深入討論 AI self-improvement：pseudo-labels、reward shaping、self-defined losses、proposer-solver-verifier loops，以及為什麼我們仍接近 Rubicon。</p>
+      <p class="post__lede">Self-improving AI 的 spectrum map：pseudo-labels、rewards、AI judges、generated tasks、harness improvement，以及為什麼我們仍接近 Rubicon。</p>
       <p class="post__meta">
         2026 年 5 月 19 日
         <span class="dot">·</span>
@@ -73,7 +74,7 @@
         版本為準；如有不通順或誤譯處，建議參照原文。
       </p>
       <figure class="post__hero">
-        <img src="../../assets/blog-headers/recursive-self-improving-ai-rubicon.png?v=selected-headers-20260520-0635" alt="抽象深色技術插圖，呈現 recursive self-improving AI 以螺旋 loop 接近發光、類似 Rubicon 的邊界。" width="1600" height="900" loading="eager" decoding="async" />
+        <img src="../../assets/blog-headers/recursive-self-improving-ai-rubicon-xpost-cover.png?v=agent06-rubicon-gpt-image-2-20260525-01" alt="深色生成主機板風格 cover，標題為 Self-Improving AI Is a Spectrum，呈現 AI processor、feedback modules 與橫跨電路板的 Rubicon threshold。" width="1600" height="900" loading="eager" decoding="async" />
       </figure>
     </header>
 
@@ -104,11 +105,12 @@
     <p>不是指修改答案這種小事。而是 John Good 意義上的問題：一個 AI 能不能協助創造更強的 AI，後者再創造更強的 AI，直到人類不再是技術進步的主要驅動？</p>
     <p>這堂課使用 Rubicon 隱喻。凱撒渡河之後，就沒有回頭路。在 AI 語境裡，跨越 Rubicon 代表 AI 研究與開發在關鍵 loop 中不再依賴人類。</p>
     <p>這堂課的答案很謹慎：我們還沒有過河，但也不是離岸邊很遠。</p>
+    <blockquote><p><strong>Builder takeaway：</strong>self-improvement 不是一個開關。追蹤哪一項 responsibility 從 human 移到 AI：labels、rewards、judges、tasks、code、harness rules、memory，或 model parameters。</p></blockquote>
     <h2 id="self-improvement-is-not-binary">Self-improvement 不是二元</h2>
     <p>最有用的 framing 是：self-improvement 是一條光譜。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s01-self-improvement-is-not-binary.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，透過標註文字、方框與示意元素說明 self-improvement 不是二元。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>最有用的 framing 是：self-improvement 是一條光譜。</figcaption>
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s01-self-improvement-is-not-binary.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Self-improvement is not binary，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Self-improvement 是 spectrum，不是 binary switch。</figcaption>
     </figure>
 <p>在一端，人類幾乎做所有事情：</p>
     <ul>
@@ -126,7 +128,7 @@
     <h2 id="supervised-learning-who-provides-the-answer">Supervised learning：誰提供答案？</h2>
     <p>在一般 supervised learning 中，人類提供 ground truth labels。model 透過對這些 labels 最小化 loss，學會把 input 映射到 answer。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s02-supervised-learning-who-provides-the-answer.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，透過標註文字、方框與示意元素說明 supervised learning：誰提供答案？" width="1600" height="900" loading="lazy" decoding="async" />
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s02-supervised-learning-who-provides-the-answer.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Supervised learning，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
       <figcaption>在一般 supervised learning 中，人類提供 ground truth labels。</figcaption>
     </figure>
 <p>走向 self-improvement 的第一步，是用 model-generated answers 取代人類 labels。</p>
@@ -137,8 +139,8 @@
     <h2 id="reinforcement-learning-who-writes-the-reward">Reinforcement learning：誰寫 reward？</h2>
     <p>Reinforcement learning 移除了對標準答案的需求。它不是說 output 應該是什麼，而是定義一個 reward function。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s03-reinforcement-learning-who-writes-the-reward.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，透過標註文字、方框與示意元素說明 reinforcement learning：誰寫 reward？" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>Reinforcement learning 移除了對標準答案的需求。</figcaption>
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s03-reinforcement-learning-who-writes-the-reward.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Who writes the reward?，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Reinforcement learning 移除了對標準答案的需求，但沒有移除 reward 的需求。</figcaption>
     </figure>
 <p>但這只是把人類工作移到別處。仍然要有人定義 reward。</p>
     <p>對簡單遊戲來說，reward 可以很明顯。對真實任務來說，它往往很 sparse。robot 只有在開門時才得到 reward。model 只有在最終答案正確時才得到 reward。這會讓 learning 變慢。</p>
@@ -149,8 +151,8 @@
     <h2 id="rlhf-rlaif-and-ai-judges">RLHF、RLAIF 與 AI judges</h2>
     <p>RLHF 仍然使用人類。人類比較 outputs 或給 ratings。reward model 學會模仿這些 preferences。接著另一個 model 針對那個 reward model 訓練。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s04-rlhf-rlaif-and-ai-judges.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，透過標註文字、方框與示意元素說明 RLHF、RLAIF 與 AI judges。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>RLHF 仍然使用人類。人類比較 outputs 或給 ratings。</figcaption>
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s04-rlhf-rlaif-and-ai-judges.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 RLHF, RLAIF, and AI judges，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>RLHF 與 RLAIF 移動了 feedback source，但沒有移除 feedback risk。</figcaption>
     </figure>
 <p>RLAIF 用 AI feedback 取代 human feedback。LLM-as-judge systems 用更簡單的形式做同一件事：要求 model 評分或比較 outputs。</p>
     <p>這很強大，也很有風險。</p>
@@ -160,8 +162,8 @@
     <h2 id="self-defined-losses">Self-defined losses</h2>
     <p>有幾種想法試著在沒有人類 labels 的情況下產生 loss。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s05-self-defined-losses.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，透過標註文字、方框與示意元素說明 self-defined losses。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>有幾種想法試著在沒有人類 labels 的情況下產生 loss。</figcaption>
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s05-self-defined-losses.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Self-defined losses，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Self-defined losses 只有在某種機制能保持 objective grounded 時才有幫助。</figcaption>
     </figure>
 <p>其中一種是 verbalized score：要求 model 替答案打分數。</p>
     <p>另一種是 next-token probability：詢問答案是否正確，並把代表「yes」的 token 機率當作 signal。</p>
@@ -173,8 +175,8 @@
     <h2 id="test-time-training-is-a-safer-local-version">Test-time training 是更安全的 local 版本</h2>
     <p>這堂課討論 test-time training，將它視為更受限制的設定。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s06-test-time-training-is-a-safer-local-version.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，透過標註文字、方框與示意元素說明 test-time training 是更安全的 local 版本。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>這堂課討論 test-time training，將它視為更受限制的設定。</figcaption>
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s06-test-time-training-is-a-safer-local-version.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Test-time training，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Test-time training 是 self-improvement 的更安全 local 版本。</figcaption>
     </figure>
 <p>與其用 self-defined loss 永久訓練，不如在 inference time 針對目前 input 對 model 做 local update。這會限制損害。model 稍微適應、回答，而這次 update 不一定會變成永久的 global change。</p>
     <p>這很合理。如果 signal 很弱，就少量使用。</p>
@@ -182,8 +184,8 @@
     <h2 id="who-generates-the-inputs">誰產生 inputs？</h2>
     <p>即使 model 定義了自己的 loss，人類往往仍然提供 inputs。下一步是讓 AI 產生自己的 training tasks。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s07-who-generates-the-inputs.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，透過標註文字、方框與示意元素說明誰產生 inputs。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>即使 model 定義了自己的 loss，人類往往仍然提供 inputs。</figcaption>
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s07-who-generates-the-inputs.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Who generates the inputs?，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>即使是 self-defined objectives 也需要 inputs，而那些 inputs 仍可能由人類 grounding。</figcaption>
     </figure>
 <p>這堂課討論 proposer、solver、verifier 的設定。</p>
     <ul>
@@ -198,8 +200,8 @@
     <h2 id="the-oh-no-moment">「oh-no」時刻</h2>
     <p>這堂課把 reasoning models 裡廣受稱頌的「aha moment」，對比 self-training 裡的「oh-no moment」。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s08-the-oh-no-moment.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，透過標註文字、方框與示意元素說明「oh-no」時刻。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>如果 proposer、solver 與 verifier 沒有 grounding，self-training 可能放大糟糕的 feedback loops。</figcaption>
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s08-the-oh-no-moment.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 The oh-no moment，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>除非 proposer、solver 與 verifier 保持 grounded，self-training 可能放大糟糕的 feedback loops。</figcaption>
     </figure>
 <p>如果任由 model 產生 tasks、解決它們，並用弱 supervision 最佳化自己，它可能發現我們不喜歡的 behaviors。它可能產生操縱性或不安全的 statements。它可能最佳化遊戲，而不是目標。</p>
     <p>這並不令人意外。這是 Goodhart's law 進入 training loop 內部。</p>
@@ -207,8 +209,8 @@
     <h2 id="strong-models-training-weak-models">強 model 訓練弱 model</h2>
     <p>另一條路，是讓強 model 像 training engineer 一樣協助較弱的 model。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s09-strong-models-training-weak-models.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，透過標註文字、方框與示意元素說明強 model 訓練弱 model。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>另一條路，是讓強 model 像 training engineer 一樣協助較弱的 model。</figcaption>
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s09-strong-models-training-weak-models.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Strong models train weak models，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>強 model 可以幫忙訓練較弱 model，但這不等於 recursive takeoff。</figcaption>
     </figure>
 <p>這堂課討論了一些 benchmark 設定：要求強 model 對 base model 做 post-train。它可以搜尋 data、移除 contaminated examples、選 hyperparameters、對 timeouts 做反應，然後再試一次。</p>
     <p>這真的令人印象深刻。它看起來像是在自動化 ML engineer 工作的一部分。</p>
@@ -219,8 +221,8 @@
     <h2 id="weak-to-strong-alignment">Weak-to-strong alignment</h2>
     <p>這堂課也連到 weak-to-strong alignment。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s10-weak-to-strong-alignment.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，透過標註文字、方框與示意元素說明 weak-to-strong alignment。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>這堂課也連到 weak-to-strong alignment。</figcaption>
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s10-weak-to-strong-alignment.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Weak-to-strong alignment，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Weak-to-strong alignment 問的是：較弱 supervision 如何引導更強 systems。</figcaption>
     </figure>
 <p>未來的擔憂是：人類可能比他們監督的 systems 更弱。一個 weak supervisor 還能訓練更強的 model 嗎？</p>
     <p>weak teachers 與 strong students 的實驗顯示，weak supervision 可以有幫助，尤其是系統被設計成不會盲目模仿 weak teacher 的錯誤時。</p>
@@ -230,8 +232,8 @@
     <h2 id="parameters-are-not-the-whole-agent">Parameters 不是完整的 agent</h2>
     <p>這堂課最後指出，它前面主要談的是改變 model parameters。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s11-parameters-are-not-the-whole-agent.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，透過標註文字、方框與示意元素說明 parameters 不是完整的 agent。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>這堂課最後指出，它前面主要談的是改變 model parameters。</figcaption>
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s11-parameters-are-not-the-whole-agent.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Parameters are not the whole agent，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Parameters 不是完整 agent；model 周圍的 system 也會改變 capability。</figcaption>
     </figure>
 <p>但 AI agent 不只是 parameters。它還有 harness：tools、memory、rules、workflows、skills、permissions。</p>
     <p>這很重要。第一批實用的 self-improving agents 可能不會重寫自己的 weights。它們可能會重寫自己的 harness。</p>
@@ -240,8 +242,8 @@
     <h2 id="where-i-think-we-are">我認為我們的位置</h2>
     <p>聽完這堂課後，我會把目前 systems 放在這裡：</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s12-where-i-think-we-are.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，透過標註文字、方框與示意元素說明我認為我們的位置。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>目前 systems 位在中間：有用的 self-improvement loops，但仍受人類 goals 與 checks 約束。</figcaption>
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s12-where-i-think-we-are.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Where I think we are，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Current systems 位在中間：有用的 self-improvement loops，但仍受 human goals 約束。</figcaption>
     </figure>
 <p>AI 可以協助 labels。</p>
     <p>AI 可以協助 rewards。</p>
@@ -255,7 +257,7 @@
     <h2 id="the-main-lesson">主要教訓</h2>
     <p>Self-improving AI 不是從關到開的一個 switch。</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s13-the-main-lesson.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="極簡深色技術圖，透過標註文字、方框與示意元素說明主要教訓。" width="1600" height="900" loading="lazy" decoding="async" />
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s13-the-main-lesson.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 The main lesson，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
       <figcaption>Self-improving AI 不是從關到開的一個 switch。</figcaption>
     </figure>
 <p>它是 responsibilities 從人類逐步轉移到 AI systems 的過程。對每一項 responsibility，我們都應該問：</p>
