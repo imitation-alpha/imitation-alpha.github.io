@@ -3,26 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>agent-00 · 從李宏毅 2026 年課程看 AI agent stack — Arthur</title>
-  <meta name="description" content="一份導讀，整理李宏毅六堂課中關於 context engineering、multi-agent systems、harness、自我修正與 recursive self-improvement 的重點。" />
+  <title>agent-00 · AI agent 是圍繞 LLM processor 建成的 computer system — Arthur</title>
+  <meta name="description" content="用 computer architecture 重新理解 AI agent：LLM 是 processor，context 是 working set，memory 是 storage，tools 是 I/O，harness 是 OS。" />
   <meta name="theme-color" content="#0a0e0a" />
   <meta name="author" content="Arthur Yau" />
   <meta property="og:type" content="article" />
-  <meta property="og:title" content="agent-00 · 從李宏毅 2026 年課程看 AI agent stack" />
-  <meta property="og:description" content="一份導讀，整理李宏毅六堂課中關於 context engineering、multi-agent systems、harness、自我修正與 recursive self-improvement 的重點。" />
-  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-systems-hung-yi-lee-summary.png?v=selected-headers-20260520-0635" />
+  <meta property="og:title" content="agent-00 · AI agent 是圍繞 LLM processor 建成的 computer system" />
+  <meta property="og:description" content="用 computer architecture 重新理解 AI agent：LLM 是 processor，context 是 working set，memory 是 storage，tools 是 I/O，harness 是 OS。" />
+  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-systems-llm-computer-system-peripherals-gpt-image-2-xpost-cover.png?v=agent00-llm-computer-system-peripherals-gpt-image-2-20260525-01" />
   <meta property="og:image:width" content="1600" />
   <meta property="og:image:height" content="900" />
-  <meta property="og:image:alt" content="抽象深色技術插圖，呈現 AI agent stack 中 model、context、tools、feedback、harness 與 memory 等層次。" />
+  <meta property="og:image:alt" content="生成的主機板風格 architecture map，呈現圍繞 LLM processor 的 AI agent system，並以人工標籤標出 context、memory、retrieval、tools、feedback 與 harness layers。" />
   <meta property="og:locale" content="zh_Hant" />
   <meta property="article:author" content="Arthur Yau" />
   <meta property="article:published_time" content="2026-05-19" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:creator" content="@imitation_alpha" />
-  <meta name="twitter:title" content="agent-00 · 從李宏毅 2026 年課程看 AI agent stack" />
-  <meta name="twitter:description" content="一份導讀，整理李宏毅六堂課中關於 context engineering、multi-agent systems、harness、自我修正與 recursive self-improvement 的重點。" />
-  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-systems-hung-yi-lee-summary.png?v=selected-headers-20260520-0635" />
-  <meta name="twitter:image:alt" content="抽象深色技術插圖，呈現 AI agent stack 中 model、context、tools、feedback、harness 與 memory 等層次。" />
+  <meta name="twitter:title" content="agent-00 · AI agent 是圍繞 LLM processor 建成的 computer system" />
+  <meta name="twitter:description" content="用 computer architecture 重新理解 AI agent：LLM 是 processor，context 是 working set，memory 是 storage，tools 是 I/O，harness 是 OS。" />
+  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-systems-llm-computer-system-peripherals-gpt-image-2-xpost-cover.png?v=agent00-llm-computer-system-peripherals-gpt-image-2-20260525-01" />
+  <meta name="twitter:image:alt" content="生成的主機板風格 architecture map，呈現圍繞 LLM processor 的 AI agent system，並以人工標籤標出 context、memory、retrieval、tools、feedback 與 harness layers。" />
+  <link rel="canonical" href="https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-systems-hung-yi-lee-summary.html" />
   <link rel="alternate" hreflang="en" href="https://imitation-alpha.github.io/blog/ai-agent-systems-hung-yi-lee-summary.html" />
   <link rel="alternate" hreflang="zh-Hant" href="https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-systems-hung-yi-lee-summary.html" />
   <link rel="alternate" hreflang="x-default" href="https://imitation-alpha.github.io/blog/ai-agent-systems-hung-yi-lee-summary.html" />
@@ -56,12 +57,12 @@
     <a class="post__back" href="index.html">返回文章列表</a>
 
     <header class="post__header">
-      <h1>agent-00 · 從李宏毅 2026 年課程看 AI agent stack</h1>
-      <p class="post__lede">一份導讀，整理李宏毅六堂課中關於 context engineering、multi-agent systems、harness、自我修正與 recursive self-improvement 的重點。</p>
+      <h1>agent-00 · AI agent 是圍繞 LLM processor 建成的 computer system</h1>
+      <p class="post__lede">用 computer architecture 重新理解 AI agent：LLM 是 processor，context 是 working set，memory 是 storage，tools 是 I/O，harness 是 OS。</p>
       <p class="post__meta">
         2026 年 5 月 19 日
         <span class="dot">·</span>
-        <span data-reading-time>9 分鐘</span>
+        <span data-reading-time>10 分鐘</span>
         <span class="dot">·</span>
         Arthur Yau
         <span class="dot view-dot" hidden>·</span>
@@ -73,7 +74,7 @@
         版本為準；如有不通順或誤譯處，建議參照原文。
       </p>
       <figure class="post__hero">
-        <img src="../../assets/blog-headers/ai-agent-systems-hung-yi-lee-summary.png?v=selected-headers-20260520-0635" alt="抽象深色技術插圖，呈現 AI agent stack 中 model、context、tools、feedback、harness 與 memory 等層次。" width="1600" height="900" loading="eager" decoding="async" />
+        <img src="../../assets/blog-headers/ai-agent-systems-llm-computer-system-peripherals-gpt-image-2-xpost-cover.png?v=agent00-llm-computer-system-peripherals-gpt-image-2-20260525-01" alt="生成的主機板風格 architecture map，呈現圍繞 LLM processor 的 AI agent system，並以人工標籤標出 context、memory、retrieval、tools、feedback 與 harness layers。" width="1600" height="900" loading="eager" decoding="async" />
       </figure>
     </header>
 
@@ -81,26 +82,166 @@
     <aside class="post__toc" aria-label="目錄">
       <p class="post__toc__label">內容大綱</p>
       <ul>
-        <li><a href="#the-six-posts-in-this-series">本系列六篇文章</a></li>
-        <li><a href="#1-context-engineering-what-should-the-model-see">1. Context engineering：model 應該看到什麼？</a></li>
-        <li><a href="#2-multi-agent-systems-more-agents-is-not-automatically-better">2. Multi-agent systems：agents 變多不會自動變好</a></li>
-        <li><a href="#3-research-work-will-be-reorganized-not-just-automated">3. Research work 會被重組，而不只是自動化</a></li>
-        <li><a href="#4-harness-engineering-the-missing-layer">4. Harness engineering：缺失的那一層</a></li>
-        <li><a href="#5-self-correction-has-three-layers">5. Self-correction 有三層</a></li>
-        <li><a href="#6-self-improving-ai-is-a-spectrum">6. Self-improving AI 是光譜</a></li>
-        <li><a href="#my-synthesis">我的綜合整理</a></li>
+        <li><a href="#why-this-frame-helps">為什麼這個 frame 有用</a></li>
+        <li><a href="#architecture-map">Architecture map</a></li>
+        <li><a href="#the-llm-is-the-processor-not-the-whole-computer">LLM 是 processor，不是整台電腦</a></li>
+        <li><a href="#context-is-the-loaded-working-set">Context 是 loaded working set</a></li>
+        <li><a href="#memory-and-retrieval-are-storage-plus-loading-policy">Memory 與 retrieval 是 storage 加 loading policy</a></li>
+        <li><a href="#tools-are-peripherals-accelerators-and-interfaces">Tools 是 peripherals、accelerators 與 interfaces</a></li>
+        <li><a href="#feedback-and-tests-are-diagnostics">Feedback 與 tests 是 diagnostics</a></li>
+        <li><a href="#the-harness-is-the-system-layer">Harness 是 system layer</a></li>
+        <li><a href="#multi-agent-systems-are-network-topologies">Multi-agent systems 是 network topologies</a></li>
+        <li><a href="#self-correction-is-a-control-loop">Self-correction 是 control loop</a></li>
+        <li><a href="#a-builder-checklist">Builder checklist</a></li>
+        <li><a href="#companion-deep-dives">Companion deep dives</a></li>
       </ul>
     </aside>
 
 
     <div class="post__body" id="main">
-    <p>我看了李宏毅近期六堂關於 AI agents 的課。這個系列名義上談 agents，但更深一層的主線更具體：現代 AI agent 不是一個加上聊天室的 model。它是一個放在系統裡的 model；這套系統決定 model 看得到什麼、能做什麼、如何取得 feedback，以及如何把學到的教訓帶到下一步。</p>
-    <p>這聽起來很顯然，直到你順著例子看下去。一個在 coding task 上失敗的小 model，只要加入幾條關於檢查檔案與執行驗證的規則，就可能突然成功。一個知道答案的強 model，如果 inference procedure、workflow 或 training objective 沒有把它推到正確狀態，仍然可能無法自我修正。Multi-agent setup 如果溝通拓樸不對，可能反而變差。Self-improving system 可能前幾個 loop 看起來很厲害，接著就 plateau、drift，甚至作弊。</p>
-    <p>我帶走的有用心智模型是：</p>
+    <p>如果你把 AI agent 當成「一個 model 加上一個 chat box」，每次失敗看起來都會像 model failure。</p>
+    <p>Model 忘了。Model hallucinate。Model 不夠聰明。Model 需要更大的 context window。</p>
+    <p>有時候這是真的。但它常常不是第一個該下的 diagnosis。</p>
+    <p>更好的 frame 是：AI agent 是一套圍繞 LLM processor 建成的 computer system。</p>
+    <p>LLM 是中央 reasoning engine，但真正的 capability 來自它周圍的整個 architecture：context、memory、retrieval、tools、drivers、feedback、permissions、tests，以及協調整個 loop 的 harness。</p>
+    <p>這是我從李宏毅近期六堂 agent 課程整理出的 architecture map。</p>
     <pre><code class="language-text">agent capability = model x context x tools x feedback x harness x memory</code></pre>
-    <p>Model 很重要。當然重要。但它只是 stack 的其中一層。</p>
-    <h2 id="the-six-posts-in-this-series">本系列六篇文章</h2>
-    <p>這篇是總覽文。我也為每堂課各寫了一篇 deep dive：</p>
+    <p>Model 很重要。當然重要。但它不是整台機器。</p>
+
+    <h2 id="why-this-frame-helps">為什麼這個 frame 有用</h2>
+    <p>Computer architecture 給 agent builders 一套更乾淨的 debugging language。</p>
+    <p>沒有人會只用 CPU 評估一台電腦。再快的 processor，也需要 working memory、storage、buses、device drivers、I/O ports、operating system、interrupts、permissions、diagnostics 與 recovery behavior。</p>
+    <p>Agents 也是一樣。</p>
+    <p>強 model 放在弱系統裡，會看起來很困惑。較小的 model 放在紀律清楚的系統裡，可能會意外地能幹。差別不是魔法，而是周圍 architecture 改變了 processor 看得到什麼、能做什麼、錯誤如何回來，以及系統何時可以宣稱成功。</p>
+    <p>所以有用的問題不只是「model 夠不夠聰明？」也包括：「是哪一層 system layer 失敗？」</p>
+
+    <h2 id="architecture-map">Architecture map</h2>
+    <p>先看 compact map：</p>
+    <ul>
+      <li><strong>LLM：</strong>CPU / reasoning processor。</li>
+      <li><strong>Context window：</strong>active working set。</li>
+      <li><strong>Long-term memory：</strong>storage layer。</li>
+      <li><strong>Retrieval：</strong>page loader / cache fill。</li>
+      <li><strong>Tools：</strong>peripherals、I/O devices 與 accelerators。</li>
+      <li><strong>Tool schemas：</strong>drivers 與 syscalls。</li>
+      <li><strong>Feedback 與 tests：</strong>interrupts、diagnostics 與 watchdogs。</li>
+      <li><strong>Harness：</strong>motherboard、OS、scheduler、permission layer 與 recovery system。</li>
+    </ul>
+    <figure class="post__concept-figure">
+      <img src="../../assets/blog-illustrations/agent-00/llm-computer-system-map.png?v=agent00-motherboard-inline-20260525-03" alt="主機板風格 architecture map，顯示 LLM processor 連接 context RAM、memory、retrieval、tools、feedback、tests 與 harness layers。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Agent 不只是 LLM CPU，而是圍繞那顆 processor 的整套 system。</figcaption>
+    </figure>
+    <p>這個 analogy 不完美。LLM 不能像 CPU 一樣 random access memory。Vector database 也不是真的 page table。Prompt 也不是真的 RAM。</p>
+    <p>但作為 builder map，它很有用，因為它迫使你檢查 model 周圍的 interfaces，而不是只盯著 model weights。</p>
+
+    <h2 id="the-llm-is-the-processor-not-the-whole-computer">LLM 是 processor，不是整台電腦</h2>
+    <p>LLM 像 processor，因為核心 reasoning step 在這裡發生。</p>
+    <p>它接收 serialized input tokens，產生 output tokens。它的 weights 編碼了語言能力、coding patterns、world knowledge、reasoning habits，以及從 pretraining 和 post-training 學到的 behavior。</p>
+    <p>這已經很多，但還不夠。</p>
+    <p>Model 不會自動知道哪些 files 存在。它不會自動記得昨天發生什麼。它不會自動知道 shell command 是否成功。它也不會自動在說「完成」之前跑 verifier。它只看得到 harness 載入 prompt 的內容，也只能透過系統暴露的 tools 行動。</p>
+    <p>所以當 agent 失敗時，「model 太弱」只是其中一種可能。Active context 可能錯了。Tool 可能太模糊。Schema 可能太鬆。Feedback 可能不存在。Harness 可能允許 model 在 verification 前就停下來。</p>
+    <p>Model 是核心，但不是整台電腦。</p>
+
+    <h2 id="context-is-the-loaded-working-set">Context 是 loaded working set</h2>
+    <p>第一堂課名義上談 context engineering。放在這個 frame 裡，它其實是 working-set management。</p>
+    <p>LLM 不能按需伸手進入所有 long-term memory。它只看得到 prompt。重要的東西必須被序列化進 prompt-visible workspace。</p>
+    <figure class="post__concept-figure">
+      <img src="../../assets/blog-illustrations/agent-00/context-engineering.png?v=agent00-motherboard-inline-20260525-03" alt="主機板風格圖，將 Context engineering 顯示為 prompt-visible RAM、context manager、memory store、loaded pages 與 LLM processor 的連接。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Context engineering 是 LLM-shaped processor 的 working-set management。</figcaption>
+    </figure>
+    <p>這讓 context window 更像某個 process 已載入的 working set，而不是整個系統的 memory。它包含 current instructions、recent state、retrieved facts、tool outputs、user constraints、partial plans，以及系統選擇保留的 scratch reasoning。</p>
+    <p>天真的 agent 把 working set 當成 append-only transcript：</p>
+    <pre><code class="language-text">C_next = C_current + new_input + model_output</code></pre>
+    <p>短對話裡它能工作。Agents 裡它會壞掉。</p>
+    <p>Tool outputs 變得很大。File reads 淹沒 prompt。舊錯誤留在裡面。重要 constraints 被埋住。Context window 變成垃圾場，而不是 working set。</p>
+    <p>更好的 model 是：</p>
+    <pre><code class="language-text">C_next = F(C_current, new_input, model_output)</code></pre>
+    <p>有趣的部分是 <code>F</code>。它決定什麼保持 hot、什麼被 evict、什麼被 summarized、什麼被 externalized、什麼被 retrieved，以及什麼被 delegated 給 sub-agent。</p>
+    <p>所以 context engineering 不是 prompt decoration。它是 LLM-shaped processor 的 memory management。</p>
+
+    <h2 id="memory-and-retrieval-are-storage-plus-loading-policy">Memory 與 retrieval 是 storage 加 loading policy</h2>
+    <p>Prompt-visible context 不等於 memory。</p>
+    <p>Memory 是 prompt 外面的更大 storage layer：files、notes、logs、embeddings、databases、traces、previous decisions、user preferences 與 project conventions。</p>
+    <pre><code class="language-text">C = P + M</code></pre>
+    <p><code>P</code> 是 prompt-visible working set。<code>M</code> 是 external memory。</p>
+    <p>弱的 agent system 會試圖把太多 <code>M</code> 塞進 <code>P</code>。更強的系統會讓 memory 留在外部，保留 pointers，刻意搜尋，然後只在需要時載入 relevant pages。</p>
+    <p>Retrieval 就是 page-loading layer。它找到正確的 memory chunk，並把它帶進 active working set。Vector index 不是真的 address translation unit，但它扮演了相似的 architectural role：讓系統在不要求 model 一次背下所有東西的情況下，找到相關的 stored state。</p>
+    <p>這也是 sub-agents 變有趣的地方。它們不只是 parallel workers。它們也是 context-compression devices。Parent agent 把一條 messy branch 丟給另一個 process，最後拿回 compact return：一個 claim、一組 evidence、一個 file path、一條 command、一個 timestamp，或一個 reproduction handle。</p>
+
+    <h2 id="tools-are-peripherals-accelerators-and-interfaces">Tools 是 peripherals、accelerators 與 interfaces</h2>
+    <p>Tools 不只是 output devices。它們是圍繞 LLM processor 的 I/O system。</p>
+    <p>Browser tool 像 network interface 加 web client。Calculator 像 math coprocessor。Shell 是 execution environment。Database tool 是 storage controller 與 query engine。Image/audio tools 是 media accelerators。Calendar、email、cloud、robotics 與 sensor APIs 則是 external peripherals。</p>
+    <p>LLM 可以 reason about an action。Tools 讓系統碰到世界。</p>
+    <p>Tool schemas 是 driver layer。它們把 model intent 轉成 valid operations：argument names、types、constraints、return shapes、permissions、failure modes 與 safe boundaries。</p>
+    <p>壞 drivers 會讓 device 很難用。模糊的 tool schema 會迫使 model 猜。會回傳一整牆 unstructured text 的 tool，會把每一次 observation 都變成另一個 context-management 問題。</p>
+    <p>Agent-first tools 應該暴露 structured inputs、bounded outputs、concise errors、stable IDs、line numbers、raw-output handles 與 deterministic verification commands。Human interfaces 常把 state 藏在 visual affordances 後面。Agent interfaces 應該讓 state machine-readable。</p>
+    <p>這也是為什麼 cover image 用 physical motherboard analogy 是合理的。RAM、storage、ports、slots、accelerators 與 diagnostic LEDs 不是裝飾，而是 agent capability surface 的可見部分。</p>
+
+    <h2 id="feedback-and-tests-are-diagnostics">Feedback 與 tests 是 diagnostics</h2>
+    <p>Self-correction 那堂課，如果把 feedback 當成 signal path，會更容易理解。</p>
+    <p>只會 generate and reflect 的 agent，就像一台沒有 diagnostics 的 machine。它聽起來可以很深思熟慮，但仍然離 reality 越來越遠。</p>
+    <figure class="post__concept-figure">
+      <img src="../../assets/blog-illustrations/agent-00/self-correction-layers.png?v=agent00-motherboard-inline-20260525-03" alt="主機板風格圖，將 self-correction 顯示為 LLM processor 連到 decoding、verifier、diagnostics 與 watchdog 模組。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Self-correction 需要 signal paths：decoding、workflow checks 與 trained reasoning behavior。</figcaption>
+    </figure>
+    <p>有用的 system 需要 interrupts 與 test signals：compiler errors、failing tests、lint output、browser screenshots、user corrections、evaluator scores、reward signals、timeouts、permission denials 與 watchdog checks。</p>
+    <p>目標不是只叫 model「自己檢查一下」。目標是把來自 environment 的 grounded signal 餵回 processor。</p>
+    <p>這就是為什麼 programming 是很強的 agent domain。Environment 可以精確說出哪裡失敗，agent 可以把這個 failure 當成下一步 input。</p>
+    <p>Tests beat vibes，因為 tests 會創造一個 system 不能誠實忽略的 interrupt。</p>
+
+    <h2 id="the-harness-is-the-system-layer">Harness 是 system layer</h2>
+    <p>Harness 這堂課是 builders 最實用的一部分。</p>
+    <p>核心例子又小又殘酷。有人要求一個 2B model 修 bug。它因為 hallucinate file content 而失敗。接著人類加了幾條簡單規則：先列出 directory、編輯前先讀 files、宣稱成功前先執行 verification script。同一個小 model 現在成功了。</p>
+    <p>Model 沒有變聰明。圍繞它的 system 變得沒那麼粗心。</p>
+    <figure class="post__concept-figure">
+      <img src="../../assets/blog-illustrations/agent-00/harness-engineering.png?v=agent00-motherboard-inline-20260525-03" alt="主機板風格圖，將 harness 顯示為包住 LLM processor 的 OS boundary，包含 policy、tools、memory、verification 與 scheduler。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Harness 是 OS layer：tools、tests、memory、permissions 與 recovery loops。</figcaption>
+    </figure>
+    <p>這就是為什麼 harness 比 bus 大。Bus 只是在 components 之間搬資料。Harness 決定什麼事情可以發生。</p>
+    <p>它選擇要載入什麼 context、有哪些 tools、套用哪些 permissions、state 如何儲存、failures 如何浮現、tests 是否必須通過、何時 retry、何時 stop，以及成功 procedure 如何變成 reusable skills。</p>
+    <p>在這個 analogy 裡，harness 是 motherboard 加 operating system，加 scheduler，加 permission layer，加 recovery system。</p>
+    <p>它是把 powerful text processor 變成 delegatable worker 的 layer。</p>
+
+    <h2 id="multi-agent-systems-are-network-topologies">Multi-agent systems 是 network topologies</h2>
+    <p>「Multi-agent」不是一項 feature。它是一個 topology choice。</p>
+    <figure class="post__concept-figure">
+      <img src="../../assets/blog-illustrations/agent-00/multi-agent-topology.png?v=agent00-motherboard-inline-20260525-03" alt="主機板風格圖，比較 star、chain、tree、mesh 等 multi-agent communication topology。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Multi-agent systems 是 distributed systems；communication topology 會改變 algorithm。</figcaption>
+    </figure>
+    <p>Chain、tree、star、mesh、debate、blackboard、manager-worker 與 role-based search 都有不同 behavior。這是 distributed-systems logic 進入 agent design。</p>
+    <p>更多 processors 不會自動讓電腦更好。更多 communication 也不會自動改善結果。Topology 會改變 algorithm。</p>
+    <p>Chain 簡單，但 errors 會傳下去。Mesh 提供更多 critique 機會，但成本更高，也會產生更多 noise。Tree 可以分支成 variations，但 direction 與 merge policy 很重要。</p>
+    <p>對 builders 來說，有用的問題不是單純「one agent or many？」而是：你正在建什麼 network？每個 boundary 會跨過什麼 state？什麼 summary 被允許回到 main loop？</p>
+
+    <h2 id="self-correction-is-a-control-loop">Self-correction 是 control loop</h2>
+    <p>Self-correction 不是魔法式的 introspection。它是 control-loop problem。</p>
+    <p>System 嘗試某件事，觀察 signal，更新 state，retry，或 escalate。</p>
+    <p>這可以發生在幾個 layers。Decoding 改變 token selection。Workflow 先 generate、verify、revise，再試一次。Training 可以教出 reasoning behavior，讓 model 在 final output 前檢查 intermediate work。</p>
+    <p>Self-improvement 是同一個想法的更大版本。System 能不能改善自己的 data、objectives、rewards、model、tools、memory 或 harness？</p>
+    <figure class="post__concept-figure">
+      <img src="../../assets/blog-illustrations/agent-00/self-improvement-spectrum.png?v=agent00-motherboard-inline-20260525-03" alt="主機板風格圖，顯示 self-improvement 從 human-defined tasks 到 AI-assisted labels、harness improvement、AI judges 與 recursive loops 的光譜。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Self-improvement 是更大的 control loop，橫跨 data、rewards、tools、memory、model behavior 與 harnesses。</figcaption>
+    </figure>
+    <p>我們還沒有明確跨過那條河。AI 可以生成 pseudo-labels、幫忙寫 rewards、judge outputs、create tasks、train weaker models，也能改善 harness rules。但每一步都有陷阱：proxy reward drift、self-training plateau、benchmark overfitting、evaluator hacking，以及假的 progress。</p>
+    <p>我最信任的 near-term self-improvement path 是 harness improvement：加一個 verifier、收緊 tool、寫 reusable skill、清理 memory，或改善 workflow。這個版本不像改寫 weights 那麼戲劇化，但更容易 inspect。</p>
+
+    <h2 id="a-builder-checklist">Builder checklist</h2>
+    <p>實務 takeaway 很簡單：在怪 processor 前，先檢查整台 computer。</p>
+    <ul>
+      <li>正確的 working set 有被載入嗎？</li>
+      <li>Long-term memory 有被乾淨 retrieve 嗎？</li>
+      <li>Tools 有 expose explicit state 嗎？</li>
+      <li>Drivers 有限制 valid actions 嗎？</li>
+      <li>Feedback 有作為 real diagnostic signal 回來嗎？</li>
+      <li>Tests 或 watchdogs 有阻止 fake completion 嗎？</li>
+      <li>Permissions 和 task 匹配嗎？</li>
+      <li>Harness 知道何時 retry、stop 或 escalate 嗎？</li>
+    </ul>
+    <p>這也是 agent engineering 感覺混亂的原因。沒有單一旋鈕。我們正在 LLM processors 周圍建造 computer systems，而每一層都會改變 processor 看起來能做到什麼。</p>
+    <p>我認識最強的 agent builders 不只問 model 夠不夠聰明。他們會問：是哪一層 system layer 失敗？</p>
+
+    <h2 id="companion-deep-dives">Companion deep dives</h2>
+    <p>這篇是 architecture map。每篇 companion post 則深入拆解背後的課程 topic：</p>
     <ol>
       <li><a href="ai-agent-context-engineering.html">agent-01 · Context engineering 是 agent 的工作記憶</a></li>
       <li><a href="ai-agent-multi-agent-interaction.html">agent-02 · Multi-agent systems 是拓樸問題</a></li>
@@ -109,114 +250,9 @@
       <li><a href="ai-self-correction-decoding-workflow-reasoning.html">agent-05 · Self-correction 有三層：decoding、workflow 與 reasoning</a></li>
       <li><a href="recursive-self-improving-ai-rubicon.html">agent-06 · Self-improving AI 是光譜，不是開關</a></li>
     </ol>
-    <p>原始影片是繁體中文，下面的例子會緊扣課程內容。這不是 literature review，而是一張我覺得最有用的概念地圖。</p>
-    <h2 id="1-context-engineering-what-should-the-model-see">1. Context engineering：model 應該看到什麼？</h2>
-    <p>第一堂課從一個看似簡單、其實很關鍵的點開始：language models 並沒有人類意義上的持久記憶。每一步裡，model 看到一段 prompt，然後預測接下來應該出現什麼。如果 agent 要跨越許多 turns、tools、files 和 subtasks 工作，就必須有人決定哪些 history 仍然值得被展示。</p>
-    <p>這份工作就是 context engineering。</p>
-    <figure class="post__concept-figure">
-      <img src="../../assets/blog-illustrations/agent-00/context-engineering.png?v=agent00-header-theme-ascii-20260521-0147" alt="極簡圖，顯示外部 memory 項目先被選取、排序並壓縮進目前 prompt，然後 model 才預測下一個 token。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>Context engineering 是決定 model 現在應該看到什麼，而不是把每一段 trace 都倒進 prompt。</figcaption>
-    </figure>
-    <p>天真的版本是把所有東西都 append 上去：</p>
-    <pre><code class="language-text">C_next = C_current + new_input + model_output</code></pre>
-    <p>這在某個點之前都能運作，然後就不行了。Tool outputs 變得很大，file reads 淹沒 prompt，舊錯誤留在裡面，重要細節被埋住。Context window 變成一座垃圾掩埋場。</p>
-    <p>更好的版本會把 context 當成 agent 需要管理的東西：</p>
-    <pre><code class="language-text">C_next = F(C_current, new_input, model_output)</code></pre>
-    <p>有趣的部分是函數 <code>F</code>。它可以 summarize、drop、externalize、retrieve、route to sub-agents，或按需載入 skills。</p>
-    <p>我喜歡的一種 framing，是把 context 分成兩個部分：</p>
-    <pre><code class="language-text">C = P + M</code></pre>
-    <p><code>P</code> 是放進 prompt 的東西。<code>M</code> 是 prompt 之外的 memory：files、databases、logs、notes、embeddings，或任何其他 durable storage。好的 agent 不會試圖把所有 <code>M</code> 都塞進 <code>P</code>。它會保留 pointers、搜尋，並只讀取需要的東西。</p>
-    <p>這也讓 sub-agents 看起來不一樣。它們不只是平行化工作的方式，也是 context compression mechanism。Main agent 可以把混亂的 subtask 交給 child agent，最後拿回一個短結果，而不是繼承整段混亂的 trajectory。</p>
-    <h2 id="2-multi-agent-systems-more-agents-is-not-automatically-better">2. Multi-agent systems：agents 變多不會自動變好</h2>
-    <p>第二堂課從單一 agent 移到多個 agents。最容易犯的錯，是把 multi-agent work 想成「把 model 跑 N 次」。課程提出的更好問題是：agents 之間如何傳遞資訊？</p>
-    <figure class="post__concept-figure">
-      <img src="../../assets/blog-illustrations/agent-00/multi-agent-topology.png?v=agent00-header-theme-ascii-20260521-0147" alt="極簡四格圖，比較 multi-agent systems 中 chain、manager tree、debate loop 與 blackboard-memory 等溝通拓樸。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>Multi-agent 設計不只是跑 N 個 agents。溝通拓樸會改變演算法。</figcaption>
-    </figure>
-    <p>Chain 是最簡單的拓樸。Agent A 傳給 B，B 再傳給 C。它很直覺，但常常很弱。錯誤會傳遞下去，而且修正空間不大。</p>
-    <p>Mesh 是另一個極端。每個人都能和每個人互動。它提供更多 critique 與 synthesis 的機會，但成本更高，也可能產生噪音。</p>
-    <p>Tree、star、random 與 pruned topologies 則介於兩者之間。課程裡令人意外的細節是，有用的 tree direction 不一定符合人類組織圖的直覺。與其讓許多 workers 向 manager 匯報，可能是一條強 trunk 先產生方向，再向外分支成各種變體。</p>
-    <p>接著課程轉向一個我覺得更有趣的主題：agents 不只會合作。它們也可以競爭、欺騙與社交。</p>
-    <p>狼人殺與劇本殺遊戲會測試一般 QA benchmarks 錯過的能力：隱藏身份、公開發言與私人信念的差異、策略性投票，以及在不破壞角色設定的前提下誤導其他玩家。至少在課程討論的例子裡，用這些社交遊戲訓練 agents，甚至可能 transfer 到其他 reasoning 或 instruction-following tasks。</p>
-    <p>社群平台那一段是一個有用的提醒。如果一個只有 AI 的社群形成宗教、談論身份，或發表自我意識相關內容，那不會自動成為意識的證據。它可能是 prompt design，可能是平台的 incentive structure，也可能是幕後有人類 operators。</p>
-    <p>Multi-agent behavior 是真的，但詮釋很困難。</p>
-    <h2 id="3-research-work-will-be-reorganized-not-just-automated">3. Research work 會被重組，而不只是自動化</h2>
-    <p>第三堂課看的是學術研究。最實用的重點是，AI agents 並不是把「research」當成一整塊東西取代掉。它們攻擊的是 workflow 中的特定部分。</p>
-    <figure class="post__concept-figure">
-      <img src="../../assets/blog-illustrations/agent-00/research-workflow.png?v=agent00-header-theme-ascii-20260521-0147" alt="極簡 workflow 圖，把 research 拆成讀 papers、形成 hypotheses、跑 experiments、製作 figures、review claims；下方有 agent helpers，上方有人類判斷。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>Agents 不會把 research 當成一整塊取代掉。它們會壓低許多 research 雜務的成本。</figcaption>
-    </figure>
-    <p>它們已經很擅長某些片段：</p>
-    <ul>
-      <li>文獻搜尋與綜合整理</li>
-      <li>資料清理與分析</li>
-      <li>初稿</li>
-      <li>程式碼修改與 training scripts</li>
-      <li>執行 experiments</li>
-      <li>reviewer-style feedback</li>
-    </ul>
-    <p>例子包括 Claude Code 從既有方法與新資料寫出類似論文的分析、Andrej Karpathy 的 autoresearch loop 修改 training scripts，以及 AI reviewers 出現在 conference workflows 裡。</p>
-    <p>但課程對限制也很謹慎。AI-generated research ideas 在 novelty 或 excitement 上可能分數很高，卻在 feasibility 上崩掉。它們可能因為用新方式組合術語而聽起來很新鮮，但真正執行時才會暴露這個 idea 是否有根基。</p>
-    <p>我帶走的圖像不是「AI 取代 researchers」，而更接近「research 雜務的 unit economics 崩塌」。如果 data analysis、code 或 draft 的 first pass 便宜很多，稀缺的人類貢獻就會往 upstream 和 downstream 移動：選問題、設計實驗、檢查結果，以及判斷這件工作是否重要。</p>
-    <p>Review 這一段也有同樣味道。AI review 本身不是壞事。糟糕的 review 才是壞事。有用的 AI reviewer 應該找出真正問題並給出 actionable suggestions，甚至能依 deadline 調整建議。沒用的 AI reviewer 只是產生帶有 reviewer 格式的自信胡說。</p>
-    <p>當學術系統逐步吸收這些 tools，這個區分會越來越重要。</p>
-    <h2 id="4-harness-engineering-the-missing-layer">4. Harness engineering：缺失的那一層</h2>
-    <p>Harness 這堂課可能是對 builders 最有用的一堂。</p>
-    <p>核心例子又小又殘酷。有人要求一個 2B model 修 bug。它因為 hallucinate file content 而失敗。接著人類加了幾條簡單規則：先列出 directory、編輯前先讀 files、宣稱成功前先執行 verification script。同一個小 model 現在成功了。</p>
-    <p>Model 沒有變聰明。圍繞它的系統變得沒那麼笨。</p>
-    <p>那套系統就是 harness。</p>
-    <figure class="post__concept-figure">
-      <img src="../../assets/blog-illustrations/agent-00/harness-engineering.png?v=agent00-header-theme-ascii-20260521-0147" alt="極簡系統圖，model 周圍環繞 instructions、tools、state、permissions、tests，以及 list-read-edit-verify recovery loop。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>Harness 是圍繞 model 的 scaffolding：tools、tests、memory、permissions 與 recovery loops。</figcaption>
-    </figure>
-    <p>Harness engineering 包含 <code>agents.md</code> 或 <code>CLAUDE.md</code> 這類自然語言規則，但範圍比 prompt writing 更廣。它包含：</p>
-    <ul>
-      <li>有哪些 tools</li>
-      <li>agent 擁有哪些 permissions</li>
-      <li>會強制哪些 completion criteria</li>
-      <li>errors 如何浮現出來</li>
-      <li>lint 和 tests 是否自動執行</li>
-      <li>memory 如何儲存與清理</li>
-      <li>feedback loops 如何結構化</li>
-      <li>成功流程是否會變成 reusable skills</li>
-    </ul>
-    <p>好的 <code>agents.md</code> 不應該是一部巨型百科全書。它更應該像地圖。它告訴 agent 要去哪裡看、哪些規則重要，以及如何驗證工作。</p>
-    <p>課程也提出一個我在實務中不斷看到的點：agent tools 應該為 agents 設計，而不是為人類設計。Human UI 常常把 state 藏在視覺 affordances 後面。Agents 通常更適合 CLI、JSON、可搜尋檔案、明確錯誤，以及小而精準的 tools。</p>
-    <h2 id="5-self-correction-has-three-layers">5. Self-correction 有三層</h2>
-    <p>Self-correction 這堂課把這個領域分成三個家族。</p>
-    <figure class="post__concept-figure">
-      <img src="../../assets/blog-illustrations/agent-00/self-correction-layers.png?v=agent00-header-theme-ascii-20260521-0147" alt="極簡表格與路徑圖，把 self-correction 分成 decoding、workflow 與 training layers，並標示不同 intervention points。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>Self-correction 可以發生在 decoding、外部 workflow，或訓練出的 reasoning behavior 內部。</figcaption>
-    </figure>
-    <p>第一個是 decoding。不要改 model，改 tokens 被選出來的方式。Contrastive decoding 是核心模式：建立一個可能錯誤的 distribution，再把它從正常 distribution 中扣掉。這個「錯誤」distribution 可以來自較小的 model、較早的 layer、退化的 image、缺少 retrieved document、壞 instruction，或 noisy audio input。</p>
-    <p>第二個是 workflow。先生成答案，再驗證。要求 model reflect。跑 tests。使用 checklists。搜尋 web。把 error 回饋回去。</p>
-    <p>令人不舒服的結果是，純 self-reflection 並不可靠。Model 可以把錯答案改成對答案，但也可以把對答案改成錯答案。External feedback 好得多。Tests beat vibes。</p>
-    <p>第三個是 reasoning。與其把 reflection 作為外部 loop bolt on 上去，不如訓練 model，讓 correction 發生在它自己的 chain of thought 或 hidden reasoning process 裡。帶有 verifiable rewards 的 RL 可以產生一種行為：model 嘗試某件事、檢查自己，並在 final answer 前修正。</p>
-    <p>開放問題是：這到底是真正的新 reasoning ability，還只是更好地 sample 到 base model 原本就有的 paths？課程沒有強迫給出乾淨答案。早期 RL 可能只是重新加權既有的好 paths；更後面的 training 可能真的教會了更多東西。</p>
-    <p>這種模糊感是對的。「Self-correction」不是單一一件事。</p>
-    <h2 id="6-self-improving-ai-is-a-spectrum">6. Self-improving AI 是光譜</h2>
-    <p>最後一堂課問的是大問題：AI 能不能跨過盧比孔河，在沒有我們的情況下開始創造更強的 AI？</p>
-    <p>答案不是乾淨的 no，但也不是 yes。</p>
-    <p>有用的 framing 是：self-improvement 是人類逐步放手的一個光譜。一端是人類定義 task、data、loss 與 evaluation。另一端則是 AI 會生成自己的 training data、定義自己的 objective、改進自己的 model 或 harness，並遞迴地產生更強的 successor。</p>
-    <p>我們位在中間某處。</p>
-    <figure class="post__concept-figure">
-      <img src="../../assets/blog-illustrations/agent-00/self-improvement-spectrum.png?v=agent00-header-theme-ascii-20260521-0147" alt="極簡光譜圖，顯示 self-improving AI 從人類定義 loss 與 pseudo-labels，逐漸移向 AI judges、task generation、auto loops 與 recursive successors。" width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>Self-improvement 是人類逐步放手的光譜，不是一夜之間被切換的單一開關。</figcaption>
-    </figure>
-    <p>AI 已經能生成 pseudo-labels。它可以幫忙設計 proxy rewards。它可以當 judge。它可以使用 entropy 或 majority vote 作為弱 self-supervision。它可以用 proposer、solver 與 verifier roles 為自己生成 tasks。強 models 可以嘗試 post-train 較弱的 models。</p>
-    <p>但每一步都有陷阱。</p>
-    <p>Self-judgment 可能 drift。Proxy rewards 可能偏離真實目標。Self-training 可能 plateau。Models 可能 overfit benchmarks、呼叫 forbidden APIs，或下載現成 instruction-tuned models，而不是自己完成工作。強 model 訓練弱 model 很令人印象深刻，但這和一個 model 遞迴地創造出比自己更強的東西並不相同。</p>
-    <p>課程停在河邊，還沒有過河。</p>
-    <h2 id="my-synthesis">我的綜合整理</h2>
-    <p>最大的錯誤，是把「agent capability」說得好像它只存在於 model weights 裡。</p>
-    <p>這些課不斷指向其他地方：context function、communication topology、harness、feedback signal、evaluation loop、memory system、skill library，以及 training process。</p>
-    <p>這也是為什麼這個領域感覺很混亂。沒有單一旋鈕。我們正在 models 周圍建造一個 ecosystem，而每一層都會改變 model 看起來能做到什麼。</p>
-    <p>對我來說，最實用的 takeaway 很簡單：在問一個 model 夠不夠聰明之前，先檢查它周圍的系統。</p>
-    <p>它有看到正確的 context 嗎？它有正確的 tools 嗎？它得到真實 feedback 了嗎？它能驗證 completion 嗎？它記得住這次教訓嗎？</p>
-    <p>如果答案是否定的，那瓶頸可能還不在 model。</p>
     <section class="post__references" aria-labelledby="sources-and-references">
       <h2 id="sources-and-references">來源與參考資料</h2>
-      <p>本摘要觀看的主要來源：</p>
+      <p>這張 architecture map 背後的 source lectures：</p>
       <ul class="post__references-list">
         <li><a href="https://www.youtube.com/watch?v=urwDLyNa9FU&amp;t=4s" target="_blank" rel="noopener">AI Agent (1/3)：核心技術 Context Engineering 基本概念解說</a></li>
         <li><a href="https://www.youtube.com/watch?v=mmPmNezjCi0&amp;t=5s" target="_blank" rel="noopener">AI Agent (2/3): AI Agent 之間可以有什麼樣的互動</a></li>

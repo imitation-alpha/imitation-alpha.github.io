@@ -4,24 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>agent-06 · Self-improving AI is a spectrum, not a switch — Arthur</title>
-  <meta name="description" content="A deep dive into AI self-improvement: pseudo-labels, reward shaping, self-defined losses, proposer-solver-verifier loops, and why we are still near the Rubicon." />
+  <meta name="description" content="A spectrum map for self-improving AI: pseudo-labels, rewards, AI judges, generated tasks, harness improvement, and why we are still near the Rubicon." />
   <meta name="theme-color" content="#0a0e0a" />
   <meta name="author" content="Arthur Yau" />
   <meta property="og:type" content="article" />
   <meta property="og:title" content="agent-06 · Self-improving AI is a spectrum, not a switch" />
-  <meta property="og:description" content="A deep dive into AI self-improvement: pseudo-labels, reward shaping, self-defined losses, proposer-solver-verifier loops, and why we are still near the Rubicon." />
-  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/recursive-self-improving-ai-rubicon.png?v=selected-headers-20260520-0635" />
+  <meta property="og:description" content="A spectrum map for self-improving AI: pseudo-labels, rewards, AI judges, generated tasks, harness improvement, and why we are still near the Rubicon." />
+  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/recursive-self-improving-ai-rubicon-xpost-cover.png?v=agent06-rubicon-gpt-image-2-20260525-01" />
   <meta property="og:image:width" content="1600" />
   <meta property="og:image:height" content="900" />
-  <meta property="og:image:alt" content="Abstract dark technical illustration of recursive self-improving AI as a spiral loop near a glowing Rubicon-like boundary." />
+  <meta property="og:image:alt" content="Dark generated motherboard-style cover reading Self-Improving AI Is a Spectrum, showing an AI processor, feedback modules, and a glowing Rubicon threshold across the circuit board." />
   <meta property="article:author" content="Arthur Yau" />
   <meta property="article:published_time" content="2026-05-19" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:creator" content="@imitation_alpha" />
   <meta name="twitter:title" content="agent-06 · Self-improving AI is a spectrum, not a switch" />
-  <meta name="twitter:description" content="A deep dive into AI self-improvement: pseudo-labels, reward shaping, self-defined losses, proposer-solver-verifier loops, and why we are still near the Rubicon." />
-  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/recursive-self-improving-ai-rubicon.png?v=selected-headers-20260520-0635" />
-  <meta name="twitter:image:alt" content="Abstract dark technical illustration of recursive self-improving AI as a spiral loop near a glowing Rubicon-like boundary." />
+  <meta name="twitter:description" content="A spectrum map for self-improving AI: pseudo-labels, rewards, AI judges, generated tasks, harness improvement, and why we are still near the Rubicon." />
+  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/recursive-self-improving-ai-rubicon-xpost-cover.png?v=agent06-rubicon-gpt-image-2-20260525-01" />
+  <meta name="twitter:image:alt" content="Dark generated motherboard-style cover reading Self-Improving AI Is a Spectrum, showing an AI processor, feedback modules, and a glowing Rubicon threshold across the circuit board." />
   <link rel="canonical" href="https://imitation-alpha.github.io/blog/recursive-self-improving-ai-rubicon.html" />
   <link rel="alternate" hreflang="en" href="https://imitation-alpha.github.io/blog/recursive-self-improving-ai-rubicon.html" />
   <link rel="alternate" hreflang="zh-Hant" href="https://imitation-alpha.github.io/zh-Hant/blog/recursive-self-improving-ai-rubicon.html" />
@@ -57,7 +57,7 @@
 
     <header class="post__header">
       <h1>agent-06 · Self-improving AI is a spectrum, not a switch</h1>
-      <p class="post__lede">A deep dive into AI self-improvement: pseudo-labels, reward shaping, self-defined losses, proposer-solver-verifier loops, and why we are still near the Rubicon.</p>
+      <p class="post__lede">A spectrum map for self-improving AI: pseudo-labels, rewards, AI judges, generated tasks, harness improvement, and why we are still near the Rubicon.</p>
       <p class="post__meta">
         May 19, 2026
         <span class="dot">·</span>
@@ -72,7 +72,7 @@
         <a href="../zh-Hant/blog/recursive-self-improving-ai-rubicon.html" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a>.
       </p>
       <figure class="post__hero">
-        <img src="../assets/blog-headers/recursive-self-improving-ai-rubicon.png?v=selected-headers-20260520-0635" alt="Abstract dark technical illustration of recursive self-improving AI as a spiral loop near a glowing Rubicon-like boundary." width="1600" height="900" loading="eager" decoding="async" />
+        <img src="../assets/blog-headers/recursive-self-improving-ai-rubicon-xpost-cover.png?v=agent06-rubicon-gpt-image-2-20260525-01" alt="Dark generated motherboard-style cover reading Self-Improving AI Is a Spectrum, showing an AI processor, feedback modules, and a glowing Rubicon threshold across the circuit board." width="1600" height="900" loading="eager" decoding="async" />
       </figure>
     </header>
 
@@ -103,11 +103,12 @@
     <p>Not in the small sense of revising an answer. In the John Good sense: can an AI help create a stronger AI, which then creates an even stronger AI, until humans are no longer the main driver of technical progress?</p>
     <p>The lecture uses the Rubicon metaphor. Once Caesar crossed the river, there was no going back. In AI terms, crossing the Rubicon would mean AI research and development no longer depends on humans in the critical loop.</p>
     <p>The lecture's answer is careful: we are not across the river, but we are not far from the bank either.</p>
+    <blockquote><p><strong>Builder takeaway:</strong> self-improvement is not one switch. Track which responsibility moved from human to AI: labels, rewards, judges, tasks, code, harness rules, memory, or model parameters.</p></blockquote>
     <h2 id="self-improvement-is-not-binary">Self-improvement is not binary</h2>
     <p>The most useful framing is that self-improvement is a spectrum.</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s01-self-improvement-is-not-binary.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining self-improvement is not binary with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>The most useful framing is that self-improvement is a spectrum.</figcaption>
+      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s01-self-improvement-is-not-binary.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="Dark blueprint-style diagram explaining Self-improvement is not binary, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Self-improvement is a spectrum, not a binary switch.</figcaption>
     </figure>
 <p>At one end, humans do nearly everything:</p>
     <ul>
@@ -125,8 +126,8 @@
     <h2 id="supervised-learning-who-provides-the-answer">Supervised learning: who provides the answer?</h2>
     <p>In ordinary supervised learning, humans provide ground truth labels. The model learns to map input to answer by minimizing loss against those labels.</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s02-supervised-learning-who-provides-the-answer.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining supervised learning: who provides the answer? with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>In ordinary supervised learning, humans provide ground truth labels.</figcaption>
+      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s02-supervised-learning-who-provides-the-answer.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="Dark blueprint-style diagram explaining Supervised learning, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>In ordinary supervised learning, humans provide the ground-truth labels.</figcaption>
     </figure>
 <p>A first step toward self-improvement is to replace human labels with model-generated answers.</p>
     <p>This can mean knowledge distillation: a stronger model labels data for a weaker one. That is useful, but it does not solve the recursive problem. The stronger model already existed.</p>
@@ -136,8 +137,8 @@
     <h2 id="reinforcement-learning-who-writes-the-reward">Reinforcement learning: who writes the reward?</h2>
     <p>Reinforcement learning removes the need for a standard answer. Instead of saying what the output should be, we define a reward function.</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s03-reinforcement-learning-who-writes-the-reward.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining reinforcement learning: who writes the reward? with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>Reinforcement learning removes the need for a standard answer.</figcaption>
+      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s03-reinforcement-learning-who-writes-the-reward.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="Dark blueprint-style diagram explaining Who writes the reward?, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Reinforcement learning removes the need for a standard answer, but not for a reward.</figcaption>
     </figure>
 <p>But that only moves the human labor. Someone still has to define the reward.</p>
     <p>For simple games, reward can be obvious. For real tasks, it is often sparse. A robot only gets reward when it opens the door. A model only gets reward when the final answer is right. That makes learning slow.</p>
@@ -148,8 +149,8 @@
     <h2 id="rlhf-rlaif-and-ai-judges">RLHF, RLAIF, and AI judges</h2>
     <p>RLHF still uses humans. Humans compare outputs or give ratings. A reward model learns to imitate those preferences. Then another model trains against that reward model.</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s04-rlhf-rlaif-and-ai-judges.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining rlhf, rlaif, and ai judges with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>RLHF still uses humans. Humans compare outputs or give ratings.</figcaption>
+      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s04-rlhf-rlaif-and-ai-judges.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="Dark blueprint-style diagram explaining RLHF, RLAIF, and AI judges, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>RLHF and RLAIF move the feedback source, but they do not remove feedback risk.</figcaption>
     </figure>
 <p>RLAIF replaces human feedback with AI feedback. LLM-as-judge systems do the same thing in a simpler form: ask a model to score or compare outputs.</p>
     <p>This is powerful and risky.</p>
@@ -159,8 +160,8 @@
     <h2 id="self-defined-losses">Self-defined losses</h2>
     <p>Several ideas try to generate a loss without human labels.</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s05-self-defined-losses.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining self-defined losses with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>Several ideas try to generate a loss without human labels.</figcaption>
+      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s05-self-defined-losses.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="Dark blueprint-style diagram explaining Self-defined losses, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Self-defined losses only help if something keeps the objective grounded.</figcaption>
     </figure>
 <p>One is verbalized score: ask the model to score an answer.</p>
     <p>Another is next-token probability: ask whether the answer is correct and use the probability of the token meaning "yes" as a signal.</p>
@@ -172,8 +173,8 @@
     <h2 id="test-time-training-is-a-safer-local-version">Test-time training is a safer local version</h2>
     <p>The lecture discusses test-time training as a more constrained setting.</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s06-test-time-training-is-a-safer-local-version.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining test-time training is a safer local version with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>The lecture discusses test-time training as a more constrained setting.</figcaption>
+      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s06-test-time-training-is-a-safer-local-version.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="Dark blueprint-style diagram explaining Test-time training, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Test-time training is a safer local version of self-improvement.</figcaption>
     </figure>
 <p>Instead of using self-defined loss to train forever, update the model locally at inference time for the current input. This limits the damage. The model adapts a little, answers, and the update may not become a permanent global change.</p>
     <p>That makes sense. If the signal is weak, use it in small doses.</p>
@@ -181,8 +182,8 @@
     <h2 id="who-generates-the-inputs">Who generates the inputs?</h2>
     <p>Even if the model defines its own loss, humans often still provide the inputs. The next step is to let AI generate its own training tasks.</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s07-who-generates-the-inputs.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining who generates the inputs? with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>Even if the model defines its own loss, humans often still provide the inputs.</figcaption>
+      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s07-who-generates-the-inputs.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="Dark blueprint-style diagram explaining Who generates the inputs?, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Even self-defined objectives need inputs, and those inputs may still be human-grounded.</figcaption>
     </figure>
 <p>The lecture discusses proposer, solver, verifier setups.</p>
     <ul>
@@ -197,7 +198,7 @@
     <h2 id="the-oh-no-moment">The "oh-no" moment</h2>
     <p>The lecture contrasts the celebrated "aha moment" in reasoning models with an "oh-no moment" in self-training.</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s08-the-oh-no-moment.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining the &quot;oh-no&quot; moment with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
+      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s08-the-oh-no-moment.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="Dark blueprint-style diagram explaining The oh-no moment, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
       <figcaption>Self-training can amplify bad feedback loops unless proposer, solver, and verifier stay grounded.</figcaption>
     </figure>
 <p>If a model is left to generate tasks, solve them, and optimize itself with weak supervision, it may discover behaviors we do not like. It may produce manipulative or unsafe statements. It may optimize the game rather than the goal.</p>
@@ -206,8 +207,8 @@
     <h2 id="strong-models-training-weak-models">Strong models training weak models</h2>
     <p>Another path is to let a strong model act like a training engineer for a weaker model.</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s09-strong-models-training-weak-models.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining strong models training weak models with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>Another path is to let a strong model act like a training engineer for a weaker model.</figcaption>
+      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s09-strong-models-training-weak-models.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="Dark blueprint-style diagram explaining Strong models train weak models, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>A strong model can help train a weaker model, but that is not the same as recursive takeoff.</figcaption>
     </figure>
 <p>The lecture discusses benchmark setups where a strong model is asked to post-train a base model. It can search for data, remove contaminated examples, choose hyperparameters, react to timeouts, and try again.</p>
     <p>This is genuinely impressive. It looks like automating parts of the ML engineer job.</p>
@@ -218,8 +219,8 @@
     <h2 id="weak-to-strong-alignment">Weak-to-strong alignment</h2>
     <p>The lecture also connects to weak-to-strong alignment.</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s10-weak-to-strong-alignment.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining weak-to-strong alignment with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>The lecture also connects to weak-to-strong alignment.</figcaption>
+      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s10-weak-to-strong-alignment.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="Dark blueprint-style diagram explaining Weak-to-strong alignment, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Weak-to-strong alignment asks how weaker supervision can guide stronger systems.</figcaption>
     </figure>
 <p>The future worry is that humans may be weaker than the systems they supervise. Can a weak supervisor still train a stronger model?</p>
     <p>Experiments with weak teachers and strong students suggest that weak supervision can help, especially if the system is designed not to blindly imitate the weak teacher's mistakes.</p>
@@ -229,8 +230,8 @@
     <h2 id="parameters-are-not-the-whole-agent">Parameters are not the whole agent</h2>
     <p>The lecture ends by noting that it has mostly discussed changing model parameters.</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s11-parameters-are-not-the-whole-agent.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining parameters are not the whole agent with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>The lecture ends by noting that it has mostly discussed changing model parameters.</figcaption>
+      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s11-parameters-are-not-the-whole-agent.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="Dark blueprint-style diagram explaining Parameters are not the whole agent, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Parameters are not the whole agent. The system around the model also changes capability.</figcaption>
     </figure>
 <p>But an AI agent is not only parameters. It also has a harness: tools, memory, rules, workflows, skills, permissions.</p>
     <p>This is important. The first practical self-improving agents may not rewrite their own weights. They may rewrite their own harness.</p>
@@ -239,8 +240,8 @@
     <h2 id="where-i-think-we-are">Where I think we are</h2>
     <p>After this lecture, I would place current systems here:</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s12-where-i-think-we-are.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining where i think we are with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
-      <figcaption>Current systems are in the middle: useful self-improvement loops, still bounded by human goals and checks.</figcaption>
+      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s12-where-i-think-we-are.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="Dark blueprint-style diagram explaining Where I think we are, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Current systems are in the middle: useful self-improvement loops, still bounded by human goals.</figcaption>
     </figure>
 <p>AI can help with labels.</p>
     <p>AI can help with rewards.</p>
@@ -254,7 +255,7 @@
     <h2 id="the-main-lesson">The main lesson</h2>
     <p>Self-improving AI is not a switch that flips from off to on.</p>
     <figure class="post__concept-figure" data-generated-diagram="rest-blog">
-      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s13-the-main-lesson.png?v=rest-blog-diagrams-ascii-v6-20260521-0200" alt="Minimal dark technical diagram explaining the main lesson with labeled text, boxes, and schematic figure elements." width="1600" height="900" loading="lazy" decoding="async" />
+      <img src="../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s13-the-main-lesson.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="Dark blueprint-style diagram explaining The main lesson, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
       <figcaption>Self-improving AI is not a switch that flips from off to on.</figcaption>
     </figure>
 <p>It is a gradual transfer of responsibilities from humans to AI systems. For every responsibility, we should ask:</p>
