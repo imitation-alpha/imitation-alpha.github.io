@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='utf-8'?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+  <channel>
+    <title>arthuryau's blog RSS</title>
+    <link>https://imitation-alpha.github.io/blog/</link>
+    <description>Notes on agentic systems, ML infrastructure, and tooling.</description>
+    <language>en</language>
+    <lastBuildDate>Tue, 19 May 2026 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>agent-06 · Self-improving AI is a spectrum, not a switch</title>
+      <link>https://imitation-alpha.github.io/blog/recursive-self-improving-ai-rubicon.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/blog/recursive-self-improving-ai-rubicon.html</guid>
+      <description>A deep dive into AI self-improvement: pseudo-labels, reward shaping, self-defined losses, proposer-solver-verifier loops, and why we are still near the Rubicon.</description>
+      <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+    <item>
+      <title>agent-05 · Self-correction has three layers: decoding, workflow, and reasoning</title>
+      <link>https://imitation-alpha.github.io/blog/ai-self-correction-decoding-workflow-reasoning.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/blog/ai-self-correction-decoding-workflow-reasoning.html</guid>
+      <description>A deep dive into AI self-correction, from contrastive decoding and external feedback loops to reasoning trained with verifiable rewards.</description>
+      <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+    <item>
+      <title>agent-04 · Harness engineering is how we actually make agents useful</title>
+      <link>https://imitation-alpha.github.io/blog/ai-agent-harness-engineering.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/blog/ai-agent-harness-engineering.html</guid>
+      <description>A deep dive into harness engineering: why small models can fail from bad scaffolding, how tools and feedback shape agent behavior, and why agents need more than prompts.</description>
+      <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+    <item>
+      <title>agent-03 · What AI agents change about research work</title>
+      <link>https://imitation-alpha.github.io/blog/ai-agent-research-work.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/blog/ai-agent-research-work.html</guid>
+      <description>A deep dive into Hung-yi Lee's lecture on AI agents in academic research: research assistants, idea generation, AI review, and where human judgment still matters.</description>
+      <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+    <item>
+      <title>agent-02 · Multi-agent systems are topology problems</title>
+      <link>https://imitation-alpha.github.io/blog/ai-agent-multi-agent-interaction.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/blog/ai-agent-multi-agent-interaction.html</guid>
+      <description>A deep dive into AI agent interactions: collaboration topologies, adversarial games, AI-only social platforms, and why more agents does not automatically mean better agents.</description>
+      <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+    <item>
+      <title>agent-01 · Context engineering is the agent's working memory</title>
+      <link>https://imitation-alpha.github.io/blog/ai-agent-context-engineering.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/blog/ai-agent-context-engineering.html</guid>
+      <description>A deep dive into Hung-yi Lee's lecture on context engineering: prompt versus context, memory, compression, sub-agents, and agentic context management.</description>
+      <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+    <item>
+      <title>agent-00 · The AI agent stack, as seen through Hung-yi Lee's 2026 lectures</title>
+      <link>https://imitation-alpha.github.io/blog/ai-agent-systems-hung-yi-lee-summary.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/blog/ai-agent-systems-hung-yi-lee-summary.html</guid>
+      <description>A field guide to six Hung-yi Lee lectures on context engineering, multi-agent systems, harnesses, self-correction, and recursive self-improvement.</description>
+      <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+    <item>
+      <title>My setup for running 10+ CLI coding agents at once</title>
+      <link>https://imitation-alpha.github.io/blog/orchestrating-coding-agents.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/blog/orchestrating-coding-agents.html</guid>
+      <description>How I orchestrate ~10 parallel CLI coding agents with tmux, Tailscale, Termius on iOS, and a small PWA panel for mobile control.</description>
+      <pubDate>Tue, 28 Apr 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+  </channel>
+</rss>
