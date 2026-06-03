@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='utf-8'?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+  <channel>
+    <title>arthuryau's blog RSS</title>
+    <link>https://imitation-alpha.github.io/zh-Hant/blog/</link>
+    <description>關於 agentic systems、ML infrastructure 與 tooling 的繁體中文筆記。</description>
+    <language>zh-Hant</language>
+    <lastBuildDate>Tue, 19 May 2026 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>agent-06 · Self-improving AI 是光譜，不是開關</title>
+      <link>https://imitation-alpha.github.io/zh-Hant/blog/recursive-self-improving-ai-rubicon.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/zh-Hant/blog/recursive-self-improving-ai-rubicon.html</guid>
+      <description>深入討論 AI self-improvement：pseudo-labels、reward shaping、self-defined losses、proposer-solver-verifier loops，以及為什麼我們仍接近 Rubicon。</description>
+      <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+    <item>
+      <title>agent-05 · Self-correction 有三層：decoding、workflow 與 reasoning</title>
+      <link>https://imitation-alpha.github.io/zh-Hant/blog/ai-self-correction-decoding-workflow-reasoning.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/zh-Hant/blog/ai-self-correction-decoding-workflow-reasoning.html</guid>
+      <description>深入討論 AI self-correction：從 contrastive decoding、外部 feedback loop，到以可驗證 reward 訓練出的 reasoning。</description>
+      <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+    <item>
+      <title>agent-04 · Harness engineering 才是讓 agent 真正有用的關鍵</title>
+      <link>https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-harness-engineering.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-harness-engineering.html</guid>
+      <description>深入討論 harness engineering：小模型為何會因糟糕的 scaffolding 失敗，tool 與 feedback 如何塑造 agent 行為，以及為什麼 agent 需要的不只是 prompt。</description>
+      <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+    <item>
+      <title>agent-03 · AI agent 會如何改變研究工作</title>
+      <link>https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-research-work.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-research-work.html</guid>
+      <description>深入拆解李宏毅關於 AI agents 在學術研究中的課程：research assistants、idea generation、AI review，以及 human judgment 仍然重要的地方。</description>
+      <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+    <item>
+      <title>agent-02 · Multi-agent systems 是拓樸問題</title>
+      <link>https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-multi-agent-interaction.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-multi-agent-interaction.html</guid>
+      <description>深入拆解 AI agent 互動：協作拓樸、對抗式遊戲、AI-only 社交平台，以及為什麼 agents 變多不等於 agents 變好。</description>
+      <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+    <item>
+      <title>agent-01 · Context engineering 是 agent 的工作記憶</title>
+      <link>https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-context-engineering.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-context-engineering.html</guid>
+      <description>深入解讀李宏毅關於 context engineering 的課程：prompt 與 context 的差異、memory、壓縮、sub-agents，以及 agentic context 管理。</description>
+      <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+    <item>
+      <title>agent-00 · 從李宏毅 2026 年課程看 AI agent stack</title>
+      <link>https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-systems-hung-yi-lee-summary.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-systems-hung-yi-lee-summary.html</guid>
+      <description>一份導讀，整理李宏毅六堂課中關於 context engineering、multi-agent systems、harness、自我修正與 recursive self-improvement 的重點。</description>
+      <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+    <item>
+      <title>同時駕馭 10+ 個 CLI 程式設計 agent 的設定方式</title>
+      <link>https://imitation-alpha.github.io/zh-Hant/blog/orchestrating-coding-agents.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/zh-Hant/blog/orchestrating-coding-agents.html</guid>
+      <description>如何用 tmux、Tailscale、iOS 上的 Termius，加上一個小型 PWA 控制台，同時操控 10+ 個並行 CLI 程式設計 agent。</description>
+      <pubDate>Tue, 28 Apr 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+  </channel>
+</rss>

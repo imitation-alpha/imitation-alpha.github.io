@@ -9,8 +9,10 @@ home-page/
 ├── index.html              # Main page (about, experience, projects, publications)
 ├── css/styles.css          # All styles (light + dark theme)
 ├── js/main.js              # Nav toggle, theme switcher, year, scroll spy
+├── scripts/generate_rss.py # RSS feed generator
 └── blog/
     ├── index.html          # Blog index (post list)
+    ├── feed.xml            # English RSS feed
     └── orchestrating-coding-agents.html  # Sample post — copy & rename for new posts
 ```
 
@@ -33,6 +35,7 @@ Then open <http://localhost:8000>.
 1. Copy `blog/orchestrating-coding-agents.html` to `blog/your-slug.html`
 2. Update `<title>`, `<meta description>`, the `<h1>`, the `post__meta` date, and the body
 3. Add a new `<li>` to the `.post-list` in `blog/index.html` linking to the new file
+4. Run `python3 scripts/generate_rss.py` to update `feed.xml` and localized blog feeds
 
 ## Customize
 
@@ -53,3 +56,4 @@ This is a plain static site — drop it anywhere.
 
 - Theme preference is stored in a cookie (no `localStorage`), so it survives across visits
 - All asset paths are relative — site works from any subpath
+- RSS feeds are generated from committed blog HTML metadata with `python3 scripts/generate_rss.py`
