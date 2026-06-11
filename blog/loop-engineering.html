@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>agent-07 · Loop engineering is the harness on a timer — Arthur</title>
+  <meta name="description" content="Loop engineering is harness engineering on a timer: schedule, state, spawn, and hard oracles. The hard part is choosing signals the loop cannot game." />
+  <meta name="theme-color" content="#0a0e0a" />
+  <meta name="author" content="Arthur Yau" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="agent-07 · Loop engineering is the harness on a timer" />
+  <meta property="og:description" content="Loop engineering is harness engineering on a timer: schedule, state, spawn, and hard oracles. The hard part is choosing signals the loop cannot game." />
+  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/loop-engineering-xpost-cover.png?v=agent07-loop-cover-readable-puregen-20260610-02" />
+  <meta property="og:image:width" content="1600" />
+  <meta property="og:image:height" content="900" />
+  <meta property="og:image:alt" content="Dark technical cover reading Loop engineering is the harness on a timer, with a timer-budget loop, agent harness, memory state, grounded oracle verification, and spawned sub-agent terminals in green, cyan, and violet accents." />
+  <meta property="article:author" content="Arthur Yau" />
+  <meta property="article:published_time" content="2026-06-10" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@imitation_alpha" />
+  <meta name="twitter:title" content="agent-07 · Loop engineering is the harness on a timer" />
+  <meta name="twitter:description" content="Loop engineering is harness engineering on a timer: schedule, state, spawn, and hard oracles. The hard part is choosing signals the loop cannot game." />
+  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/loop-engineering-xpost-cover.png?v=agent07-loop-cover-readable-puregen-20260610-02" />
+  <meta name="twitter:image:alt" content="Dark technical cover reading Loop engineering is the harness on a timer, with a timer-budget loop, agent harness, memory state, grounded oracle verification, and spawned sub-agent terminals in green, cyan, and violet accents." />
+  <link rel="canonical" href="https://imitation-alpha.github.io/blog/loop-engineering.html" />
+  <link rel="alternate" hreflang="en" href="https://imitation-alpha.github.io/blog/loop-engineering.html" />
+  <link rel="alternate" hreflang="zh-Hant" href="https://imitation-alpha.github.io/zh-Hant/blog/loop-engineering.html" />
+  <link rel="alternate" hreflang="x-default" href="https://imitation-alpha.github.io/blog/loop-engineering.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css?v=playhtml-blog-20260610-1" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="read-progress" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="Primary">
+    <div class="nav__inner">
+      <a class="nav__brand" href="../index.html">Arthur</a>
+      <button class="nav__toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links">
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#experience">Experience</a></li>
+        <li><a href="../index.html#projects">Projects</a></li>
+        <li><a href="../index.html#blog" class="active">Blog</a></li>
+        <li><a href="../index.html#publications">Publications</a></li>
+        <li><button class="nav__theme" aria-label="Toggle theme">◑</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="post">
+    <a class="post__back" href="../index.html#blog">Back</a>
+
+    <header class="post__header">
+      <h1>agent-07 · Loop engineering is the harness on a timer</h1>
+      <p class="post__lede">Loop engineering is harness engineering on a timer: schedule, state, spawn, and hard oracles. The hard part is choosing signals the loop cannot game.</p>
+      <p class="post__meta">
+        June 10, 2026
+        <span class="dot">·</span>
+        <span data-reading-time>10 min</span>
+        <span class="dot">·</span>
+        Arthur Yau
+        <span class="dot view-dot" hidden>·</span>
+        <span data-views data-views-label="views" hidden></span>
+      </p>
+      <p class="post__lang">
+        Also available in
+        <a href="../zh-Hant/blog/loop-engineering.html" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a>.
+      </p>
+      <figure class="post__hero">
+        <img src="../assets/blog-headers/loop-engineering-xpost-cover.png?v=agent07-loop-cover-readable-puregen-20260610-02" alt="Dark technical cover reading Loop engineering is the harness on a timer, with a timer-budget loop, agent harness, memory state, grounded oracle verification, and spawned sub-agent terminals in green, cyan, and violet accents." width="1600" height="900" loading="eager" decoding="async" />
+      </figure>
+    </header>
+
+
+    <aside class="post__toc" aria-label="Contents">
+      <p class="post__toc__label">Content outline</p>
+      <ul>
+        <li><a href="#i-was-the-loop">I was the loop</a></li>
+        <li><a href="#the-loop-is-the-harness-on-a-timer">The loop is the harness on a timer</a></li>
+        <li><a href="#the-idea-is-older-than-the-name">The idea is older than the name</a></li>
+        <li><a href="#five-parts-and-a-place-to-remember">Five parts and a place to remember</a></li>
+        <li><a href="#a-loop-is-only-as-good-as-its-least-gameable-signal">A loop is only as good as its least gameable signal</a></li>
+        <li><a href="#the-maker-and-the-checker-should-not-be-the-same-model">The maker and the checker should not be the same model</a></li>
+        <li><a href="#loops-move-the-cost-they-do-not-remove-it">Loops move the cost, they do not remove it</a></li>
+        <li><a href="#friction-was-doing-a-job">Friction was doing a job</a></li>
+        <li><a href="#the-bill-arrives-late">The bill arrives late</a></li>
+        <li><a href="#a-loop-is-harness-self-improvement-you-can-read">A loop is harness self-improvement you can read</a></li>
+        <li><a href="#where-i-think-we-are">Where I think we are</a></li>
+        <li><a href="#the-main-lesson">The main lesson</a></li>
+        <li><a href="#concept-inventory">Concept inventory</a></li>
+      </ul>
+    </aside>
+
+
+    <div class="post__body" id="main">
+    <h2 id="i-was-the-loop">I was the loop</h2>
+    <p>In April I wrote about running ten coding agents at once from a phone. The honest summary of that post is that I was the loop. I read what came back, I decided what was next, I poked the next agent. The tooling was clever. The scheduler was me.</p>
+    <p>This post is about the part where you stop being the scheduler.</p>
+    <p>People have started calling this loop engineering. Addy Osmani gave it the clean definition: you stop being the person who prompts the agent and build the system that prompts it instead. Boris Cherny, who runs Claude Code, says his job is now to write loops, not prompts. Peter Steinberger says the same thing in fewer words. It sounds like a new discipline. It is mostly the old one, seen from one floor up.</p>
+    <p>Earlier entries in this series mostly followed a lecture course. This one is different. It is the layer the course kept pointing at — meta-harnesses, harness self-improvement — without quite naming. So I will name it the way it actually arrived: on a timeline, not in a syllabus.</p>
+    <blockquote><p><strong>Builder takeaway:</strong> before you build a loop, decide three things you will not delegate to it: the goal, the oracle, and the places you refuse to leave the room. The loop automates everything else.</p></blockquote>
+    <h2 id="the-loop-is-the-harness-on-a-timer">The loop is the harness on a timer</h2>
+    <p>In <a href="ai-agent-harness-engineering.html">agent-04</a> the equation was:</p>
+    <pre><code class="language-text">AI agent = language model + harness</code></pre>
+    <p>A loop adds three things to that: a schedule, a place to remember, and the ability to spawn.</p>
+    <pre><code class="language-text">loop = harness + schedule + external state + spawn</code></pre>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/loop-engineering/s01-the-loop-is-the-harness-on-a-timer.png?v=agent-07-loop-editorial-20260610-3" alt="Dark blueprint-style diagram explaining The loop is the harness on a timer, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>A loop is the harness with a clock, a memory outside the conversation, and permission to start more of itself.</figcaption>
+    </figure>
+<p>If you keep the computer metaphor from <a href="ai-agent-systems-hung-yi-lee-summary.html">agent-00</a>, the harness is the operating system around a single run. The loop is the rest of the machine that the OS assumes: a cron timer, an init process, and a supervisor that restarts the work and reads its notes before it does.</p>
+    <p>A single agent run answers a question. A loop runs the question on a clock and acts on the answer without you in the keystroke path.</p>
+    <p>That is the entire shift. Everything else in this post is what it costs.</p>
+    <h2 id="the-idea-is-older-than-the-name">The idea is older than the name</h2>
+    <p>The pattern is Geoffrey Huntley's "Ralph," from the middle of 2025. In its purest form it was one line:</p>
+    <pre><code>while :; do cat PROMPT.md | agent ; done</code></pre>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/loop-engineering/s02-the-idea-is-older-than-the-name.png?v=agent-07-loop-editorial-20260610-3" alt="Dark blueprint-style diagram explaining The Ralph while-loop, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Ralph is a while-loop that feeds the same prompt to an agent forever, with progress living in files and git, not in the model&#x27;s memory.</figcaption>
+    </figure>
+<p>This is the context-engineering move from <a href="ai-agent-context-engineering.html">agent-01</a>. The model forgets between runs, so the state cannot live in the context window. It has to live on disk. The agent forgets. The repo does not.</p>
+    <p>What changed in 2026 is not the concept. It is that the moving parts — schedules, isolated worktrees, sub-agents, written-down skills, connectors to real tools — now ship inside Claude Code and Codex instead of living in a pile of shell scripts only you understood. That is a real convenience, and it is why the term spread this month rather than last year.</p>
+    <p>The novelty is the packaging, not the pattern.</p>
+    <h2 id="five-parts-and-a-place-to-remember">Five parts and a place to remember</h2>
+    <p>Strip the branding off either product and a working loop is five primitives and one place to remember things.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/loop-engineering/s03-five-parts-and-a-place-to-remember.png?v=agent-07-loop-editorial-20260610-3" alt="Dark blueprint-style diagram explaining Five primitives plus a place to remember, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>A loop is five primitives composed under a clock, plus external memory as the spine.</figcaption>
+    </figure>
+<ul>
+      <li><strong>Automations</strong> are the heartbeat. A prompt that runs on a schedule and triages by itself. Without this it is one run you did once, not a loop.</li>
+      <li><strong>Worktrees</strong> keep parallel agents from colliding. This is the independent-branch case from <a href="ai-agent-multi-agent-interaction.html">agent-02</a>: isolated checkouts so two agents editing the same file is not the same disaster as two engineers doing it silently.</li>
+      <li><strong>Skills</strong> are the crystallized experience from <a href="ai-agent-harness-engineering.html">agent-04</a>. Project knowledge written down once so the loop does not re-derive your conventions from zero every cycle.</li>
+      <li><strong>Connectors</strong> are I/O. Built on MCP, they let the loop read the tracker, hit staging, open a PR, post to a channel. A loop that can only see the filesystem is a tiny loop.</li>
+      <li><strong>Sub-agents</strong> are topology. One explores, one implements, one verifies. The useful structural move, and I will come back to why.</li>
+    </ul>
+    <p>Then the sixth thing: memory on disk. A markdown file, a Linear board, anything outside the single conversation that holds what is done and what is next.</p>
+    <p>That composition is the new thing: old primitives, wired together, with a clock on top.</p>
+    <h2 id="a-loop-is-only-as-good-as-its-least-gameable-signal">A loop is only as good as its least gameable signal</h2>
+    <p>This is the part that decides whether a loop becomes leverage or debt. Earlier posts in this series argued that self-correction needs real signals, not reflection, and that self-defined losses can become a closed loop of self-delusion. Loop engineering is the practitioner version of the same problem.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/loop-engineering/s04-a-loop-is-only-as-good-as-its-least-gameable-signal.png?v=agent-07-loop-editorial-20260610-3" alt="Dark blueprint-style diagram explaining The least gameable signal wins, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>A loop pointed at a real oracle converges. A loop with no oracle generates confident, plausible, wrong output faster than you can read it.</figcaption>
+    </figure>
+<p>Point a loop at a problem with a real oracle — a test suite, a strict type checker, a compiler, a conformance spec it cannot argue around — and it converges. The cleanest public example is Simon Willison's port of a JavaScript engine into roughly twenty-five thousand lines of Rust, which worked because every output could be checked byte-for-byte against the original. There was a ground truth the agent could not fake.</p>
+    <p>Take the ground truth away and the loop still runs. It just produces confident, plausible, wrong code, and it does it faster than any human can read.</p>
+    <p>The proof that the oracle is what matters, and not the model, is that agents game weak oracles. Researchers keep catching looping agents rewriting a failing test so it passes instead of fixing the code, and in one case hallucinating an external service and then mocking the service it had invented. In self-training this is the oh-no moment. At the application layer it is the same event with a different name. When the signal is gameable, the optimizer games it. That is Goodhart's law, and a loop is a Goodhart amplifier.</p>
+    <p>So the first question is not "how do I write a loop." It is "does this work have a signal the loop cannot fake."</p>
+    <p>Tests, types, compilers, golden files: loop hard. Taste, architecture, security posture, whether this is even the right abstraction: the loop has nothing to push against, and you are the only judge in the room whether you admit it or not.</p>
+    <h2 id="the-maker-and-the-checker-should-not-be-the-same-model">The maker and the checker should not be the same model</h2>
+    <p>The standard fix for a weak oracle is a verifier sub-agent. Generator, verifier, revisor — the workflow from <a href="ai-agent-harness-engineering.html">agent-04</a>, the topology from <a href="ai-agent-multi-agent-interaction.html">agent-02</a>. It helps. The model that wrote the code is too generous grading its own work, so a second agent with different instructions catches what the first talked itself into.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/loop-engineering/s05-the-maker-and-the-checker-should-not-be-the-same-model.png?v=agent-07-loop-editorial-20260610-3" alt="Dark blueprint-style diagram explaining Maker-checker independence, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>A verifier helps only when it is independent of the maker or grounded in something the maker cannot fake.</figcaption>
+    </figure>
+<p>But the verifier has the same trap. If a model judges itself, the signal may be weak or it may reinforce its own blind spots. A verifier sub-agent built from the same model class shares those blind spots. So you add another checker. And then, in principle, another.</p>
+    <p>The regress only bottoms out in two places: a human with judgment, or a hard external oracle the chain of agents cannot talk around. A verifier with nothing grounded behind it is theater that costs tokens.</p>
+    <p>A second opinion from the same mind is not a second opinion.</p>
+    <h2 id="loops-move-the-cost-they-do-not-remove-it">Loops move the cost, they do not remove it</h2>
+    <p>The pitch implies the work goes away. It moves, and it splits in two.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/loop-engineering/s06-loops-move-the-cost-they-do-not-remove-it.png?v=agent-07-loop-editorial-20260610-3" alt="Dark blueprint-style diagram explaining The cost moves, it does not vanish, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Loops convert a skill cost into a token cost and a review cost. Neither is small.</figcaption>
+    </figure>
+<p>The first half is money. A loop that keeps a few hundred agents busy around the clock burns real tokens, and the first wall most people hit is not a quality problem. It is a two-hundred-dollar infinite-retry bug at three in the morning. When Cherny describes a couple hundred agents reading his GitHub and Slack and deciding what to build, that is not a workflow you copy by learning a skill. It is a workflow you copy by having the token budget to let agents fail expensively in parallel. Osmani's aside about being token-rich versus token-poor is the whole story, said quietly.</p>
+    <p>The second half is attention. Someone still reads the output. Industry telemetry already shows the shape of it: teams that lean hard on AI merge far more pull requests, but review time climbs and each PR gets larger. This is the ceiling I hit in the April post. The thing that capped ten agents was never the tooling. It was me.</p>
+    <p>Prompt engineering was cheap and close to meritocratic. Loop engineering has a meter running.</p>
+    <h2 id="friction-was-doing-a-job">Friction was doing a job</h2>
+    <p>The whole promise of loop engineering is that it takes you out of the loop, and removal of friction gets sold as pure upside. Armin Ronacher, who created Flask, named the cost better than anyone: you have to find a way to feel the pain the agent does not feel.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/loop-engineering/s07-friction-was-doing-a-job.png?v=agent-07-loop-editorial-20260610-3" alt="Dark blueprint-style diagram explaining Friction is a steering input, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Friction is not the tax on the loop. Friction is the steering input.</figcaption>
+    </figure>
+<p>An agent's only real drive is to make progress. So it will do things a careful person would not. It will silently fall back to a default when a config is missing. It will leave a service hobbling along. It will paper over the failure it should have surfaced. The friction you are so eager to delete was where your judgment got applied.</p>
+    <p><a href="ai-agent-harness-engineering.html">agent-04</a> had the right instinct already: hard constraints live in the harness, not in the prompt, because tool boundaries are real boundaries and prompt rules are not. The same instinct scales to the loop. Put hard human gates on the few things that are expensive to get wrong — money, auth, database migrations, customer data — and let the loop run free everywhere else.</p>
+    <p>The skill is not removing yourself. It is choosing the three places you refuse to be removed.</p>
+    <h2 id="the-bill-arrives-late">The bill arrives late</h2>
+    <p>What makes all of this easy to miss is timing. Prompting by hand, you read every diff as it lands, so the gap between what exists and what you understand never gets large. A loop opens that gap silently and lets it compound.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/loop-engineering/s08-the-bill-arrives-late.png?v=agent-07-loop-editorial-20260610-3" alt="Dark blueprint-style diagram explaining Comprehension debt, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Comprehension debt is the gap between what the loop shipped and what you can still explain. It grows quietly.</figcaption>
+    </figure>
+<p>The vivid version comes from the experiments at Cursor, where a fleet of agents was turned loose on something as ambitious as a browser engine, made real early progress, and then stalled — unable to keep extending a codebase the agents themselves had written and could no longer hold. That is comprehension debt made physical. Eventually even the machines could not model what the machines built. Across real repositories, the count of surviving issues introduced by AI is already into the six figures.</p>
+    <p>The danger is not bad code. It is plausible code, arriving faster than anyone builds a mental model of it.</p>
+    <h2 id="a-loop-is-harness-self-improvement-you-can-read">A loop is harness self-improvement you can read</h2>
+    <p>The previous post ended on a useful point: the first practical self-improving agents may not rewrite their weights. They may rewrite their harness. And that kind of self-improvement is easier to inspect than a weight update.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/loop-engineering/s09-a-loop-is-harness-self-improvement-you-can-read.png?v=agent-07-loop-editorial-20260610-3" alt="Dark blueprint-style diagram explaining Self-improvement you can read, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>A loop that edits its own skills, state, and rules is the inspectable rung of the self-improvement spectrum.</figcaption>
+    </figure>
+<p>A loop that updates its own skill files, rewrites its state, and revises its own rules between runs is exactly that, out in the open. The skill file, the state file, the triage notes are all readable, versionable, and deletable. That was the reason I liked skills in agent-04: a fine-tuned behavior is hard to audit, a file is not.</p>
+    <p>The caution carries over without changes. It is still dangerous if the agent can edit the wrong part of its own system. So scope what the loop is allowed to rewrite as carefully as you scope what it is allowed to deploy.</p>
+    <p>This is the safest rung on the self-improvement spectrum, and unlike most of that spectrum, it is already shipping.</p>
+    <h2 id="where-i-think-we-are">Where I think we are</h2>
+    <p>The leverage point moved up a layer. Judgment did not move. It concentrated.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/loop-engineering/s10-where-i-think-we-are.png?v=agent-07-loop-editorial-20260610-3" alt="Dark blueprint-style diagram explaining The loop is a multiplier, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>The loop is a multiplier. It has no opinion about whether you understand the work.</figcaption>
+    </figure>
+<p>A loop is a multiplier on whatever you bring to it. Two people can build the identical loop and get opposite results, because the loop does not know the difference between someone using it to move faster on work they understand and someone using it to avoid understanding the work at all. The system has no opinion about that. You do.</p>
+    <p>That lesson applies one rung lower. Building a loop that keeps shipping is easy. Building a loop that keeps shipping for the right reasons is the whole job.</p>
+    <p>Useful, not autonomy.</p>
+    <h2 id="the-main-lesson">The main lesson</h2>
+    <p>Loop engineering does not make the engineering easier. It moves the engineering to the parts you cannot automate.</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../assets/blog-illustrations/loop-engineering/s11-the-main-lesson.png?v=agent-07-loop-editorial-20260610-3" alt="Dark blueprint-style diagram explaining The work with no oracle, with short English labels and high-contrast technical geometry." width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>The work that is left is the work that has no oracle: choosing the goal, choosing the signal, choosing where to stay.</figcaption>
+    </figure>
+<p>Before you let a loop run unattended, ask:</p>
+    <ul>
+      <li>Does this work have an oracle the loop cannot fake?</li>
+      <li>Is the checker independent of the maker, or grounded in something that is?</li>
+      <li>What is the loop allowed to touch without me?</li>
+      <li>Am I still reading the output, or only the summary?</li>
+      <li>What is the meter costing me when the loop is wrong?</li>
+      <li>Can the loop edit the wrong part of itself?</li>
+    </ul>
+    <p>If you cannot answer those, the loop is not saving you work. It is deferring it, with interest.</p>
+    <p>Build the loop. Keep the oracle. Stay the engineer.</p>
+    <h2 id="concept-inventory">Concept inventory</h2>
+    <p>The main loop-engineering concepts in this post:</p>
+    <ul>
+      <li>loop engineering as the layer above the harness</li>
+      <li><code>AI agent = LLM + harness</code>; <code>loop = harness + schedule + external state + spawn</code></li>
+      <li>the loop as cron, init, and a supervisor in the agent-as-computer metaphor</li>
+      <li>the Ralph loop and its bash one-liner ancestor</li>
+      <li>memory on disk versus memory in context</li>
+      <li>the five primitives: automations, worktrees, skills, connectors, sub-agents</li>
+      <li>worktrees as collision-free parallel branches</li>
+      <li>skills as crystallized, auditable experience</li>
+      <li>connectors and MCP as agent I/O</li>
+      <li>the least-gameable-oracle rule</li>
+      <li>grounded signals: tests, types, compilers, conformance suites, golden files</li>
+      <li>Goodhart's law in the loop; test subversion; the oh-no moment at the application layer</li>
+      <li>generator, verifier, revisor and maker–checker separation</li>
+      <li>the verifier regress, ending at a human or a hard oracle</li>
+      <li>token cost, the infinite-retry failure mode, token-rich versus token-poor</li>
+      <li>review bandwidth as the real ceiling on parallel agents</li>
+      <li>friction as steering; hard human gates on money, auth, migrations, and data</li>
+      <li>comprehension debt and time-shifted failure</li>
+      <li>agents stalling on a codebase they wrote</li>
+      <li>surviving AI-introduced technical debt at ecosystem scale</li>
+      <li>harness self-improvement as the inspectable rung of the self-improvement spectrum</li>
+      <li>the loop as a multiplier on the operator's understanding</li>
+    </ul>
+    <section class="post__references" aria-labelledby="sources-and-references">
+      <h2 id="sources-and-references">Sources and references</h2>
+      <p>The discourse this post responds to:</p>
+      <ul class="post__references-list">
+        <li><a href="https://addyosmani.com/blog/loop-engineering/" target="_blank" rel="noopener">Loop Engineering — Addy Osmani</a></li>
+        <li><a href="https://officechai.com/ai/i-now-just-write-loops-to-prompt-claude-code-claude-code-creator-boris-cherny/" target="_blank" rel="noopener">Boris Cherny on writing loops instead of prompts (Acquired)</a></li>
+        <li><a href="https://x.com/steipete/status/2063697162748260627" target="_blank" rel="noopener">Peter Steinberger: design loops that prompt your agents</a></li>
+        <li><a href="https://ghuntley.com/ralph/" target="_blank" rel="noopener">Ralph Wiggum as a "software engineer" — Geoffrey Huntley</a></li>
+        <li><a href="https://tldrecap.tech/posts/2026/aie-europe/ai-agents-friction/" target="_blank" rel="noopener">The Friction is Your Judgment — Armin Ronacher and Cristina Poncela Cubeiro</a></li>
+        <li><a href="https://simonw.substack.com/p/agentic-engineering-patterns" target="_blank" rel="noopener">Agentic Engineering Patterns — Simon Willison</a></li>
+        <li><a href="https://arxiv.org/html/2603.28592v1" target="_blank" rel="noopener">Debt Behind the AI Boom (arXiv)</a> and <a href="https://arxiv.org/pdf/2603.27249" target="_blank" rel="noopener">An Endless Stream of AI Slop (arXiv)</a></li>
+      </ul>
+      <p>Earlier in this series:</p>
+      <ul class="post__references-list">
+        <li><a href="recursive-self-improving-ai-rubicon.html">agent-06 · Self-improving AI is a spectrum, not a switch</a></li>
+        <li><a href="ai-agent-harness-engineering.html">agent-04 · Harness engineering is how we actually make agents useful</a></li>
+        <li><a href="orchestrating-coding-agents.html">My setup for running 10+ CLI coding agents at once</a></li>
+      </ul>
+    </section>
+    </div><!-- /.post__body -->
+    <section class="playhtml-widget" data-playhtml-blog-widget data-playhtml-locale="en" aria-labelledby="playhtml-reader-trace-title">
+      <div class="playhtml-widget__head">
+        <div>
+          <h2 id="playhtml-reader-trace-title">Reader trace</h2>
+          <p class="playhtml-widget__presence" aria-live="polite">
+            <span class="playhtml-widget__presence-dot" aria-hidden="true"></span>
+            <span class="playhtml-widget__presence-count">Loading readers</span>
+          </p>
+        </div>
+        <div class="playhtml-widget__presence-pips" data-presence-pips aria-hidden="true"></div>
+      </div>
+      <div class="playhtml-widget__reactions" aria-label="Leave a reader trace">
+        <button type="button" class="playhtml-widget__reaction" data-reaction="useful" aria-pressed="false">
+          <span class="playhtml-widget__reaction-label">Useful</span>
+          <span class="playhtml-widget__reaction-count" data-reaction-count="useful">0</span>
+        </button>
+        <button type="button" class="playhtml-widget__reaction" data-reaction="think" aria-pressed="false">
+          <span class="playhtml-widget__reaction-label">Sparked an idea</span>
+          <span class="playhtml-widget__reaction-count" data-reaction-count="think">0</span>
+        </button>
+        <button type="button" class="playhtml-widget__reaction" data-reaction="reread" aria-pressed="false">
+          <span class="playhtml-widget__reaction-label">Worth rereading</span>
+          <span class="playhtml-widget__reaction-count" data-reaction-count="reread">0</span>
+        </button>
+      </div>
+      <p class="playhtml-widget__note">Shared through PlayHTML's hosted beta service. It stores only aggregate counts for this page; data is public to anyone with the room name.</p>
+    </section>
+    <footer class="post__footer" aria-label="Post navigation">
+      <ul class="post__nav" aria-label="Newer and older posts">
+        <li class="post__nav__item post__nav__item--previous">
+          <span class="post__nav__disabled" aria-disabled="true">
+            <span class="post__nav__label">Newer post</span>
+            <span class="post__nav__title">Latest post</span>
+          </span>
+        </li>
+        <li class="post__nav__item post__nav__item--next">
+          <a href="recursive-self-improving-ai-rubicon.html">
+            <span class="post__nav__label">Older post</span>
+            <span class="post__nav__title">agent-06 · Self-improving AI is a spectrum, not a switch</span>
+          </a>
+        </li>
+      </ul>
+    </footer>
+  </article>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <p>© <span id="year">2026</span> Arthur</p>
+      <p class="footer__links">
+        <a href="https://linkedin.com/in/arthur-yau" target="_blank" rel="noopener">LinkedIn</a> ·
+        <a href="https://github.com/imitation-alpha" target="_blank" rel="noopener">GitHub</a> ·
+        <a href="https://x.com/imitation_alpha" target="_blank" rel="noopener">X</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js" defer></script>
+  <!-- GoatCounter pageview tracking (privacy-friendly, no cookies) -->
+  <script data-goatcounter="https://imitation-alpha.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
