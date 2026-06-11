@@ -30,7 +30,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../../css/styles.css?v=post-prev-next-20260521-0929" />
+  <link rel="stylesheet" href="../../css/styles.css?v=playhtml-blog-20260610-1" />
 </head>
 <body>
   <a class="skip-link" href="#main">略過導覽</a>
@@ -270,6 +270,33 @@
       </ul>
     </section>
     </div><!-- /.post__body -->
+    <section class="playhtml-widget" data-playhtml-blog-widget data-playhtml-locale="zh-Hant" aria-labelledby="playhtml-reader-trace-title">
+      <div class="playhtml-widget__head">
+        <div>
+          <h2 id="playhtml-reader-trace-title">讀者足跡</h2>
+          <p class="playhtml-widget__presence" aria-live="polite">
+            <span class="playhtml-widget__presence-dot" aria-hidden="true"></span>
+            <span class="playhtml-widget__presence-count">讀者狀態載入中</span>
+          </p>
+        </div>
+        <div class="playhtml-widget__presence-pips" data-presence-pips aria-hidden="true"></div>
+      </div>
+      <div class="playhtml-widget__reactions" aria-label="留下讀者足跡">
+        <button type="button" class="playhtml-widget__reaction" data-reaction="useful" aria-pressed="false">
+          <span class="playhtml-widget__reaction-label">有用</span>
+          <span class="playhtml-widget__reaction-count" data-reaction-count="useful">0</span>
+        </button>
+        <button type="button" class="playhtml-widget__reaction" data-reaction="think" aria-pressed="false">
+          <span class="playhtml-widget__reaction-label">啟發想法</span>
+          <span class="playhtml-widget__reaction-count" data-reaction-count="think">0</span>
+        </button>
+        <button type="button" class="playhtml-widget__reaction" data-reaction="reread" aria-pressed="false">
+          <span class="playhtml-widget__reaction-label">值得重讀</span>
+          <span class="playhtml-widget__reaction-count" data-reaction-count="reread">0</span>
+        </button>
+      </div>
+      <p class="playhtml-widget__note">透過 PlayHTML hosted beta service 分享。這裡只儲存本頁的 aggregate counts；任何知道 room name 的人都可能讀取這些資料。</p>
+    </section>
     <footer class="post__footer" aria-label="文章導覽">
       <ul class="post__nav" aria-label="較新與較舊文章">
         <li class="post__nav__item post__nav__item--previous">
@@ -300,6 +327,7 @@
   </footer>
 
   <script src="../../js/main.js" defer></script>
+  <script type="module" src="../../js/playhtml-blog.js?v=playhtml-blog-20260602-2"></script>
   <!-- GoatCounter pageview tracking (privacy-friendly, no cookies) -->
   <script data-goatcounter="https://imitation-alpha.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
