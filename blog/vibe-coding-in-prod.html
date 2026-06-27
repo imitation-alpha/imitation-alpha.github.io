@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>agent-08 · Vibe coding in prod: forget code, not the product — Arthur</title>
+  <meta name="description" content="A production-oriented take on Anthropic's Code w/ Claude talk: use leaf nodes, PRD-like prompts, verification gates, SAST/SCA, reproducible builds, observability, and rollback instead of trusting vibes." />
+  <meta name="theme-color" content="#0a0e0a" />
+  <meta name="author" content="Arthur Yau" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="agent-08 · Vibe coding in prod: forget code, not the product" />
+  <meta property="og:description" content="A production-oriented take on Anthropic's Code w/ Claude talk: use leaf nodes, PRD-like prompts, verification gates, SAST/SCA, reproducible builds, observability, and rollback instead of trusting vibes." />
+  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/vibe-coding-in-prod-cover.png?v=vibe-coding-prod-20260618-01" />
+  <meta property="og:image:width" content="1600" />
+  <meta property="og:image:height" content="900" />
+  <meta property="og:image:alt" content="Dark blueprint-style cover reading Vibe Coding in Prod, with a production AI coding flow from Prompt equals PRD through Claude, self critique, tests, CI, canary metrics, and rollback." />
+  <meta property="article:author" content="Arthur Yau" />
+  <meta property="article:published_time" content="2026-06-18" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@imitation_alpha" />
+  <meta name="twitter:title" content="agent-08 · Vibe coding in prod: forget code, not the product" />
+  <meta name="twitter:description" content="A production-oriented take on Anthropic's Code w/ Claude talk: leaf nodes, PRD-like prompts, verification gates, and rollback instead of trusting vibes." />
+  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/vibe-coding-in-prod-cover.png?v=vibe-coding-prod-20260618-01" />
+  <meta name="twitter:image:alt" content="Dark blueprint-style cover reading Vibe Coding in Prod, with a production AI coding flow from Prompt equals PRD through Claude, self critique, tests, CI, canary metrics, and rollback." />
+  <link rel="canonical" href="https://imitation-alpha.github.io/blog/vibe-coding-in-prod.html" />
+  <link rel="alternate" hreflang="en" href="https://imitation-alpha.github.io/blog/vibe-coding-in-prod.html" />
+  <link rel="alternate" hreflang="x-default" href="https://imitation-alpha.github.io/blog/vibe-coding-in-prod.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css?v=post-prev-next-20260521-0929" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="read-progress" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="Primary">
+    <div class="nav__inner">
+      <a class="nav__brand" href="../index.html">Arthur</a>
+      <button class="nav__toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links">
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#experience">Experience</a></li>
+        <li><a href="../index.html#projects">Projects</a></li>
+        <li><a href="../index.html#blog" class="active">Blog</a></li>
+        <li><a href="../index.html#publications">Publications</a></li>
+        <li><button class="nav__theme" aria-label="Toggle theme">◑</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="post">
+    <a class="post__back" href="../index.html#blog">Back</a>
+
+    <header class="post__header">
+      <h1>agent-08 · Vibe coding in prod: forget code, not the product</h1>
+      <p class="post__lede">Vibe coding can reach production only when the human stops acting like a line-by-line reviewer and starts acting like a product manager, test designer, and release owner.</p>
+      <p class="post__meta">
+        Jun 18, 2026
+        <span class="dot">·</span>
+        <span data-reading-time>8 min</span>
+        <span class="dot">·</span>
+        Arthur Yau
+        <span class="dot view-dot" hidden>·</span>
+        <span data-views data-views-label="views" hidden></span>
+      </p>
+      <figure class="post__hero">
+        <img src="../assets/blog-headers/vibe-coding-in-prod-cover.png?v=vibe-coding-prod-20260618-01" alt="Dark blueprint-style cover reading Vibe Coding in Prod, with a production AI coding flow from Prompt equals PRD through Claude, self critique, tests, CI, canary metrics, and rollback." width="1600" height="900" loading="eager" decoding="async" />
+      </figure>
+    </header>
+
+    <aside class="post__toc" aria-label="Contents">
+      <p class="post__toc__label">Content outline</p>
+      <ul>
+        <li><a href="#why-revisit-vibe-coding-in-prod">Why revisit vibe coding in prod?</a></li>
+        <li><a href="#forget-code-not-product">Forget code, not product</a></li>
+        <li><a href="#verification-is-the-abstraction-layer">Verification is the abstraction layer</a></li>
+        <li><a href="#leaf-node-first">Leaf node first</a></li>
+        <li><a href="#be-claudes-pm">Be Claude's PM</a></li>
+        <li><a href="#the-double-loop">The double loop</a></li>
+        <li><a href="#what-counts-as-safe-enough">What counts as safe enough?</a></li>
+        <li><a href="#what-i-would-not-vibe-code">What I would not vibe code</a></li>
+        <li><a href="#the-main-lesson">The main lesson</a></li>
+        <li><a href="#sources-and-references">Sources and references</a></li>
+      </ul>
+    </aside>
+
+    <div class="post__body" id="main">
+    <p>Last August I wrote a short Threads note after watching Anthropic's <a href="https://www.youtube.com/watch?v=fHWFF_pnqDk" target="_blank" rel="noopener">“Vibe coding in prod”</a> talk.</p>
+    <p>The core idea still feels right, but the thread was compressed. The blog version deserves more precision because “vibe coding in prod” sounds reckless if you treat it as “ship whatever the model wrote.”</p>
+    <p>That is not the useful interpretation.</p>
+    <p>The useful interpretation is: AI coding is pushing engineers toward the same management problem that every other field already has. You cannot personally inspect every implementation detail forever. You need to decide which details must stay human-owned, which details can be delegated, and which evidence lets you trust the delegated work.</p>
+    <blockquote><p><strong>Builder takeaway:</strong> production vibe coding is not about trusting vibes. It is about replacing line-by-line trust with scoped delegation, testable interfaces, observable behavior, and rollback.</p></blockquote>
+
+    <h2 id="why-revisit-vibe-coding-in-prod">Why revisit vibe coding in prod?</h2>
+    <p>The talk makes one prediction hard to ignore: AI task length is expanding quickly. METR frames this as a horizon-length metric and reports a historical doubling time of roughly seven months. In the talk, the practical question is simple: what happens when a model can generate a day or week of engineering work at once?</p>
+    <p>At one-hour task length, a senior engineer can still stay in the loop. Read the diff. Ask for changes. Run the tests. Keep the mental model warm.</p>
+    <p>At one-day or one-week task length, that breaks. If the only safety strategy is “read every line the model wrote,” the strategy does not scale with the capability curve.</p>
+    <p>This is why the compiler analogy in the talk is useful. Early compiler users could inspect generated assembly. Modern engineers mostly do not. We still care deeply about the product behavior, performance, correctness, and security. We just moved trust to another abstraction layer.</p>
+    <p>AI-generated software needs the same move. Not blind trust. A better abstraction layer.</p>
+
+    <h2 id="forget-code-not-product">Forget code, not product</h2>
+    <p>Karpathy's original vibe-coding phrase includes the line “forget that the code even exists.” The dangerous reading is to forget everything: code, product, users, security, billing, data, and rollback.</p>
+    <p>The production reading is narrower:</p>
+    <pre><code class="language-text">forget the code, not the product</code></pre>
+    <p>You may stop treating the diff as the primary artifact. You cannot stop owning the product contract.</p>
+    <p>That contract includes inputs, outputs, invariants, latency, privacy boundaries, migration behavior, user-visible semantics, observability, and failure modes. The model can write and explain. The human still specifies, verifies, and decides.</p>
+    <p>This is not a new kind of responsibility. A PM can judge whether a feature works without reading every implementation detail. A CTO can evaluate an expert's work through acceptance tests, architecture review, and operational metrics. A CEO can spot-check an accountant's model through the slices that matter.</p>
+    <p>Software engineers are just less used to giving up the implementation layer because we historically had to understand the whole stack ourselves.</p>
+
+    <h2 id="verification-is-the-abstraction-layer">Verification is the abstraction layer</h2>
+    <p>If you do not inspect every line, you need something stronger than vibes.</p>
+    <p>The abstraction layer is verification. Not one verifier, but a stack of signals:</p>
+    <ul>
+      <li><strong>Contract tests:</strong> the input-output semantics that must stay true.</li>
+      <li><strong>Integration tests:</strong> whether the generated code works with real dependencies.</li>
+      <li><strong>Stress tests:</strong> whether stability holds over long runs, not just one happy path.</li>
+      <li><strong>SAST and SCA:</strong> static analysis and dependency scanning before merge.</li>
+      <li><strong>Reproducible builds:</strong> pinned dependencies and repeatable environments.</li>
+      <li><strong>Observability:</strong> latency, error rate, saturation, business metrics, and logs after release.</li>
+      <li><strong>Rollback:</strong> feature flags, canaries, and a fast path back to known-good behavior.</li>
+    </ul>
+    <p>The Anthropic example in the talk was a Claude-heavy 22,000-line change to a production reinforcement-learning codebase. The important detail is not the line count. The important detail is how the risk was shaped: days of human planning, leaf-node concentration, targeted human review for extensible pieces, stress tests for stability, and human-verifiable inputs and outputs.</p>
+    <p>That is the production version of “let Claude cook.” You do not ask the model to replace accountability. You design the work so accountability has handles.</p>
+
+    <h2 id="leaf-node-first">Leaf node first</h2>
+    <p>My favorite operational rule from the talk is also the simplest: start at leaf nodes.</p>
+    <p>A leaf node is a part of the codebase that other systems do not deeply depend on. It might be a CLI utility, a pure-function library, an edge adapter, a report generator, a UI-only surface, or an offline pipeline stage with clear input-output behavior.</p>
+    <p>Leaf nodes are not automatically safe. They are safer because the blast radius is easier to bound:</p>
+    <ul>
+      <li>fewer downstream dependencies break if the implementation is messy;</li>
+      <li>rollback is cheaper because the change is isolated;</li>
+      <li>contract tests can pin behavior at the boundary;</li>
+      <li>humans can verify outputs without understanding every internal step;</li>
+      <li>tech debt is less likely to become the trunk that everything else grows from.</li>
+    </ul>
+    <p>The trunk and branches are different. Core architecture, auth, billing, permissions, data migrations, shared abstractions, public APIs, and security boundaries still need deep human ownership. The talk is explicit about this caveat: tech debt is hard to measure without reading code. Until we have better tech-debt verifiers, do not hand the trunk to the model and hope the tree survives.</p>
+
+    <h2 id="be-claudes-pm">Be Claude's PM</h2>
+    <p>The strongest workflow shift is mental: treat Claude like a very fast new engineer, not like a magic compiler with no onboarding cost.</p>
+    <p>In the talk, the pre-work matters. Spend 15–20 minutes collecting the task into a strong prompt. Explore the codebase. Find the relevant files. Name the patterns to follow. State the constraints. Ask the model to expose unknowns before it writes too much.</p>
+    <p>I think of this prompt as a small PRD:</p>
+    <ul>
+      <li><strong>Background:</strong> why this change exists and what system it touches.</li>
+      <li><strong>Goal:</strong> the user-visible or operator-visible outcome.</li>
+      <li><strong>Acceptance criteria:</strong> what must be true before the work is done.</li>
+      <li><strong>Constraints:</strong> forbidden libraries, compatibility needs, latency budgets, data boundaries.</li>
+      <li><strong>Edge cases:</strong> known weird inputs, old migrations, failure modes, rollback behavior.</li>
+      <li><strong>Verification:</strong> tests, commands, screenshots, logs, metrics, or review artifacts required in the final answer.</li>
+    </ul>
+    <p>This is not prompt decoration. It is product management. If a new human engineer would fail with a one-line ticket, the model probably will too. The difference is that the model can fail much faster and produce a much larger diff.</p>
+
+    <h2 id="the-double-loop">The double loop</h2>
+    <p>For production work, I want two loops: a specification loop before implementation and a release loop after implementation.</p>
+    <pre><code class="language-text">spec loop:    prompt → plan → critique → refined PRD
+release loop: draft → tests → CI/security → canary → metrics → rollback or expand</code></pre>
+    <p>The spec loop reduces ambiguity before the model spends a large budget. It is where you ask: what should change, what should not change, which files matter, what assumptions are dangerous, and what evidence will prove success?</p>
+    <p>The release loop prevents a convincing final message from becoming the definition of done. The agent can claim success only after the environment has produced evidence.</p>
+    <p>This is where the original thread's checklist still holds:</p>
+    <ul>
+      <li>Use coverage targets when the feature lends itself to coverage; I often treat 80%+ as a useful floor, not a magic number.</li>
+      <li>Run SAST and SCA in CI; a critical finding should block merge.</li>
+      <li>Prefer reproducible builds through pinned dependencies, Nix, Bazel, lockfiles, or equivalent discipline.</li>
+      <li>Deploy behind a feature flag or canary when the change touches real users.</li>
+      <li>Watch latency, error rate, and product metrics after release.</li>
+      <li>Require the agent to record what changed and what verification actually ran.</li>
+    </ul>
+    <p>The point is not ceremony. The point is to make the model's work legible to the system around it.</p>
+
+    <h2 id="what-counts-as-safe-enough">What counts as safe enough?</h2>
+    <p>Safe enough is contextual. A local demo, an offline batch job, an internal dashboard, a production payments path, and a schema migration do not deserve the same autonomy budget.</p>
+    <p>My default rollout ladder looks like this:</p>
+    <ol>
+      <li><strong>Offline or local-only task:</strong> let the agent move faster, but still require runnable verification.</li>
+      <li><strong>Leaf-node production code:</strong> add contract tests, CI, human review of interfaces, and rollback.</li>
+      <li><strong>Shared component:</strong> require architecture review and smaller diffs; use the model as implementer, not owner.</li>
+      <li><strong>Critical path:</strong> use AI for planning, test generation, migration rehearsal, and review assistance, but keep human ownership over the final design and release decision.</li>
+    </ol>
+    <p>The boundary can move as models, tools, and verifiers improve. But the boundary should move because evidence improved, not because the demo felt magical.</p>
+
+    <h2 id="what-i-would-not-vibe-code">What I would not vibe code</h2>
+    <p>I would not ask a model to autonomously ship a critical production path where I cannot state the contract, run the verifier, or roll back quickly.</p>
+    <p>That includes auth, billing, permissions, customer data deletion, compliance-sensitive flows, irreversible migrations, secret handling, and anything where “we can fix it later” means users pay the cost.</p>
+    <p>I would also be careful with non-technical operators using vibe coding to build real businesses from scratch. The talk makes this point directly: if you cannot ask the right questions, you cannot be an effective PM for the model. Vibe coding is a creative unlock, but production requires enough domain understanding to know what is dangerous.</p>
+    <p>For games, prototypes, personal tools, and low-stakes experiments, go fast. For production, the human job changes from typing code to designing bounded work and evidence.</p>
+
+    <h2 id="the-main-lesson">The main lesson</h2>
+    <p>Vibe coding in prod is not the death of engineering judgment. It is a demand for more explicit engineering judgment.</p>
+    <p>The model writes code. The human defines the work, chooses the boundary, protects the trunk, designs the tests, watches the metrics, and decides whether the evidence is good enough.</p>
+    <p>That is why the line I still like from my original thread is:</p>
+    <blockquote><p><strong>Claude writes and explains. You specify, verify, and decide.</strong></p></blockquote>
+    <p>If we keep that division of labor, “forget the code” becomes less reckless. It means the code is no longer the only thing we know how to inspect. The product contract, verification harness, and release loop become the objects of engineering.</p>
+
+    <section class="post__references" aria-labelledby="sources-and-references">
+      <h2 id="sources-and-references">Sources and references</h2>
+      <ul class="post__references-list">
+        <li><a href="https://www.youtube.com/watch?v=fHWFF_pnqDk" target="_blank" rel="noopener">Anthropic — “Vibe coding in prod” / Code w/ Claude</a></li>
+        <li><a href="https://www.threads.com/@imitation.alpha/post/DM-ae36xHz1" target="_blank" rel="noopener">Original Threads note from Aug 5, 2025</a></li>
+        <li><a href="https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/" target="_blank" rel="noopener">METR — Measuring AI Ability to Complete Long Tasks</a></li>
+        <li><a href="https://aws.amazon.com/q/developer/build/" target="_blank" rel="noopener">AWS — Amazon Q Developer agentic coding experience</a></li>
+        <li><a href="https://www.veracode.com/blog/ai-generated-code-security-risks/" target="_blank" rel="noopener">Veracode — AI-generated code security risks</a></li>
+      </ul>
+    </section>
+    </div><!-- /.post__body -->
+<footer class="post__footer" aria-label="Post navigation">
+      <ul class="post__nav" aria-label="Newer and older posts">
+        <li class="post__nav__item post__nav__item--previous">
+          <span class="post__nav__disabled" aria-disabled="true">
+            <span class="post__nav__label">Newer post</span>
+            <span class="post__nav__title">Latest post</span>
+          </span>
+        </li>
+        <li class="post__nav__item post__nav__item--next">
+          <a href="loop-engineering.html">
+            <span class="post__nav__label">Older post</span>
+            <span class="post__nav__title">agent-07 · Loop engineering is the harness on a timer</span>
+          </a>
+        </li>
+      </ul>
+    </footer>
+  </article>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <p>© <span id="year">2026</span> Arthur</p>
+      <p class="footer__links">
+        <a href="https://linkedin.com/in/arthur-yau" target="_blank" rel="noopener">LinkedIn</a> ·
+        <a href="https://github.com/imitation-alpha" target="_blank" rel="noopener">GitHub</a> ·
+        <a href="https://x.com/imitation_alpha" target="_blank" rel="noopener">X</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js" defer></script>
+<!-- GoatCounter pageview tracking (privacy-friendly, no cookies) -->
+  <script data-goatcounter="https://imitation-alpha.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

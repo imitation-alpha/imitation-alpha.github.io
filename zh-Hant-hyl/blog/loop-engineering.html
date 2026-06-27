@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>agent-07 · Loop engineering 其實就是定時運行的 harness 啦 — Arthur</title>
+  <meta name="description" content="各位同學大家好！今天我們要來聊聊 loop engineering：其實就是把 harness 加上 clock、budget、stop rules 與 work queues，讓它能自動反覆運行而不走鐘的硬核技術啦！" />
+  <meta name="theme-color" content="#0a0e0a" />
+  <meta name="author" content="Arthur Yau" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="agent-07 · Loop engineering 其實就是定時運行的 harness 啦" />
+  <meta property="og:description" content="各位同學大家好！今天我們要來聊聊 loop engineering：其實就是把 harness 加上 clock、budget、stop rules 與 work queues，讓它能自動反覆運行而不走鐘的硬核技術啦！" />
+  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/loop-engineering-xpost-cover.png?v=agent07-loop-engineering-20260610-01" />
+  <meta property="og:image:width" content="1600" />
+  <meta property="og:image:height" content="900" />
+  <meta property="og:image:alt" content="深色 technical blueprint cover，文字為 Loop Engineering 與 The harness on a timer，呈現 timed agent loop、queue、verifier 與 memory nodes。" />
+  <meta property="og:locale" content="zh_Hant" />
+  <meta property="article:author" content="Arthur Yau" />
+  <meta property="article:published_time" content="2026-06-10" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@imitation_alpha" />
+  <meta name="twitter:title" content="agent-07 · Loop engineering 其實就是定時運行的 harness 啦" />
+  <meta name="twitter:description" content="各位同學大家好！今天我們要來聊聊 loop engineering：其實就是把 harness 加上 clock、budget、stop rules 與 work queues，讓它能自動反覆運行而不走鐘的硬核技術啦！" />
+  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/loop-engineering-xpost-cover.png?v=agent07-loop-engineering-20260610-01" />
+  <meta name="twitter:image:alt" content="深色 technical blueprint cover，文字為 Loop Engineering 與 The harness on a timer，呈現 timed agent loop、queue、verifier 與 memory nodes。" />
+  <link rel="canonical" href="https://imitation-alpha.github.io/zh-Hant/blog/loop-engineering.html" />
+  <link rel="alternate" hreflang="en" href="https://imitation-alpha.github.io/blog/loop-engineering.html" />
+  <link rel="alternate" hreflang="zh-Hant" href="https://imitation-alpha.github.io/zh-Hant/blog/loop-engineering.html" />
+  <link rel="alternate" hreflang="x-default" href="https://imitation-alpha.github.io/blog/loop-engineering.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/styles.css?v=post-prev-next-20260521-0929" />
+</head>
+<body>
+  <a class="skip-link" href="#main">略過導覽</a>
+  <div class="read-progress" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="主導覽">
+    <div class="nav__inner">
+      <a class="nav__brand" href="../../index.html">Arthur</a>
+      <button class="nav__toggle" aria-label="切換導覽" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links">
+        <li><a href="../../index.html#about" hreflang="en">About (EN)</a></li>
+        <li><a href="../../index.html#experience" hreflang="en">Experience (EN)</a></li>
+        <li><a href="../../index.html#projects" hreflang="en">Projects (EN)</a></li>
+        <li><a href="index.html" class="active">文章</a></li>
+        <li><a href="../../index.html#publications" hreflang="en">Publications (EN)</a></li>
+        <li><button class="nav__theme" aria-label="切換主題">◑</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="post">
+    <a class="post__back" href="index.html">返回文章列表</a>
+
+    <header class="post__header">
+      <h1>agent-07 · Loop engineering 其實就是定時運行的 harness 啦</h1>
+      <p class="post__lede">其實，一個會動的 harness 還不夠！如果讓 Agent 反覆自動跑個一百次，怎麼讓它不失控、不把你的 Token 錢包燒光？這就是 Loop Engineering 要解決的硬核問題啦！</p>
+      <p class="post__meta">
+        2026 年 6 月 10 日
+        <span class="dot">·</span>
+        <span data-reading-time>8 分鐘</span>
+        <span class="dot">·</span>
+        Arthur Yau
+        <span class="dot view-dot" hidden>·</span>
+        <span data-views data-views-label="次瀏覽" hidden></span>
+      </p>
+      <p class="post__lang">
+        各位同學大家好，本文已採用「李宏毅式教學風格」全新改寫！你也可以閱讀
+        <a href="../../blog/loop-engineering.html" hreflang="en" lang="en">English 英文原文</a>。
+      </p>
+      <figure class="post__hero">
+        <img src="../../assets/blog-headers/loop-engineering-xpost-cover.png?v=agent07-loop-engineering-20260610-01" alt="深色 technical blueprint cover，文字為 Loop Engineering 與 The harness on a timer，呈現 timed agent loop、queue、verifier 與 memory nodes。" width="1600" height="900" loading="eager" decoding="async" />
+      </figure>
+    </header>
+
+    <aside class="post__toc" aria-label="目錄">
+      <p class="post__toc__label">內容大綱</p>
+      <ul>
+        <li><a href="#the-loop-is-the-harness-on-a-timer">Loop 就是裝上定時器的 harness 啦</a></li>
+        <li><a href="#a-loop-has-a-clock">Loop 其實是有 clock 的</a></li>
+        <li><a href="#work-queues-turn-intent-into-pressure">Work queues 把意圖變成真正的壓力</a></li>
+        <li><a href="#budgets-are-behavioral-boundaries">Budgets 是限制 Agent 行為的邊界</a></li>
+        <li><a href="#stop-rules-are-safety-features">Stop rules 其實就是安全機制</a></li>
+        <li><a href="#feedback-windows-define-learning-speed">Feedback windows 決定了學習的速度</a></li>
+        <li><a href="#verification-is-the-loop-gate">Verification 才是 Loop 的終極守門員</a></li>
+        <li><a href="#memory-needs-a-retention-policy">Memory 也需要定期清理喔</a></li>
+        <li><a href="#human-review-belongs-at-boundaries">Human review 應該要放在邊界上</a></li>
+        <li><a href="#what-i-would-build">如果是我的話，我會先 build 什麼？</a></li>
+        <li><a href="#the-main-lesson">今天這堂課最重要的一擊</a></li>
+        <li><a href="#concept-inventory">今天學到的概念清單</a></li>
+      </ul>
+    </aside>
+
+    <div class="post__body" id="main">
+    <p>各位同學大家好啊，那我們就準備來上課吧。今天這堂課呢，我們要來聊聊 loop engineering...</p>
+    <p>今天我們分成幾個部分：我們先來看為什麼只有一個 harness 還不夠，為什麼我們需要為 loop 加上 clock（時鐘）與 work queue（工作佇列）；接著來看怎麼用 budget（預算）與 stop rules（停止規則）來限縮 Agent 的行為，以及 feedback window（回饋窗口）和 verification（驗證）要怎麼設計；最後，我們還會聊聊 memory（記憶體）的保存策略、human review（人工審查）的邊界，以及如果是我的話會先 build 什麼樣的系統。</p>
+    <p>在之前的課程裡面，我們都把 Agent 當作是一個圍繞著 LLM 處理器（LLM processor）建成的電腦系統。我們常說 model 很重要，對不對？但其實周圍的 system（系統）更關鍵！是這個系統決定了 model 能看見什麼、能做什麼、什麼時候該 retry（重試），還有什麼時候必須停下來。</p>
+    <p>但是！當你的 harness（測試架構/運行容器）成功跑完一次之後，事情就結束了嗎？沒有喔！神奇的點就在這裡，如果你的 Agent 必須每小時跑一次、每晚跑一次、或者每次有人發 PR（pull request）、每次客服收到 ticket、每次評測失敗（failed evaluation）都要跑一次，那會發生什麼事？</p>
+    <p>以前的一次性 harness，白話文就是一個「單次的作業程序」。而我們今天要講的 loop，白話文就是一個「持續運轉的運作節奏（operating rhythm）」！</p>
+    <blockquote><p><strong>一言以蔽之：所謂的 loop engineering，其實就是把你的 harness 套上定時器、加上狀態管理，讓它能反覆自動運行而不會失控歪掉而已。</strong></p></blockquote>
+    <p>所以大家要記住喔：<strong>如果 harness 是針對單次 Agent 運行的保護殼，那 loop 就是這個殼再加上時間（time）、狀態（state）、佇列壓力（queue pressure）、預算（budgets）、驗證關卡（verification gates）以及升級/通報規則（escalation rules）！</strong></p>
+
+    <h2 id="the-loop-is-the-harness-on-a-timer">Loop 就是裝上定時器的 harness 啦</h2>
+    <p>以前我們是怎麼教 Agent 工作的第一步？我們跟它說：『你要先讀完文件再編輯喔』、『要用對的 tools 喔』、『要留下 evidence（證據）喔』。這個限制與引導的結構，就叫做 harness。但是，如果你想讓它每天自動幫你整理程式碼，你不可能每天手動去點它。那如果直接放任它自己一直跑呢？這就像《葬送的芙莉蓮》裡面的魔導玩偶，你叫它去打掃圖書館，它如果沒有人叫它停，它可能會一直掃、掃到把地板磨穿，甚至把珍規的魔法書當成垃圾丟掉！</p>
+    <p>那<strong>怎麼辦呢？</strong></p>
+    <p>這時候我們就需要為它裝上一個定時器，這就是 <strong>loop</strong>！它決定了 harness 什麼時候該醒來（wake on schedule）、要去拿哪一個工作項目（item）、要繼承什麼樣的狀態（load state），以及到底做到什麼地步才算是一次完成的迭代（iteration）。</p>
+    <figure class="post__concept-figure" data-generated-diagram="loop-engineering">
+      <img src="../../assets/blog-illustrations/loop-engineering/s01-the-loop-is-the-harness-on-a-timer-clean.png?v=agent07-loop-engineering-clean-20260610-04" alt="深色 blueprint-style 圖，說明 loop 是定時運行的 harness，包含 wake on schedule、load state、run harness、verify result、write state back 與 spawn next run 標籤。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Loop 其實就是裝上了定時器的 harness 啦。</figcaption>
+    </figure>
+    <p>欸你知道嗎？用這種方式去思考，你的工程問題就會變得很具體。你不再是去追求一個空洞、抽象的『超強自主型 Agent』，而是去建立一個有明確 input（輸入）、output（輸出）、boundary（邊界）和 evidence（證據）的重複性流程（repeated process）。</p>
+    <p>這個定時器（timer）可以是那種最死板的 cron job，也可以是某種 event trigger（事件觸發器），像是：有人在 GitHub 留言了、CI 跑失敗了、資料夾裡多了一份新文件、或者 benchmark（基準測試）突然退步了。不管觸發條件是什麼，白話文就是：每次觸發，都必須產生一個『有邊界的任務（bounded piece of work）』。</p>
+
+    <h2 id="a-loop-has-a-clock">Loop 其實是有 clock 的</h2>
+    <p>大家要知道，clock（時鐘）不只是硬體零件，它其實是 product（產品）設計的一部分！因為它會徹底改變 Agent 的 behavior（行為）。</p>
+    <figure class="post__concept-figure" data-generated-diagram="loop-engineering">
+      <img src="../../assets/blog-illustrations/loop-engineering/s02-a-loop-has-a-clock-clean.png?v=agent07-loop-engineering-clean-20260610-04" alt="深色 blueprint-style 圖，說明 loop clocks，包含 interval、deadline、jitter、catch-up 與 quiet-hours 標籤。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Loop 不只有 prompt，它其實是有 clock 的。</figcaption>
+    </figure>
+    <p>你想看，一個每分鐘跑一次的 loop，跟一個每天晚上才跑一次的 loop，它們的行為會一樣嗎？當然不一樣啊！如果是每分鐘都在跑的 fast loop，它就必須要有非常嚴格的 stop rules（停止規則）以及非常便宜的 checks（檢查），不然你可能一眨眼信用卡就被刷爆了。如果是每天晚上才跑一次的 slow loop，它就可以慢慢來嘛！它可以收集更多的 evidence、把工作打包成 batch（批次），甚至在動手（action）之前先發個訊息問人類：『請問我真的可以這樣做嗎？』</p>
+    <p>而且，clock 還需要很多看似無聊、但只要一壞掉就會讓你痛不欲生的運作細節（operational details）。像是什麼？像是 interval（間隔時間）、timeout（逾時限制）、quiet hours（安靜時間，比如半夜不要打擾使用者）、backoff（指數退避）、jitter（隨機抖動）、catch-up behavior（落後補進行為），還有如果兩個時間點（ticks）重疊了該怎麼辦？你沒有看錯，這些細節超級重要！如果沒有設計好，你的 loop 遲早會重複做工、默默漏掉工作，或者造成 retry storm（重試風暴）。</p>
+
+    <h2 id="work-queues-turn-intent-into-pressure">Work queues 把意圖變成真正的壓力</h2>
+    <p>在開發系統的時候，我們常常會抱持著美好的幻想。我們跟 Agent 說：『你要幫我保持這個 repository 的健康喔！』結果咧？Agent 根本不知道要幹嘛。因為這只是你的『意圖（intent）』，它不是一個具體的 input（輸入）。如果只有意圖，Agent 就會像個無頭蒼蠅一樣亂飛。</p>
+    <p>那<strong>怎麼辦呢？</strong></p>
+    <p>這時候我們就需要引入 <strong>work queue（工作佇列）</strong>。</p>
+    <p>我們不能給它抽象的口號，而是要給它具體的工作：『這裡有五個失敗的 check 項目，每一個項目都有特定的 lease（租約期限）、priority（優先級）與 owner（所有者），請你現在去 review（審查）它們。』</p>
+    <figure class="post__concept-figure" data-generated-diagram="loop-engineering">
+      <img src="../../assets/blog-illustrations/loop-engineering/s03-work-queues-turn-intent-into-pressure-clean.png?v=agent07-loop-engineering-clean-20260610-04" alt="深色 blueprint-style 圖，說明 work queues，包含 inbox、priority、lease、owner、done 與 agent worker 標籤。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Work queues 其實就是把抽象的意圖，轉化為實質的運作壓力。</figcaption>
+    </figure>
+    <p>這個 queue 的妙處，就在於它能把那些『看不見的壓力（invisible pressure）』變得非常具體且可見。白話文就是：現在到底有多少個 items 正在排隊？有哪些項目已經過期了（stale）？哪些項目之前失敗過？哪些需要 human review（人工介入）？有哪些又因為權限不足（missing permissions）被卡住了？</p>
+    <p>欸，你知道嗎？對於 Agent 來說，設計這個 queue 其實就是在設計 prompt！每一個放進佇列裡的 work item，都應該包含明確的 goal（目標）、scope（範疇）、相關的 pointer（指標/連結）、允許的 actions（操作）、預期的 evidence（證據），還有一個超級清楚的 definition of done（完成定義）。這就像死發配任務一樣，一個好的 queue item，其實就是一份小型的合約（contract）！</p>
+
+    <h2 id="budgets-are-behavioral-boundaries">Budgets 是限制 Agent 行為的邊界</h2>
+    <p>好，那我們接著看下一個重點。</p>
+    <p>欸你知道嗎？Agent 最擅長的事情之一，就是幫你花錢（笑）。真的！不論是 token 數量、tool call 次數、真實世界流逝的時間（wall-clock time）、retry 次數、API 呼叫費，還是人類寶貴的注意力，只要放進一個看起來『好像很忙、很有生產力』的 loop 裡面，這些資源就會像蒸發一樣瞬間消失！</p>
+    <figure class="post__concept-figure" data-generated-diagram="loop-engineering">
+      <img src="../../assets/blog-illustrations/loop-engineering/s04-budgets-are-behavioral-boundaries-clean.png?v=agent07-loop-engineering-clean-20260610-04" alt="深色 blueprint-style 圖，說明 loop budgets，包含 tokens、tools、time、retries 與 spend 標籤。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Budgets（預算）不僅是成本控制，更是約束 Agent 行為的邊界。</figcaption>
+    </figure>
+    <p>所以我們需要 <strong>budget（預算）</strong>。但是，大家千萬不要以為 budget 只是用來控制成本（cost control）而已喔。它其實更是一個 <strong>behavioral boundary（行為邊界）</strong>！為什麼？因為預算會改變行為嘛！如果一個 loop 被限制只能 retry 三次，那它就會非常珍惜每一次機會，學著讓每次 retry 都發揮最大價值。但如果你給它無限次的 retry 呢？它可能就會把所有的『不確定性』轉化為一堆無意義的盲目亂試（motion），最後什麼問題都沒解決，卻把你的 Token 刷爆了。</p>
+    <p>所以，budgets 必須要做到內外透明。在 run（運行）的內部，Agent 必須隨時知道自己還剩下多少 budget。在 run 的外部，維運人員（operator）也必須能清楚看到資源到底花到哪裡去了。一旦 loop 越過了某個臨界值（threshold），它就應該立刻停下來、降級運作（degrade）或者進行升級通報（escalate），而不是在那邊自己即興發揮！</p>
+
+    <h2 id="stop-rules-are-safety-features">Stop rules 其實就是安全機制</h2>
+    <p>任何一個有用的 loop，都必須要有一種『不是因為成功而停下來』的方法。你想想看，如果一個 Agent 在跑一個任務，結果這個任務因為外部系統掛掉而永遠無法成功。如果它沒有別的停止方法，它就會在裡面無限循環跑下去，直到地老天荒。</p>
+    <p>那<strong>怎麼辦呢？</strong></p>
+    <p>這時候我們就需要 <strong>stop rules（停止規則）</strong>！這是一個非常關鍵的安全機制（safety feature）。</p>
+    <figure class="post__concept-figure" data-generated-diagram="loop-engineering">
+      <img src="../../assets/blog-illustrations/loop-engineering/s05-stop-rules-are-safety-features-clean.png?v=agent07-loop-engineering-clean-20260610-04" alt="深色 blueprint-style 圖，說明 stop rules，包含 max retries、no progress、risk threshold 與 escalate 標籤。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Stop rules 是保障系統安全的關鍵功能，讓一切保持可控。</figcaption>
+    </figure>
+    <p>最簡單的 stop rule 就是硬上限（hard maximum），例如：最多只能嘗試 N 次、最多只能跑 M 分鐘、最多只能修改 K 個檔案。但是，這還不夠聰明！更好的 stop rules 應該要能夠偵測到 <strong>pattern failure（模式失效）</strong>。什麼意思呢？白話文就是，它能發現：『欸？怎麼重複出現了一模一樣的 error？』、『怎麼改出來的程式碼差異（diff）越來越大，但測試卻完全沒有變好？』、『為什麼 Agent 一直在要同一個漏掉的 context？』、『或者，驗證器（verifier）為什麼連續兩次 reject（拒絕）同一個 claim（宣稱）？』</p>
+    <p>大家不要覺得設計 stop rules 是因為我們對技術很悲觀喔。相反地，這是為了讓 loop 保持『可檢查性（inspectable）』！你想想看嘛，一個因為觸發 stop rule 而停下來、並留下乾淨 trace（追蹤紀錄）的 loop，絕對比一個一直胡搞瞎搞到所有證據都被它自己的歷史紀錄（history）淹沒的 Agent，還要容易 debug 一百倍！</p>
+
+    <h2 id="feedback-windows-define-learning-speed">Feedback windows 決定了學習的速度</h2>
+    <p>再來，我們來聊聊 feedback（回饋）。Loop 必須透過 feedback 來學習、來修正行為，但是 feedback 的時機點是非常講究的，也就是所謂的 <strong>feedback window（回饋窗口）</strong>。</p>
+    <p>有的 feedback 應該在運行過程中（inside the run）立刻給它；有的 feedback 應該在一天結束時才看；有的則應該留到每週審查（weekly review）。</p>
+    <figure class="post__concept-figure" data-generated-diagram="loop-engineering">
+      <img src="../../assets/blog-illustrations/loop-engineering/s06-feedback-windows-define-learning-speed-clean.png?v=agent07-loop-engineering-clean-20260610-04" alt="深色 blueprint-style 圖，說明 feedback windows，包含 fast signal、daily review、weekly audit 與 skill update 標籤。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Feedback windows 決定了學習的速度與它的具體形貌。</figcaption>
+    </figure>
+    <p>我們一般可以把它分成兩種：</p>
+    <p>第一種是 <strong>fast feedback（快速回饋）</strong>。白話文就是『戰術層面（tactics）』的小修正。像是：某個 test 跑失敗了、某個 link 斷掉了、指令 timeout 了，或者某個 claim 沒有標明出處。這時候就要立刻跟 Agent 講，讓它當場改掉。</p>
+    <p>第二種是 <strong>slow feedback（慢速回饋）</strong>。白話文就是『戰略層面（strategy）』的大檢討。像是：這種類型的任務是不是太複雜、應該要被拆分（split）？某個 tool 的定義是不是太模糊（ambiguous）、容易讓 Agent 誤解？某筆 memory 內容是不是已經過期了？或者某個工作清單（checklist）應該要變成一個可複用的技能（reusable skill）？</p>
+    <p>如果你把這兩種 feedback window 混在一起，系統就會變得超級吵（noisy）！你想看，如果每一次小小的戰術失敗（例如打錯一個字），都立刻被寫進 Agent 的永久記憶體裡面，那它的 memory 很快就會被一堆無聊的芝麻綠豆小事（trivia）塞爆。但反過來，如果每一次策略上的大失敗（例如工具選錯），都只是被當作單次運行裡的短暫碎碎念（transient comment），那下週這個 loop 保證還會再犯一模一樣的錯誤！這就是為什麼我們必須把窗口分開的原因。</p>
+
+    <h2 id="verification-is-the-loop-gate">Verification 才是 Loop 的終極守門員</h2>
+    <p>接下來，我們要講到一個非常、非常重要的觀念，那就是 <strong>verification（驗證）</strong>。如果沒有 verification，你的 loop 其實只是在重複做一件事情而已：就是不斷地產生內容（repeated generation）。</p>
+    <p>大家知道這樣會發生什麼事嗎？這會導致嚴重的 <strong>drift（漂移/走鐘）</strong>！Agent 跑著跑著，產出的東西就跟當初預期的目標越差越遠。</p>
+    <p>所以，<strong>verification 就是阻擋 drift 的那扇終極閘門（loop gate）</strong>！</p>
+    <figure class="post__concept-figure" data-generated-diagram="loop-engineering">
+      <img src="../../assets/blog-illustrations/loop-engineering/s07-verification-is-the-loop-gate-clean.png?v=agent07-loop-engineering-clean-20260610-04" alt="深色 blueprint-style 圖，說明 verification 作為 loop gate，包含 claim、test、evidence、pass 與 block 標籤。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Verification（驗證）是隔開持續進步與失控漂移（drift）的關鍵閘門。</figcaption>
+    </figure>
+    <p>這閘門不需要做到絕對完美，但它必須是非常明確且不可妥協的（explicit）。例如說：如果你做的是寫 code 的 loop，那你可能必須規定：一定要跑過 tests、通過靜態檢查（static checks），並且產出 diff（程式碼差異）的摘要。如果你做的是資料調研（research）的 loop，你可能需要它提供 source links（來源連結）、擷取的原文（extracted quotes），並且跑一次矛盾檢測（contradiction scan）。如果是客服支援（support）的 loop，可能需要檢索公司政策（policy retrieval），並在給客戶退款時加入 human approval gate（人工審批關卡）。</p>
+    <p>蠻厲害的耶，這套邏輯聽起來非常合理對不對？今天最核心的原則就是：<strong>這個 loop 絕對不能僅僅因為最後的 answer『聽起來很像完成了』，就自作主張把自己標記成 done！</strong>它必須拿出真憑實據（evidence）來通過驗證。</p>
+
+    <h2 id="memory-needs-a-retention-policy">Memory 也需要定期清理喔</h2>
+    <p>好，那我們繼續往下看。<strong>神奇的點就在這裡</strong>：一個重複運作的 loop，不管你有目標去設計它，它都一定會自己產生記憶（memory）！</p>
+    <p>這些記憶包括：日誌（logs）、摘要（summaries）、追蹤軌跡（traces）、未解決的任務、使用者的偏好（preferences）、失敗紀錄，以及一些運作時的小撇步（operational tricks）。但問題來了：這些 memory 到底是你精心挑選整理出來的（curated），還是只是隨機產生的歷史垃圾（accidental）？</p>
+    <figure class="post__concept-figure" data-generated-diagram="loop-engineering">
+      <img src="../../assets/blog-illustrations/loop-engineering/s08-memory-needs-a-retention-policy-clean.png?v=agent07-loop-engineering-clean-20260610-04" alt="深色 blueprint-style 圖，說明 memory retention policy，包含 write、source、age、review 與 delete 標籤。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Memory（記憶）需要明確的 retention policy，否則只會累積過期雜訊。</figcaption>
+    </figure>
+    <p>一個好的 loop memory 系統，一定會保留指標（pointers）、出處（provenance）和有效期（expiry）。它會清清楚楚地標示：這個教訓（lesson）是從哪裡學來的？它上一次發揮作用是什麼時候？還有，它什麼時候應該被重新審查（review）或直接刪掉（delete）。相反地，一個糟糕的 loop memory，就像是一個滿嘴胡言的人，塞給你的只有一堆『聽起來信心滿滿、但完全沒有出處、也不知道過期了多久的 summaries』。</p>
+    <p>所以，保持記憶的衛生（memory hygiene）是 loop 安全性的重中之重。一條過期、失效的指令（stale instruction），往往比完全沒有指令還要可怕！因為 Agent 會自以為是地把它當作『已經學到的寶貴經驗（learned experience）』去執行，結果就會造成大災難。</p>
+
+    <h2 id="human-review-belongs-at-boundaries">Human review 應該要放在邊界上</h2>
+    <p>大家也知道，人類的時間和注意力是非常昂貴的，所以 <strong>human review（人工審查）</strong> 絕對不能亂放。我們必須把它放在『最能影響關鍵決策』的地方。</p>
+    <p>你想看嘛，如果 Agent 產生的每一個 token 你都要人工 review 一次，那你不就成了人工輸入機器？這哪裡叫自動化，這白話文就是：多繞了好幾個冤枉路的手動工作流（manual workflow）而已！但如果你完全不 review 呢？那 loop一旦出錯，就會像滾雪球一樣不斷累積錯誤（compound errors）。</p>
+    <p>那<strong>怎麼辦呢？</strong></p>
+    <p>所以，最理想的定位是把 human review 放在 <strong>risk（風險）發生變化的邊界上（boundaries）</strong>！</p>
+    <figure class="post__concept-figure" data-generated-diagram="loop-engineering">
+      <img src="../../assets/blog-illustrations/loop-engineering/s09-human-review-belongs-at-boundaries-clean.png?v=agent07-loop-engineering-clean-20260610-04" alt="深色 blueprint-style 圖，說明 human review 位於 loop boundaries，包含 routine、risk change、public output 與 approval 標籤。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Human review 應該放在風險發生的 boundaries（邊界）上。</figcaption>
+    </figure>
+    <p>哪些是關鍵的風險邊界？例如：要動到 production（線上生產環境）了、要花真實的錢（spending money）了、要聯絡真實的使用者了、要公開發表內容了、要修改核心 policy（政策）了，或者是需要更新共享記憶體（shared memory）的時候。一個設計精良的 loop，它的特色就是：讓日常的例行公事（routine work）變得非常便宜、幾乎沒有額外成本；同時，一旦遇到跨越風險邊界（boundary crossings）的情況，就會變得無比顯眼、立刻攔截下來讓人類介入！</p>
+
+    <h2 id="what-i-would-build">如果是我的話，我會先 build 什麼？</h2>
+    <p>好，講了這麼多理論，那如果今天是我的話，我會想要先 build 一個什麼樣的 loop 系統呢？我絕對不會一上來就寫一個『能自我規劃、在所有系統裡到處亂跑』的超神大 Agent，那個太天方夜譚了。</p>
+    <p>我的做法非常簡單：<strong>從小地方開始。</strong></p>
+    <figure class="post__concept-figure" data-generated-diagram="loop-engineering">
+      <img src="../../assets/blog-illustrations/loop-engineering/s10-what-i-would-build-clean.png?v=agent07-loop-engineering-clean-20260610-04" alt="深色 blueprint-style 圖，說明 small observable loop，包含 single queue、dry run、logs、checks 與 manual gate 標籤。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>如果是我的話，我會先建立一個小巧、容易觀察的 loop，而不是一個盲目追求酷炫的自主系統。</figcaption>
+    </figure>
+    <p>就一個 queue。一個 trigger。一種 task（任務）的形狀。然後，一定要加上 <strong>dry-run mode（模擬運行模式）</strong>！設定一個非常清楚的 budget。產出人類可以輕鬆讀懂的 logs。設計一個『真的會失敗、不會假裝通過』的 verification 機制。在進行任何不可逆的操作（irreversible action）之前，加上一個手動的安全門檻（manual gate）。最後，每週做一次 review，把那些重複發生的 failures 拿出來分析，看看是要改 prompt、調整 tools、修改測試、還是調整 memory policy。</p>
+    <p><strong>就結束了，就這麼簡單！</strong></p>
+    <p>聽起來可能沒有那種『在各種系統之間穿梭自如的超級自主 AI（autonomous agent）』聽起來那麼刺激、那麼酷。但老實說，這才是唯一一個我自己敢真正信任、敢上線運作的系統。</p>
+
+    <h2 id="the-main-lesson">今天這堂課最重要的一擊</h2>
+    <p>所以，今天這堂課我們最想要傳達的核心觀念（the main lesson）是什麼？那就是：<strong>Agent 的 behavior，會在 loop 之中不斷地產生『複利效應（compounds）』！</strong></p>
+    <figure class="post__concept-figure" data-generated-diagram="loop-engineering">
+      <img src="../../assets/blog-illustrations/loop-engineering/s11-the-main-lesson-clean.png?v=agent07-loop-engineering-clean-20260610-04" alt="深色 blueprint-style 圖，說明 loops 是 agent behavior compound 的地方，包含 harness、timer、signal、gate 與 compounding behavior 標籤。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>今天最重要的一擊：Loop，才是 Agent 行為產生複利與失控的關鍵場所。</figcaption>
+    </figure>
+    <p>如果你只是單次執行拿到一個很爛的答案，那沒關係，那只是一個 bug。但如果你的 loop 設計得很爛，那你其實是在 build 一個<strong>會按照你的時鐘設定（on schedule）源源不絕自動製造出更多 bug 的『量產系統』</strong>！這真的很可怕。</p>
+    <p>不過，樂觀的一面也是完全成立的喔。一個設計優良的 loop，甚至能把一個能力平庸的 modest model，鍛鍊成一個非常有用的運業者（operator）！為什麼？因為這個系統會不斷挑出有邊界的任務、嚴格檢查結果、妥善保存有用的 memory，並在碰到邊界改變時及時向上呈報（escalate）。</p>
+    <p>這也就是為什麼，我認為 <strong>loop engineering</strong> 絕對值得擁有它自己獨立的名字！它絕對不只是 prompt engineering（提示詞工程）、context engineering（上下文工程）或 harness engineering 的附屬品。它是一門獨立的學問——一門<strong>讓 Agent 的重複性工作在漫長時間中保持優良行為的學問</strong>！</p>
+
+    <h2 id="concept-inventory">今天學到的概念清單</h2>
+    <p>我們今天聊到的實用 loop-engineering 概念，大家回去可以好好複習一下：</p>
+    <ul>
+      <li><strong>timer-triggered（定時觸發）</strong>與<strong>event-triggered（事件觸發）</strong>的 Agent 運作</li>
+      <li><strong>work queues（工作佇列）</strong>、<strong>leases（租約期限）</strong>、<strong>priority（優先級）</strong>、<strong>ownership（所有權）</strong>與過期（stale）項目的處理</li>
+      <li>單次運行中，針對 <strong>tokens</strong>、<strong>tools</strong>、<strong>time</strong>、<strong>retries</strong>、<strong>spend</strong> 與人類注意力所設定的 <strong>budgets（預算）</strong></li>
+      <li>針對重複失敗、沒有進展、風險臨界點與 escalation 所設計的 <strong>stop rules（停止規則）</strong></li>
+      <li>區分戰術型即時修正與戰略型 harness 升級的 <strong>feedback windows（回饋窗口）</strong></li>
+      <li>在將任務標示為完成之前，要求必須提供真憑實據（evidence）的 <strong>verification gates（驗證閘門）</strong></li>
+      <li><strong>memory retention policy（記憶保留政策）</strong>：包括 provenance（出處）、age（壽命）、review（審查）、expiry（過期）與 deletion（刪除）</li>
+      <li>將 <strong>human review（人工審查）</strong>放置在 risk boundaries（風險邊界），而不是卡在每一個日常步驟裡</li>
+      <li>在執行任何不可逆行為前，利用 <strong>dry-run mode（模擬模式）</strong>、可讀的 logs 和 manual gates 來保護系統</li>
+      <li>每週進行 <strong>weekly loop review</strong>，將重複出現的失敗轉化為系統的優化方向</li>
+    </ul>
+
+    <p>在我們下課之前，我們用 3 個重點來幫大家快速 Recap 今天的精華：</p>
+    <ol>
+      <li><strong>Harness 加上定時器就是 Loop</strong>：不要盲目追求大而無當的 autonomous agent，把重複的工作封裝進有邊界的 loop 才是王道。</li>
+      <li><strong>Budgets 與 Stop Rules 是防禦機制</strong>：透過模式偵測與上限限制，避免 Agent 陷入無效的重複迴圈或把你的錢包燒光。</li>
+      <li><strong>Verification 與 Human Review 守住邊界</strong>：絕不單憑聽起來很好的 answer 就給 pass，唯有 evidence 驗證與在風險邊界上的人工審查，才能確保系統不走鐘（drift）。</li>
+    </ol>
+    <p>以上就是我今天想跟大家分享的內容。好，那我們今天的課呢，就上到這邊。</p>
+
+    <section class="post__references" aria-labelledby="sources-and-references">
+      <h2 id="sources-and-references">來源與參考資料</h2>
+      <p>本系列的 companion context：</p>
+      <ul class="post__references-list">
+        <li><a href="ai-agent-harness-engineering.html">agent-04 · Harness engineering 才是讓 agent 真正有用的關鍵</a></li>
+        <li><a href="recursive-self-improving-ai-rubicon.html">agent-06 · Self-improving AI 是光譜，不是開關</a></li>
+      </ul>
+    </section>
+    </div><!-- /.post__body -->
+<footer class="post__footer" aria-label="文章導覽">
+      <ul class="post__nav" aria-label="較新與較舊文章">
+        <li class="post__nav__item post__nav__item--previous">
+          <span class="post__nav__disabled" aria-disabled="true">
+            <span class="post__nav__label">較新文章</span>
+            <span class="post__nav__title">最新文章</span>
+          </span>
+        </li>
+        <li class="post__nav__item post__nav__item--next">
+          <a href="recursive-self-improving-ai-rubicon.html">
+            <span class="post__nav__label">較舊文章</span>
+            <span class="post__nav__title">agent-06 · Self-improving AI 是光譜，不是開關</span>
+          </a>
+        </li>
+      </ul>
+    </footer>
+  </article>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <p>© <span id="year">2026</span> Arthur</p>
+      <p class="footer__links">
+        <a href="https://linkedin.com/in/arthur-yau" target="_blank" rel="noopener">LinkedIn</a> ·
+        <a href="https://github.com/imitation-alpha" target="_blank" rel="noopener">GitHub</a> ·
+        <a href="https://x.com/imitation_alpha" target="_blank" rel="noopener">X</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js" defer></script>
+<!-- GoatCounter pageview tracking (privacy-friendly, no cookies) -->
+  <script data-goatcounter="https://imitation-alpha.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

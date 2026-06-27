@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>agent-05 · AI 能自我修正嗎？從 decoding、workflow 到 reasoning 的技術全解析 — Arthur</title>
+  <meta name="description" content="AI 能不能自我修正？李宏毅老師這堂課把技術分成 decoding、workflow 和 reasoning 三層，用大白話告訴你：自我修正需要真實訊號，只靠自我反省是不夠的！" />
+  <meta name="theme-color" content="#0a0e0a" />
+  <meta name="author" content="Arthur Yau" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="agent-05 · AI 能自我修正嗎？從 decoding、workflow 到 reasoning 的技術全解析" />
+  <meta property="og:description" content="AI 能不能自我修正？李宏毅老師這堂課把技術分成 decoding、workflow 和 reasoning 三層，用大白話告訴你：自我修正需要真實訊號，只靠自我反省是不夠的！" />
+  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-self-correction-decoding-workflow-reasoning-xpost-cover.png?v=agent-series-cover-badge-fix-20260525-05" />
+  <meta property="og:image:width" content="1600" />
+  <meta property="og:image:height" content="900" />
+  <meta property="og:image:alt" content="深色 campaign cover，標題為 Self-Correction Needs A Signal，並呈現紅色技術 feedback-system layout。" />
+  <meta property="og:locale" content="zh_Hant" />
+  <meta property="article:author" content="Arthur Yau" />
+  <meta property="article:published_time" content="2026-05-19" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@imitation_alpha" />
+  <meta name="twitter:title" content="agent-05 · AI 能自我修正嗎？從 decoding、workflow 到 reasoning 的技術全解析" />
+  <meta name="twitter:description" content="AI 能不能自我修正？李宏毅老師這堂課把技術分成 decoding、workflow 和 reasoning 三層，用大白話告訴你：自我修正需要真實訊號，只靠自我反省是不夠的！" />
+  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-self-correction-decoding-workflow-reasoning-xpost-cover.png?v=agent-series-cover-badge-fix-20260525-05" />
+  <meta name="twitter:image:alt" content="深色 campaign cover，標題為 Self-Correction Needs A Signal，並呈現紅色技術 feedback-system layout。" />
+  <link rel="canonical" href="https://imitation-alpha.github.io/zh-Hant/blog/ai-self-correction-decoding-workflow-reasoning.html" />
+  <link rel="alternate" hreflang="en" href="https://imitation-alpha.github.io/blog/ai-self-correction-decoding-workflow-reasoning.html" />
+  <link rel="alternate" hreflang="zh-Hant" href="https://imitation-alpha.github.io/zh-Hant/blog/ai-self-correction-decoding-workflow-reasoning.html" />
+  <link rel="alternate" hreflang="x-default" href="https://imitation-alpha.github.io/blog/ai-self-correction-decoding-workflow-reasoning.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/styles.css?v=post-prev-next-20260521-0929" />
+</head>
+<body>
+  <a class="skip-link" href="#main">略過導覽</a>
+  <div class="read-progress" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="主導覽">
+    <div class="nav__inner">
+      <a class="nav__brand" href="../../index.html">Arthur</a>
+      <button class="nav__toggle" aria-label="切換導覽" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links">
+        <li><a href="../../index.html#about" hreflang="en">About (EN)</a></li>
+        <li><a href="../../index.html#experience" hreflang="en">Experience (EN)</a></li>
+        <li><a href="../../index.html#projects" hreflang="en">Projects (EN)</a></li>
+        <li><a href="index.html" class="active">文章</a></li>
+        <li><a href="../../index.html#publications" hreflang="en">Publications (EN)</a></li>
+        <li><button class="nav__theme" aria-label="切換主題">◑</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="post">
+    <a class="post__back" href="index.html">返回文章列表</a>
+
+    <header class="post__header">
+      <h1>agent-05 · AI 能自我修正嗎？從 decoding、workflow 到 reasoning 的技術全解析</h1>
+      <p class="post__lede">AI 能不能自我修正？李宏毅老師這堂課把技術分成 decoding、workflow 和 reasoning 三層，用大白話告訴你：自我修正需要真實訊號，只靠自我反省是不夠的！</p>
+      <p class="post__meta">
+        2026 年 5 月 19 日
+        <span class="dot">·</span>
+        <span data-reading-time>8 分鐘</span>
+        <span class="dot">·</span>
+        Arthur Yau
+        <span class="dot view-dot" hidden>·</span>
+        <span data-views data-views-label="次瀏覽" hidden></span>
+      </p>
+      <p class="post__lang">
+        這篇文章也提供
+        <a href="../../blog/ai-self-correction-decoding-workflow-reasoning.html" hreflang="en" lang="en">English</a>
+        版本。
+      </p>
+      <figure class="post__hero">
+        <img src="../../assets/blog-headers/ai-self-correction-decoding-workflow-reasoning-xpost-cover.png?v=agent-series-cover-badge-fix-20260525-05" alt="深色 campaign cover，標題為 Self-Correction Needs A Signal，並呈現紅色技術 feedback-system layout。" width="1600" height="900" loading="eager" decoding="async" />
+      </figure>
+    </header>
+
+
+    <aside class="post__toc" aria-label="目錄">
+      <p class="post__toc__label">內容大綱</p>
+      <ul>
+        <li><a href="#layer-1-decoding">第 1 層：decoding</a></li>
+        <li><a href="#the-cost-problem">成本問題</a></li>
+        <li><a href="#layer-2-workflow">第 2 層：workflow</a></li>
+        <li><a href="#reflection-has-a-compute-baseline">reflection 有 compute baseline</a></li>
+        <li><a href="#the-four-outcomes-of-revision">revision 的四種結果</a></li>
+        <li><a href="#layer-3-reasoning">第 3 層：reasoning</a></li>
+        <li><a href="#knowing-the-fact-is-not-enough">知道事實還不夠</a></li>
+        <li><a href="#revise-and-the-distribution-shift-problem">REVISE 與 distribution shift 問題</a></li>
+        <li><a href="#did-rl-learn-something-new">RL 學到了新東西嗎？</a></li>
+        <li><a href="#my-practical-takeaway">我的實務 takeaway</a></li>
+        <li><a href="#the-main-lesson">核心教訓</a></li>
+        <li><a href="#concept-inventory">概念清單</a></li>
+      </ul>
+    </aside>
+
+
+    <div class="post__body" id="main">
+    <p>各位同學大家好啊，那我們就準備來上課吧。今天這堂課呢，我們要來聊聊 AI self-correction，也就是 AI 能不能自己修正自己的錯誤這個問題。</p>
+    <p>大家知道，以前模型寫錯答案，只要人類在旁邊敲一下頭，說「欸你這裡寫錯了喔」，它就會乖乖修改。這很常見嘛。但今天如果沒有人類在旁邊當導師，AI 自己有沒有辦法在生成的過程中，偵測到錯誤並把它修掉呢？這就是我們今天這堂課的重點啦！</p>
+    <p>為了幫大家理清頭緒，李宏毅老師今天把這個技術領域整理成三個層次：</p>
+    <ol>
+      <li>改變 decoding（不修改模型權重，只改變選 token 的方式）</li>
+      <li>改變 workflow（在外面包一層工作流流程來做檢查）</li>
+      <li>透過 reasoning training 改變模型（把糾錯能力直接內化進去）</li>
+    </ol>
+    <p>這三個層次的分類非常重要。為什麼？更新了之後的人們不管三七二十一，都把這三者混在一起叫「self-correction」。其實它們根本是不一樣的東西嘛！</p>
+    <blockquote><p><strong>Builder takeaway（開發者筆記）：一言以蔽之，self-correction 的核心其實就是你必須要有一個真實的 signal（訊號）而已。</strong> 無論你是要用 tests（測試）、verifiers（驗證器）、retrieved evidence（檢索證據）、contrastive baselines（對比基準），還是 trained rewards（訓練好的獎勵機制），一定要先拿到一個實實在在的訊號，才能相信模型真的把答案修好了。如果只叫它坐在那裡「閉著眼睛自我反省」，那通常只是自己騙自己啦！</p></blockquote>
+
+    <p>今天我們分成幾個部分：我們先來看 decoding 層面，看看怎麼在不修改模型權重的情況下微調 token 輸出；接著看 workflow 層面，看看怎麼在外面套一層流程來幫忙檢查；最後，我們來看真正的魔王級關卡，也就是 reasoning 層面，看看怎麼讓模型在生成答案之前，就在腦海裡完成自我糾正。</p>
+
+    <h2 id="layer-1-decoding">第 1 層：decoding</h2>
+    <p>第一大類的方法呢，非常神奇。它完全不需要去動到模型的 weights（權重），而是直接在下一個 token 的機率分布上動手腳喔。</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s01-layer-1-decoding.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Layer 1: decoding，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>第一個 self-correction 家族改變的是 decoding，而不是模型權重。</figcaption>
+    </figure>
+    <p>它的核心概念其實就是 <strong>contrastive decoding</strong>。</p>
+    <p>一般 LLM 在生成的時候，不是會給所有可能的 token 一個機率分布嗎？那我們可以刻意再去製造另一個「比較糟糕、容易犯錯」的分布，然後把原本好的分布減掉這個壞的分布。這樣一來，不好的 token 就會被我們過濾掉啦！</p>
+    <p>用最簡單的大白話公式來寫，其實就是：</p>
+    <pre><code class="language-text">better_answer = normal_distribution - bad_distribution</code></pre>
+    <p>這時候你一定會問：這個「壞的分布」要怎麼來？</p>
+    <p>以前最簡單的方法是，拿一個比它小的 model 來跑。因為大 model 和小 model 都容易對一些廢話（generic continuation）給出很高的機率，但大 model 對正確答案的掌握度通常更高。那我們把大 model 的分布減掉小 model 的分布，就能把那些干擾的廢話 token 給除掉啦！</p>
+    <p>那如果不想拿另一個小 model 怎麼辦呢？這時候就有人提出了 <strong>DoLa</strong>（Decoding by Contrasting Layers）。它的原理很妙：同一個 model 裡面，比較前面的 layers 可以看成是「還沒想清楚的初步猜測」，後面的 layers 則是「深思熟慮後的精煉結論」。那我們直接用後面 layers 的分布減掉前面 layers 的分布，就能把不成熟的猜測過濾掉。這個早期的 layer 就像是你在國中時候做的蠢決定，後期的 layer 則是長大後的你。我們把長大後的決策扣掉國中時的中二想法，留下來的就是比較成熟的答案啦。這蠻厲害的耶！</p>
+    <p>如果是 RAG（檢索增強生成）的場景，也有類似的玩法，叫作 <strong>context-aware decoding</strong>。我們先把 retrieved documents（檢索到的文件）餵給模型跑一次，再不餵文件跑一次。不餵文件時跑出來的，往往就是模型自己的 hallucination（幻覺）或是 parametric prior（預訓練偏誤）。那我們把兩者拿來相減，扣掉幻覺分布，就能強迫模型百分之百依賴檢索到的正確 context 了！</p>
+    <p>在視覺（Vision）或音訊（Audio）模型上也有一樣的套路：把圖片模糊化、拿掉圖片加雜訊，或者把音訊變靜音。這個「被降級的輸入」可以揭露出模型的偏見（prior）。只要把這部分減掉，就能強迫模型看清現實。</p>
+    <p>欸你知道嗎？神奇的點就在這裡！它把 hallucination 當成一個可以被估計的方向，只要知道這個方向在哪裡，我們在選 token 的時候往反方向走就好了嘛！這確實是一個非常漂亮的想法，就這樣子，不需要去重新 train 你的 weights，靠著選 token 的時候加加減減，就結束了，就這麼簡單。</p>
+
+    <h2 id="the-cost-problem">成本問題</h2>
+    <p>雖然這招很酷，但眼尖的同學一定發現問題了：這需要額外的 inference（推理）成本啊！因為你得跑兩次模型——一次正常跑，一次在降級條件下跑，這樣才能相減嘛。</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s02-the-cost-problem.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 The cost problem，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Contrastive decoding 通常是拿額外的 inference 成本來換取回答品質。</figcaption>
+    </figure>
+    <p>這成本可是非常昂貴的耶！怎麼辦呢？</p>
+    <p>上課時就有提到一個解決方案：<strong>minimum test-time intervention (MTI)</strong>。意思就是，我們不要每一個 token 都拿來做 contrastive decoding 嘛。只有在模型自己覺得「很迷茫、信心不足」（也就是 entropy 很高的時候），我們才出手干預，花額外的 compute 幫它過濾 token。其他很有把握的 token 就照常輸出就好啦。這很符合直覺，大多數 token 不會改變世界，只在決策點花額外 compute 就可以啦！</p>
+    <p>另外，如果 normal 和 contrastive 的輸入前面有一長串重複的 prefix，我們還可以透過 <strong>KV cache reuse</strong> 來重複使用 cache。這些工程上的細節在實際系統中非常關鍵。不然的話，你一個再厲害的算法，如果代價是把每一次推理成本直接翻倍，那在實務上一定會被無聊但便宜的 baseline 給打敗的啦！你看，加上這些工程細節，就這樣子。</p>
+
+    <h2 id="layer-2-workflow">第 2 層：workflow</h2>
+    <p>第二類的方法，就是我們大家最熟悉的做法啦：不要動模型底層，而是在模型外面包上一層「流程」（process）。</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s03-layer-2-workflow.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Layer 2: workflow，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Workflow 層面是把模型包在一個可以主動捕捉錯誤的流程（process）中。</figcaption>
+    </figure>
+    <p>我們先讓模型生成一個答案，然後把答案餵回給它，或者是給另一個模型，叫立它去檢查。我們叫它 reflect（反省）、寫測試、查清單（checklist）、上網 Google，或者把答案丟給專門的 verifier（驗證器）。</p>
+    <p>這聽起來就像是我們在用 ChatGPT 或 Claude 時會打的 prompt：</p>
+    <pre><code class="language-text">Are you sure?
+Check your work.
+Find the bug.
+Revise the answer.</code></pre>
+    <p>但李宏毅老師在這裡特別警告：<strong>純粹的 self-reflection，效果其實非常不可靠喔。</strong></p>
+    <p>因為模型在修改的過程中，確實可能把「錯的改成對的」；但它同樣也有可能把「原本寫對的改成錯的」啊！你一直問它「你確定嗎？」，只會增加它想要修改的意願，但不代表修改後的答案會變更正確嘛。</p>
+    <p>這就是為什麼這堂課特別把這類手段細分成兩種：<strong>internal self-reflection（內部自我反省）</strong>和 <strong>external feedback（外部回饋機制）</strong>。</p>
+    <p>Internal reflection 就是模型不依賴任何外部新證據，單純在自己的心裡玩內心戲、自我懷疑。這通常沒什麼用啦。</p>
+    <p>而 External feedback 則是提供模型一個扎實的訊號：像是編譯器的 compiler error、寫好的一段 test case、剛查出來的檢索文件、一份明確的 checklist、人類的具體 comment，或者是模擬器的 output。</p>
+    <p>這就像是你寫數學題，寫完了你自己檢查十遍，可能還是看不出粗心在哪裡。但如果旁邊有一台計算機（external feedback）按一下，對就是對，錯就是錯，你馬上就能修。所以啊，有外部 feedback 才是真理，只靠內心戲通常只會自己騙自己啦。在實務上，external feedback 通常是更好的賭注！</p>
+
+    <h2 id="reflection-has-a-compute-baseline">reflection 有 compute baseline</h2>
+    <p>接著，老師提出了一個非常犀利、也是最容易被大家忽略的提醒：<strong>Reflection 是有 compute baseline 的！</strong></p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s04-reflection-has-a-compute-baseline.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Reflection has a baseline，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Reflection 不是免費的魔法；它必須要能勝過同等運算預算下的 baseline 才有意義。</figcaption>
+    </figure>
+    <p>假設你設計了一個 self-reflection 工作流，它總共需要調用三次模型：一次生成、一次反思、一次修改。這等於花了三倍的 compute 資源耶！</p>
+    <p>那你拿它去跟一個「只調用一次模型的原始答案」做對比，本來就不公平嘛。你既然有三倍的預算，你其實可以直接用 <strong>majority vote</strong>（多數決）啊！也就是直接並行生成三個獨立的答案，然後選票數最多的那一個。</p>
+    <p>如果你的 reflection 工作流花了大半天，結果居然還贏不了簡單粗暴的 majority vote，那你這個工作流就完全不值得了嘛！你沒有看錯，這就是最常被忽視的盲點。我們在做系統的時候，不能被一些花俏的字眼給騙了，要把資源花在刀口上啊！</p>
+
+    <h2 id="the-four-outcomes-of-revision">revision 的四種結果</h2>
+    <p>這堂課對模型修改（revision）結果的分類，真的是簡單又清晰：</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s05-the-four-outcomes-of-revision.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Four outcomes of revision，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Revision 一共有四種結果，而且其中有兩種是我們不想要的壞結果。</figcaption>
+    </figure>
+    <ul>
+      <li>wrong to right（從錯變對：最棒的夢想！）</li>
+      <li>right to right（從對維持對）</li>
+      <li>wrong to wrong（從錯還是錯）</li>
+      <li>right to wrong（從對變錯：大惡夢！）</li>
+    </ul>
+    <p>為了評估模型到底是變聰明還是變瞎，我們可以使用兩個關鍵指標：</p>
+    <ul>
+      <li><strong>Confidence Level（置信度 / 穩定度）</strong>：如果原本的答案是對的，模型在重審時能堅持保留它的機率有多高？</li>
+      <li><strong>Critic Score（批判度 / 修正度）</strong>：如果原本的答案是錯的，模型能成功把它修好的機率有多高？</li>
+    </ul>
+    <p>如果一個模型你跟它講什麼它都改，那代表它非常有彈性（plasticity 高），但毫無堅持（stability 低）；反過來，如果不管你怎麼說它都打死不改，那它穩定度很高，但就失去了解決問題和糾錯的能力。</p>
+    <p>欸你知道嗎？神奇的點就在這裡！模型表現出來的「性格」，其實可以用 prompt 輕易改變喔！你如果一直誇它（praise），它就會自信爆棚、死不認錯（Confidence Level 高）；如果你一直懷疑它（doubt），它就會變得極度自卑，就算寫對了也硬要改成錯的（Critic Score 高，但 right to wrong 也變多）。這蠻好笑的耶，感覺調 prompt 簡直就是在做心理輔導，模型的 personality 居然是調 prompt 出來的，蠻厲害的耶。</p>
+
+    <h2 id="layer-3-reasoning">第 3 層：reasoning</h2>
+    <p>第三大類呢，就是真正的大絕招了——我們想辦法把「自我修正」的能力，直接內化（internalize）進模型的權重裡面！</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s06-layer-3-reasoning.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Layer 3: reasoning，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Reasoning 層面是在輸出最終答案之前，在模型內部的思考鏈中完成糾錯。</figcaption>
+    </figure>
+    <p>與其在外面套一個工作流一直喊「你要不要再想想看」，不如直接去訓練模型，讓它在思考（reasoning process）的過程中，就自動完成檢查和修改。</p>
+    <p>這時候，強化學習（RL）和 <strong>verifiable rewards</strong> 就登場啦！像是在數學解題或寫 code 的場景下，最終答案對就是對、錯就是錯，非常容易自動驗證。模型在生成一長串 reasoning tokens 時，如果最後算出來的答案是正確的，它就會拿到 positive reward；寫錯了，就拿到 negative reward。</p>
+    <p>神奇的是，我們完全不需要去人工標註中間的每一步思考（thought），只要給它最終的 verification signal，模型在大量 RL 訓練下，就會自動湧現（emergent）出驚人的 <strong>emergent verification</strong>能力！它在思考鏈中，會自己寫到一半發現「欸，不對，我前面好像算錯了，應該倒回去換個方法」，然後在最後給出正確答案。</p>
+    <p>這就像是動漫《葬送的芙莉蓮》裡面的魔族一樣，他們一輩子都在研究魔力，魔法已經內化成他們的直覺了，根本不需要吟唱。Reasoning-trained model 在思考的時候，自動在內部完成了自我糾正，這才是真正的 self-correction 境界啊！</p>
+
+    <h2 id="knowing-the-fact-is-not-enough">知道事實還不夠</h2>
+    <p>不過老師也給了大家一個非常重要的觀念提醒：<strong>模型內部「知道這個事實」，不代表它「會用這個事實來糾錯」喔。</strong></p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s07-knowing-the-fact-is-not-enough.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Knowing the fact is not enough，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>在模型內存有這項事實，跟能不能動態調用它來修正錯誤，是兩碼子事。</figcaption>
+    </figure>
+    <p>白話文就是，很多時候模型明明在預訓練時就已經背過某個正確的知識點了，但當你問它另一個相關問題時，它還是會寫錯。為什麼？因為它根本沒意識到要調用這個知識，或是它的思考路徑（routing）走歪了，也沒有觸發自我懷疑的機制。所以這不是「知不知道」的問題，而是「控制」與「調度」的問題。這蠻奇妙的耶。</p>
+
+    <h2 id="revise-and-the-distribution-shift-problem">REVISE 與 distribution shift 問題</h2>
+    <p>接著，課堂上討論到了一個叫作 <strong>REVISE</strong> 的架構。這個架構的想法非常合邏輯：把「錯誤偵測」（error detection）跟「錯誤修正」（error correction）這兩種不同的超能力拆開來訓練。</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s08-revise-and-the-distribution-shift-problem.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 REVISE and distribution shift，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>REVISE 架構將錯誤偵測與糾正拆開，但這也帶來了 distribution shift 的風險。</figcaption>
+    </figure>
+    <p>模型在回答完之後，會先學著去偵測這個答案有沒有瑕疵。如果有，它就會輸出一個特殊的 `refine`（修飾）token。看到這個 token 之後，它再切換到糾錯模式，產生修正後的最終答案。</p>
+    <p>雖然這個拆解聽起來很完美，但怎麼辦呢？這裡面藏著一個非常陰險的問題，就是 <strong>distribution shift（分布偏移）</strong>。</p>
+    <p>因為一旦你 fine-tune 完模型之後，它被訓練得更聰明了，它犯錯的類型 and 頻率也會跟著改變。這時候，你當初用來訓練它偵測錯誤的那個舊數據集（dataset），可能早就已經不符合新模型的犯錯分布了！這就是自我提升（self-improvement）中常見的坑——你用昨天的錯誤去訓練今天的新模型，很可能只是在追逐一個不斷移動的靶心而已。</p>
+
+    <h2 id="did-rl-learn-something-new">RL 學到了新東西嗎？</h2>
+    <p>在課程的尾聲，老師提到了一個目前學術界吵得最兇、也非常有趣的爭論：<strong>RL 到底有沒有教給模型「新的 reasoning 能力」？</strong></p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s09-did-rl-learn-something-new.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Did RL learn something new?，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>學術界仍在爭論：RL 到底是教了模型全新的推導路徑，還是僅僅重新分配了路徑的權重。</figcaption>
+    </figure>
+    <p>第一種觀點認為：<strong>其實並沒有。</strong></p>
+    <p>他們覺得 base model 原本就已經會那些正確的推導路徑（reasoning paths）了，只是那些路徑的生成機率被壓得很低而已。RL 做的，只不過是幫它把這些原本很冷門、但正確的路徑「調高權重」（reweight）罷了。這就好像是你拿 pass@k 去測 base model，抽樣很多次，它最後通常也能跑出對的答案嘛。</p>
+    <p>另一種觀點則認為：<strong>RL 確實教出了全新的邏輯行為。</strong></p>
+    <p>因為如果你去觀察 RL 訓練完之後的思考鏈（chain of thought），在遇到更難、原本完全沒見過的極端評估路徑時，模型展現出來的推理深度和纠錯模式是 base model 根本做不到的。這代表有一些更深層的推導能力被激發、創造出來了。</p>
+    <p>那李宏毅老師的態度非常包容，他覺得這兩種觀點其實不互斥：在訓練的早期階段，可能確實只是在把好路徑重新加權；但隨著訓練愈來愈深入，模型真的會產生全新的 reasoning 概念和新能力。所以其實雙方都對，就看你 train 到什麼程度而已，就這樣子。</p>
+
+    <h2 id="my-practical-takeaway">我的實務 takeaway</h2>
+    <p>如果你現在要動手寫一個 AI Agent，希望它能具備自我修正的能力，請你千萬不要一上來就在 prompt 裡面寫「請自我反省一下你的回答」喔。那是最弱、最沒用的做法啦！</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s10-my-practical-takeaway.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Practical takeaway，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>開發實用的 Agent 系統時，請優先考慮測試和反饋，而不是毫無根據的自我反思。</figcaption>
+    </figure>
+    <p>我會建議大家按照下面這個「實戰天梯」來規劃：</p>
+    <ol>
+      <li><strong>有沒有辦法取得 external verifier？</strong>（比如編譯器、計算機或測試腳本。有外部真實訊號最重要！）</li>
+      <li><strong>能不能跑 test、search、compiler、simulator 或 checklist？</strong>（基於 Grounded 的反饋才是真理。）</li>
+      <li><strong>能不能便宜地比較 multiple samples？</strong>（如果預算夠，多生成幾個答案做 majority vote，這往往是最無腦但最強的 baseline。）</li>
+      <li><strong>在幻覺特徵很明顯的場景下，能不能用 contrastive decoding？</strong>（利用 token 加減法把不好的分布扣掉。）</li>
+      <li><strong>能不能直接去 fine-tune，或者選擇本身就具備強 reasoning 能力的模型？</strong>（比如有經過 reasoning-RL 訓練的模型。）</li>
+    </ol>
+    <p>除非你的任務完全沒有任何外部訊號，否則「純自我反思」絕對要放在你清單的最末端，不要一上來就叫模型面壁思過，那真的沒什麼用啦。</p>
+
+    <h2 id="the-main-lesson">核心教訓</h2>
+    <p>所以，我們今天最大的收穫是什麼？</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/ai-self-correction-decoding-workflow-reasoning/s11-the-main-lesson.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 The main lesson，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Self-correction 從來都不是單一的萬靈丹，它是由三個層次拼湊起來的完整拼圖。</figcaption>
+    </figure>
+    <p>Self-correction 絕對不是只有一種魔法機制。</p>
+    <p>在 decoding 層面，我們在選 token 的時候把機率引導遠離那些被估計出來 of error states。</p>
+    <p>在 workflow 層面，我們用 verification 和 feedback 把生成過程重重包裝起來，逼模型面對現實。</p>
+    <p>在 reasoning 層面，我們試圖直接去訓練模型，讓它在最後拍板答案之前，在心裡默默地完成檢查與修正。</p>
+    <p>而這一切的核心教訓，就是<strong>自我修正必須要依賴訊號（signal）。</strong>沒有真實訊號的自我修正，那不叫糾錯，那只是換一種講廢話的風格而已啦！最好的自我修正系統，一定會是這三層的結合：更聰明的 token decoding、實實在在的外部 feedback，以及在內部思考鏈中能完美駕馭反饋的 reasoning 模型。</p>
+    <p>把這三層結合起來，這就是目前 AI 自我修正的完整拼圖了，就這樣子，就這麼簡單。</p>
+
+    <h2 id="concept-inventory">概念清單</h2>
+    <p>這堂課的主要 self-correction 概念：</p>
+    <ul>
+      <li>self-correction 是在沒有人類直接給答案的情況下進行 error detection（錯誤偵測）加 error correction（錯誤修正）</li>
+      <li>不更新 model weights 的 decoding-level methods（解碼層次方法）</li>
+      <li>contrastive decoding（對比解碼）與扣掉 error-prone distribution 的想法</li>
+      <li>控制 contrast（對比）強度的 alpha 或 omega weights</li>
+      <li>用較小 model 當作 error model（錯誤模型）</li>
+      <li>用 logit lens 檢查 intermediate-layer predictions（中間層預測）</li>
+      <li>DoLa，也就是 Decoding by Contrasting Layers</li>
+      <li>multimodal models（多模態模型）裡的 layer contrastive decoding</li>
+      <li>使用刻意糟糕 instruction 的 instruction contrastive decoding</li>
+      <li>RAG 裡透過對比有無 retrieved documents 的 context-aware decoding</li>
+      <li>透過移除、模糊或遮罩圖片的 visual contrastive decoding</li>
+      <li>對比正常音訊與降級音訊的 audio-aware decoding</li>
+      <li>高 entropy token 上的 minimum test-time intervention</li>
+      <li>用 KV cache reuse 降低 contrastive decoding 成本</li>
+      <li>VISTA-style representation intervention</li>
+      <li>attention-level contrastive methods，例如 ACG</li>
+      <li>workflow-level generation（生成）、verification（驗證）、reflection（反思）與 revision（修正）</li>
+      <li>internal self-reflection（內部自我反省）對比 external feedback（外部反饋）</li>
+      <li>RefineBench-style multi-round refinement evaluation</li>
+      <li>四種 revision outcomes：wrong to right、right to right、wrong to wrong、right to wrong</li>
+      <li>Confidence Level（置信度）與 Critic Score（批判度）</li>
+      <li>accuracy relationship（準確率關係式） <code>ACC2 = ACC1 * CL + (1 - ACC1) * CS</code></li>
+      <li>reflection prompt personality effects，例如稱讚會保留答案、懷疑會增加修改</li>
+      <li>majority vote（多數決）作為 compute-matched baseline</li>
+      <li>reasoning（推理）作為 internalized correction（內化糾錯）</li>
+      <li>知道一個 fact，對比知道何時用它來 correction</li>
+      <li>correction states 的 steering vectors（引導向量）</li>
+      <li>REVISE 與 refine tokens</li>
+      <li>用舊錯誤模式訓練時的 distribution shift（分布偏移）</li>
+      <li>RL（強化學習）與具可驗證 reward 的 RLVR</li>
+      <li>reasoning training 後的 emergent verification（湧現驗證）</li>
+      <li>thinking cost（思考成本）與 reasoning-token budgets</li>
+      <li>reasoning 透過 decomposing problems（拆解問題）降低 sample complexity</li>
+      <li>parity 或 XOR 作為 multi-step reasoning 壓縮複雜度的例子</li>
+      <li>pass@k 與 RL 是否只是重新加權既有路徑的問題</li>
+      <li>training-free sampling methods，例如 COTPath-style path selection 或 checking</li>
+    </ul>
+
+    <p>好，最後我們來做個溫馨的三點總結：</p>
+    <ol>
+      <li>第一，不要迷信單純的自我反省（internal reflection），沒有真實的外部 signal，自我反省通常只是在瞎猜、瞎改而已。</li>
+      <li>第二，如果你有運算資源，記得拿 majority vote 做基準線。如果你的 workflow 贏不了多抽幾次答案，那就別浪費電了。</li>
+      <li>第三，真正的自我修正大師是透過 reasoning training 訓練出來的，它能把糾錯內化成直覺，就像魔族使用魔法一樣自然。</li>
+    </ol>
+    <p>以上就是我今天想跟大家分享的內容。好，那我們今天的課呢，就上到這邊。</p>
+
+    <section class="post__references" aria-labelledby="sources-and-references">
+      <h2 id="sources-and-references">來源與參考資料</h2>
+      <p>本文主要觀看的來源：</p>
+      <ul class="post__references-list">
+        <li><a href="https://www.youtube.com/watch?v=m3i2mk5hs8U&amp;t=381s" target="_blank" rel="noopener">AI 能自我修正嗎？從 decoding、workflow 到 reasoning 的技術發展整理</a></li>
+      </ul>
+    </section>
+    </div><!-- /.post__body -->
+<footer class="post__footer" aria-label="文章導覽">
+      <ul class="post__nav" aria-label="較新與較舊文章">
+        <li class="post__nav__item post__nav__item--previous">
+          <a href="recursive-self-improving-ai-rubicon.html">
+            <span class="post__nav__label">較新文章</span>
+            <span class="post__nav__title">agent-06 · Self-improving AI 是光譜，不是開關</span>
+          </a>
+        </li>
+        <li class="post__nav__item post__nav__item--next">
+          <a href="ai-agent-harness-engineering.html">
+            <span class="post__nav__label">較舊文章</span>
+            <span class="post__nav__title">agent-04 · Harness engineering 才是讓 agent 真正有用的關鍵</span>
+          </a>
+        </li>
+      </ul>
+    </footer>
+  </article>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <p>© <span id="year">2026</span> Arthur</p>
+      <p class="footer__links">
+        <a href="https://linkedin.com/in/arthur-yau" target="_blank" rel="noopener">LinkedIn</a> ·
+        <a href="https://github.com/imitation-alpha" target="_blank" rel="noopener">GitHub</a> ·
+        <a href="https://x.com/imitation_alpha" target="_blank" rel="noopener">X</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js" defer></script>
+<!-- GoatCounter pageview tracking (privacy-friendly, no cookies) -->
+  <script data-goatcounter="https://imitation-alpha.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

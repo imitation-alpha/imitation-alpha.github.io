@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>同時駕馭 10+ 個 CLI 程式設計 agent 的設定方式 — Arthur</title>
+  <meta name="description" content="如何用 tmux、Tailscale、iOS 上的 Termius，加上一個小型 PWA 控制台，同時操控 10+ 個並行 CLI 程式設計 agent。" />
+  <meta name="theme-color" content="#0a0e0a" />
+  <meta name="author" content="Arthur Yau" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="同時駕馭 10+ 個 CLI 程式設計 agent 的設定方式" />
+  <meta property="og:description" content="tmux、Tailscale、iOS 上的 Termius，加上一個小型 PWA 控制台 — 同時駕馭 10+ 個並行程式設計 agent 的方法。" />
+  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/orchestrating-coding-agents.png?v=selected-headers-20260520-0635" />
+  <meta property="og:image:width" content="1600" />
+  <meta property="og:image:height" content="900" />
+  <meta property="og:image:alt" content="抽象深色技術插圖，呈現透過 tmux 式格狀面板與手機控制台同時駕馭多個 CLI 程式設計 agent。" />
+  <meta property="og:locale" content="zh_Hant" />
+  <meta property="article:author" content="Arthur Yau" />
+  <meta property="article:published_time" content="2026-04-28" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@imitation_alpha" />
+  <meta name="twitter:title" content="同時駕馭 10+ 個 CLI 程式設計 agent 的設定方式" />
+  <meta name="twitter:description" content="tmux、Tailscale、iOS 上的 Termius，加上一個小型 PWA 控制台 — 在桌面或火車上同時駕馭 10+ 個並行程式設計 agent 的方法。" />
+  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/orchestrating-coding-agents.png?v=selected-headers-20260520-0635" />
+  <meta name="twitter:image:alt" content="抽象深色技術插圖，呈現透過 tmux 式格狀面板與手機控制台同時駕馭多個 CLI 程式設計 agent。" />
+  <link rel="canonical" href="https://imitation-alpha.github.io/zh-Hant/blog/orchestrating-coding-agents.html" />
+  <link rel="alternate" hreflang="en" href="https://imitation-alpha.github.io/blog/orchestrating-coding-agents.html" />
+  <link rel="alternate" hreflang="zh-Hant" href="https://imitation-alpha.github.io/zh-Hant/blog/orchestrating-coding-agents.html" />
+  <link rel="alternate" hreflang="x-default" href="https://imitation-alpha.github.io/blog/orchestrating-coding-agents.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/styles.css?v=post-prev-next-20260521-0929" />
+</head>
+<body>
+  <a class="skip-link" href="#main">略過導覽</a>
+  <div class="read-progress" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="主導覽">
+    <div class="nav__inner">
+      <a class="nav__brand" href="../../index.html">Arthur</a>
+      <button class="nav__toggle" aria-label="切換導覽" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links">
+        <li><a href="../../index.html#about" hreflang="en">About (EN)</a></li>
+        <li><a href="../../index.html#experience" hreflang="en">Experience (EN)</a></li>
+        <li><a href="../../index.html#projects" hreflang="en">Projects (EN)</a></li>
+        <li><a href="index.html" class="active">文章</a></li>
+        <li><a href="../../index.html#publications" hreflang="en">Publications (EN)</a></li>
+        <li><button class="nav__theme" aria-label="切換主題">◑</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="post">
+    <a class="post__back" href="index.html">返回文章列表</a>
+
+    <header class="post__header">
+      <h1>同時駕馭 10+ 個 CLI 程式設計 agent 的設定方式</h1>
+      <p class="post__lede">tmux、Tailscale、iOS 上的 Termius，加上一個小型 PWA 控制台 — 在桌面或火車上同時駕馭 10+ 個並行程式設計 agent 的方法。</p>
+      <p class="post__meta">
+        2026 年 4 月 28 日
+        <span class="dot">·</span>
+        <span data-reading-time>8 分鐘</span>
+        <span class="dot">·</span>
+        Arthur Yau
+        <span class="dot view-dot" hidden>·</span>
+        <span data-views data-views-label="次瀏覽" hidden></span>
+      </p>
+      <p class="post__lang">
+        本文採用李宏毅式教學風格改寫。原文請參見
+        <a href="../../blog/orchestrating-coding-agents.html" hreflang="en" lang="en">English</a>
+        版本。
+      </p>
+      <figure class="post__hero">
+        <img src="../../assets/blog-headers/orchestrating-coding-agents.png?v=selected-headers-20260520-0635" alt="抽象深色技術插圖，呈現透過 tmux 式格狀面板與手機控制台同時駕馭多個 CLI 程式設計 agent。" width="1600" height="900" loading="eager" decoding="async" />
+      </figure>
+    </header>
+
+
+    <aside class="post__toc" aria-label="目錄">
+      <p class="post__toc__label">內容大綱</p>
+      <ul>
+        <li><a href="#stack">技術組合</a></li>
+        <li><a href="#tmux">一個專案一個 tmux session</a></li>
+        <li><a href="#tailscale">Tailscale：自家主機、零對外曝險</a></li>
+        <li><a href="#termius">手機上的 Termius</a></li>
+        <li><a href="#gui">真的需要 GUI 的時候</a></li>
+        <li><a href="#panel">缺失的那塊：一個總覽所有 agent 的控制台</a></li>
+        <li><a href="#what-id-add">還想加上的東西</a></li>
+        <li><a href="#install">設定指南：tmux、Tailscale、Termius</a></li>
+        <li><a href="#configs">附錄：~/.vimrc</a></li>
+        <li><a href="#further-reading">延伸閱讀</a></li>
+      </ul>
+    </aside>
+
+
+    <div class="post__body" id="main">
+    <p>
+      各位同學大家好啊，那我們就準備來上課吧。今天這堂課呢，我們要來聊聊怎麼在實務上同時駕馭 10+ 個 CLI 程式設計 agent。
+    </p>
+    <p>
+      欸你知道嗎？在平常的工作日裡，我的電腦上隨時都跑著 10+ 個 CLI 程式設計 agent 在並行運作喔！這裡面有 <strong>Claude Code</strong>，有 <strong>Codex</strong>，還有 <strong>Gemini CLI</strong>。
+    </p>
+    <p>
+      你想想看，同時跑 10 幾個 agent 幫你寫 code，這感覺像什麼？這感覺就像是你在《葬送的芙莉蓮》裡面，同時召喚了 10 幾個魔族魔法使來當你的免費勞工啊！對不對？有些魔族在幫你跑需要長時間的大型任務（例如開發新功能、做資料 pipeline、訓練模型、或者進行深度的技術調查）；有些魔族則是在幫你處理各種繁雜的雜事（像是 commit、開 PR、code review，或是寫寫 document 這樣）。
+    </p>
+    <p>
+      很多朋友就在問我說：「欸，Arthur，你同時跑這麼多個 agent，你的電腦、你的腦袋難道不會直接爆炸、崩潰成一團混亂嗎？」所以今天，我們就來公開這一整套極致省力的「馴魔術」設定。
+    </p>
+    <p>
+      今天我們分成幾個部分：我們先來看這整套架構的<strong>技術組合</strong>是什麼，接著看怎麼用 <strong>tmux</strong>、<strong>Tailscale</strong>、還有手機上的 <strong>Termius</strong> 來打造不論在書桌前還是在火車上都能流暢控制的遠端環境，最後我們再來看最酷的一塊——怎麼用一個小巧的 <strong>PWA 控制面板</strong>來統一管理這堆 agent，而且文末還有一份完整的<strong>設定指南</strong>和 <strong>vim 附錄</strong>喔！
+    </p>
+    <p>
+      其實今天我們要講的東西呢，一言以蔽之，<strong>其實就是把我們與 agent 之間的溝通摩擦降到最低而已</strong>。
+    </p>
+
+    <h2 id="stack">技術組合</h2>
+    <p>
+      這套架構其實一點都不花哨，非常樸實無華：白話文就是 <code>tmux</code> + <code>vim</code> 跑在一台放在家裡的 Linux 主機（我們叫它 home box），然後在 Mac 上用 iTerm 或者是 Ghostty 這種 terminal 軟體，遠端連線的部分就用 <a href="https://tailscale.com" target="_blank" rel="noopener">Tailscale</a>，出門在外的時候手機用 Termius 連回去，最後再加上一個我自己正在開發的小型 PWA 網頁來當作全局的控制面板。
+    </p>
+    <p>
+      欸，神奇的點就在這裡！這裡面其實沒有任何一個什麼高大上的黑科技，但是當它們組合在一起的時候，你就會發現：你居然可以用極低的成本，在不同 agent 之間像切換分頁一樣轉來轉去，這真的蠻厲害的耶！
+    </p>
+
+    <pre><code>  ┌──────────────┐                              ┌─ home box ──────────────────────┐
+  │ Mac          │                              │ tmux                            │
+  │ (iTerm /     │ ◀───────┐                    │  ├─ session: project-a          │
+  │  Ghostty)    │         │                    │  │   ├─ window: Claude Code     │
+  │└──────────────┘         │                    │  │   ├─ window: tests / logs    │
+  │                         │      Tailscale     │  │   └─ window: git ops         │
+  │┌──────────────┐         ├──── (private ─────▶│  ├─ session: project-b          │
+  ││ Phone        │ ◀───────┤      mesh)         │  │   └─ ...                     │
+  ││ (Termius +   │         │                    │  └─ session: ...                │
+  ││  PWA panel)  │ ◀───────┘                    │                                 │
+  └└──────────────┘                              └─────────────────────────────────┘</code></pre>
+
+    <h2 id="tmux">一個專案一個 tmux session</h2>
+    <p>
+      那以前如果我們要跑好幾個 agent 怎麼跑？你可能就是開好幾個 terminal 視窗對不對？但是如果你今天人在外面，或者是網路突然斷了，你那個 terminal 視窗一關，完蛋，那幾隻 agent 跑了三小時的 context 直接就不見了！
+    </p>
+    <p>
+      這個時候要怎麼辦呢？我們就需要請出今天的主角之一：<strong>tmux</strong> 啦！
+    </p>
+    <p>
+      tmux 到底是什麼？白話文就是「終端機複用器」（terminal multiplexer），聽起來很玄，但其實它裡面就只有三層非常直覺的巢狀概念：
+    </p>
+    <ul>
+      <li><strong>sessions</strong>：這就是你的長期工作區（workspace），通常一個專案我們就開一個 session。</li>
+      <li><strong>windows</strong>：這就像是瀏覽器的分頁（tabs），一個專案裡面可能有些不同的事情（concern）要處理，一個事情就佔一個 window。</li>
+      <li><strong>panes</strong>：這就是同一個分頁裡面的切分畫面（splits）。</li>
+    </ul>
+    <p>
+      最厲害的地方在於：這些 session 是完全活在遠端主機的系統後台的！意思就是說，就算你現在直接把筆電螢幕蓋上、Wi-Fi 瞬間斷線，或者是你從筆電切換到手機，那些正在幫你寫 code 的 agent 依然在後台快快樂樂地繼續跑！你只需要用一行指令重新連回去（reattach），就可以瞬間回到你剛才離開的那個畫面。
+    </p>
+    <p>
+      我的實務配置是這樣的：我會為每個專案開一個獨立的 session（用 <code>tmux new -s &lt;project&gt;</code>），在這個 session 裡面，第一個 window 用來跑程式碼 agent，第二個 window 用來跑 tests 或者是看 logs，第三個 window 用來跑那種需要執行很久的資料 pipeline，第四個 window 用來做 git 的操作。
+    </p>
+    <p>
+      當我分配了一個需要跑很久的大任務給其中一個 agent 之後，我就可以直接拍拍屁股切到另一個 session（對應另一個專案），去指導下一個 agent 做事。等前面的任務跑完了、需要我注意的時候，我再一鍵切回去。看吧，就這麼簡單！至於怎麼安裝以及有哪些常用的快捷鍵，我已經放在<a href="#install">文末的設定指南</a>裡囉。
+    </p>
+
+    <h2 id="tailscale">Tailscale：自家主機、零對外曝險</h2>
+    <p>
+      為什麼我們要讓 agent 跑在家裡的那台 Linux 主機上？因為那台機器的 GPU 比較強、硬碟空間也比較大嘛！
+    </p>
+    <p>
+      但這個時候問題就來了：如果我們今天人在外面（比如說在咖啡廳，或者在捷運上），我們要怎麼安全地連回家裡的電腦呢？以前要怎麼做？以前你可能要在路由器上做 port forwarding，或者是架一個公開的 nginx 伺服器對不對？但這樣做不僅麻煩，而且還會把你的家裡主機暴露在可怕的公網上，隨時都有被駭客攻擊的風險耶！
+    </p>
+    <p>
+      這個時候要怎麼辦呢？這時候，<strong>Tailscale</strong> 就派上用場了！
+    </p>
+    <p>
+      Tailscale 到底是什麼？白話文就是「私有虛擬網格網路」（private mesh network）。只要安裝好之後，它就會把你的筆電、手機、還有家裡那台 Linux 主機，通通圈在同一個只有你進得去的安全的私有網路裡面。
+    </p>
+    <p>
+      欸，你沒有看錯！也就是說，不論你人在這個世界的哪一個角落，你都可以直接 SSH 進去你家的主機，甚至連你在主機上跑的各種 prototype 網頁伺服器都能直接連。
+    </p>
+    <p>
+      舉個具體的例子：我可以直接在我的手機 Safari 網址列輸入 <code>http://homebox:8501</code>，就能直接連上正在主機上跑的 Streamlit 網頁 prototype，完全不需要設定什麼複雜的 port forwarding、不用寫 nginx 設定檔，更不用去申請什麼公開的 hostname！這真的太方便了！
+    </p>
+    <p>
+      這件事情其實比聽起來還要重要得多：因為我平常跑的這堆工具，大約有一半根本就沒有做任何身分驗證（auth）功能，如果直接放到公網上簡直是災難，但有了 Tailscale，我完全不需要去擔心安全性的問題，就這樣子。
+    </p>
+
+    <h2 id="termius">手機上的 Termius</h2>
+    <p>
+      那在手機上要怎麼連呢？怎麼辦呢？這時候呢，我們在手機上可以用 <strong>Termius</strong> 啦！
+    </p>
+    <p>
+      平常我出門在外的時候，我就是用 iOS 上的 Termius App 透過 SSH 連回去。
+    </p>
+    <p>
+      欸，你可能會想說：「在手機螢幕上用 terminal 加上 tmux 真的能用嗎？字那麼小，而且那些常用的快捷鍵在手機螢幕鍵盤上根本按不出來啊！」
+    </p>
+    <p>
+      神奇的點就在這裡！Termius 真正讓 tmux 在手機上變得「超級好用」的關鍵，在於它提供了一排<strong>快捷鍵工具列</strong>（shortcut bar），裡面有 esc、tab、ctrl、alt、方向鍵，甚至還有 shift+tab，就直接貼心地下巴黏在你的虛擬鍵盤正上方！有了這些按鍵，再搭配 tmux 的 prefix 組合鍵，我人在火車上真的只要用一隻手，就能流暢地操控一整個 Claude Code session，這真的蠻厲害的耶！
+    </p>
+
+    <figure>
+      <img src="../../blog/assets/termius-ios.jpg" alt="iPhone 上的 Termius 顯示 tmux 中的 Claude Code CLI session，shortcut bar（esc/tab/ctrl/alt/方向鍵）就在 iOS 鍵盤上方。" />
+      <figcaption>iOS 上的 Termius — tmux + Claude Code，全靠 shortcut bar 一手掌握。</figcaption>
+    </figure>
+
+    <p>
+      而且這裡還有一個能讓你的手機體驗直接「升天」的終極小技巧：那就是讓 SSH 連線成功時<strong>自動 attach 到 tmux</strong>，這樣你每一次用 Termius 連線時，就會直接降落在你上一次離開的 tmux session 裡面，完全省去你手動輸入 <code>tmux a</code> 的那一步！
+    </p>
+    <p>
+      你只需要在遠端 Linux 主機的 <code>~/.bashrc</code> 檔案裡加上這段程式碼：
+    </p>
+    <pre><code>if [[ -z "$TMUX" &amp;&amp; -n "$SSH_CONNECTION" &amp;&amp; $- == *i* ]]; then
+  tmux attach -t main 2&gt;/dev/null || tmux new -s main
+fi</code></pre>
+    <p>
+      現在，只要你一連線，你就會被穩穩地送進名為 <code>main</code> 的 session 裡。如果你比較希望在 Termius client 端來針對不同主機做這個設定，後面的<a href="#install-auto-attach">設定指南</a>也有提供 Termius 端設定的版本喔。
+    </p>
+
+    <h2 id="gui">真的需要 GUI 的時候</h2>
+    <p>
+      雖然我們大部份的工作都是直接在 terminal 裡完成，但人生嘛，總是有那麼一些時候你會需要看到「真實的畫面（pixels）」對不對？比如說，你的 agent 突然幫你架起了一個網頁 dashboard、或者你需要用 Jupyter UI、又或者是某些不支援 headless（無介面）模式執行的奇特工具。
+    </p>
+    <p>
+      怎麼辦呢？
+    </p>
+    <p>
+      這時候，我們可以用 <strong>Chrome Remote Desktop (CRD)</strong> 或者 <strong>VNC</strong> 伺服器來解決！我通常會把這兩樣東西都裝在家裡的主機上。
+    </p>
+    <p>
+      CRD 的好處是它非常無腦、只要透過一般的瀏覽器就可以直接連線進去；而 VNC 也是一個很好的選擇，只要你記得把它的監聽介面（interface）綁定在 Tailscale 的虛擬 IP 上，就能確保它絕對不會暴露在危險的公網中。雖然這兩個圖形介面工具的速度都比不上直接用 SSH 來得流暢，但相信我，它們完全足夠應付那 5% 真正需要用到螢幕畫面的工作了，就這樣子。
+    </p>
+
+    <h2 id="panel">缺失的那塊：一個總覽所有 agent 的控制台</h2>
+    <p>
+      但是，當你真的像我一樣同時跑了 10 幾個 agent 之後，你就會發現：事情好像又有點不太對勁了。
+    </p>
+    <p>
+      因為在實務上，真正的痛點往往不是「在 session 裡輸入指令」，而是「<strong>找到對的那隻魔族</strong>」！
+    </p>
+    <p>
+      你想看，你必須要確認：到底現在是哪一隻 agent 已經把工作跑完了？哪一隻正停在那裡等你輸入？而哪一隻又突然沒聲音、悄悄死掉了？
+    </p>
+    <p>
+      如果每一次要檢查，你都得拿出手機、打開 Termius、好不容易連上 SSH、打指令 attach 回 tmux、在好幾個 session 之間切換、然後還要把畫面往上嚕（scroll back）來看剛剛發生了什麼事——這整個過程至少要花掉你 20 秒的時間。
+    </p>
+    <p>
+      我們來算一下數學：10 個 session，每天檢查幾十次，每次 20 秒……天啊，這累積起來的心智負擔和時間成本真的非常恐怖！
+    </p>
+    <p>
+      這時候怎麼辦呢？
+    </p>
+    <p>
+      所以我就自己動手寫了一個小型的 PWA 控制面板！它會把每一個正在跑的 CLI agent 變成一張張非常漂亮的「卡片」，並且按照它們最後一次活動的時間自動排序。
+    </p>
+    <p>
+      每一張卡片上面，都會直接顯示這隻 agent 的狀態（是 <em>working</em> 正在努力工作、還是 <em>idle</em> 閒置、或者是 <em>waiting on input</em> 正在等待你給它進一步的指示），同時還會標上專案的 tag，甚至還能直接看到最新產生的幾行輸出畫面！
+    </p>
+    <p>
+      更厲害的是，當某個 session 執行完畢或者需要你回答問題時，它還會直接在你的手機上推播通知喔！你只要點一下那張卡片，它就會打開一個很像 LINE/Slack 那樣的聊天視窗，你可以直接在裡面跟這隻 agent 對話、派給它下一個任務，完全不需要再開 SSH、也不需要手動做任何 tmux 的導覽！
+    </p>
+
+    <div class="figure-row">
+      <figure>
+        <img src="../../blog/assets/panel-list-view.jpg" alt="PWA 中所有 CLI agent session 以卡片呈現，依狀態分組 — idle、working、needs input、offline，每張卡片都有專案 tag。" />
+        <figcaption>列表視圖 — 所有人手、所有狀態，一眼看過去清清楚楚。</figcaption>
+      </figure>
+      <figure>
+        <img src="../../blog/assets/panel-session-view.jpg" alt="PWA 中打開單一 CLI agent session 的詳細視圖，包含訊息輸入框與一排終端機快捷鍵。" />
+        <figcaption>Session 視圖 — 像聊天一樣，不用 SSH 也能直接對 agent 發號施令。</figcaption>
+      </figure>
+    </div>
+
+    <p>
+      這真的是我今年對自己的行動工作流所做過的最棒、也最成功的改進了！
+    </p>
+    <p>
+      我目前正在把這個控制面板整理並開源，這個專案叫做 <a href="https://github.com/imitation-alpha/vmux" target="_blank" rel="noopener">vmux</a>。目前在 GitHub 上它還只是一個 placeholder（預留位置）。
+    </p>
+    <p>
+      <strong>不過，如果這個 repo 的 star 數量突破 100 的話，我就會正式開始程式碼的移植工作，把它打包成一個真正能讓大家下載開箱即用的開源專案！</strong>所以大家如果想要投票支持，就請動動手指去點個 star 吧！當它正式發佈的時候，你就會在第一時間自動收到 GitHub 的 release 通知喔。
+    </p>
+
+    <h2 id="what-id-add">還想加上的東西</h2>
+    <p>
+      未來我還想在裡面加入一些更好玩的功能：像是讓一隻 agent 可以直接讀取另外一隻 agent 的輸出，完全省去我們手動複製貼上（copy-paste）的麻煩。或者是一個「廣播模式（broadcast mode）」，讓我可以把同一個 prompt 同時送給多個指定的 session（控制面板其實已經幫這個功能留好空位了）。
+    </p>
+    <p>
+      甚至，我還想加入語音輸入功能，這樣我們在搭公車的時候，只要動動嘴巴就可以跟我們的 agent 免費勞工溝通了對不對？
+    </p>
+    <p>
+      其實今天最核心的心得只有一個，那就是：<strong>盡可能縮短「你」與「agent」之間的每一個操作步驟。</strong>當你把這個距離縮到最短之後，同時駕馭十幾個 agent 對你來說就再也不會像是一件沉重的工作了。
+    </p>
+
+    <h2 id="install">設定指南：tmux、Tailscale、Termius</h2>
+    <p>
+      如果你現在還沒有把這三個東西跑起來，下面是幫你準備的「20 分鐘快速上手路線圖」，保證讓你從零到可以完全照著本文操作。如果你本來就已經裝好了，就可以直接跳過這段喔。
+    </p>
+
+    <h3>tmux</h3>
+    <p>
+      安裝方式非常簡單：在 macOS 上直接用 <code>brew install tmux</code>；在 Windows 上可以用 WSL 來安裝；而在 Linux 上就是用你慣用的 package manager。
+    </p>
+    <p>
+      那為了讓大家有一組舒服的預設值，我強烈推薦直接使用「Oh My Tmux」的設定：
+    </p>
+    <pre><code>git clone https://github.com/gpakosz/.tmux.git ~/.tmux
+ln -s -f ~/.tmux/.tmux.conf ~/.tmux.conf
+cp ~/.tmux/.tmux.conf.local ~/</code></pre>
+    <p>
+      那安裝好之後呢，其實你真正會用到的，大約就只有下面這六個指令而已，就結束了，就這麼簡單：
+    </p>
+    <pre><code>tmux a                # attach 到上一個 session
+tmux new -s &lt;name&gt;    # 開新 session
+&lt;C-b&gt; z               # 放大目前 pane
+&lt;C-b&gt; s               # 挑 session
+&lt;C-b&gt; q               # 顯示 pane 編號 → 跳過去
+&lt;C-b&gt; &lt;n&gt;             # 跳到第 n 個 window</code></pre>
+    <p>
+      如果你還想查其他的指令，這兩份 cheatsheet 就已經非常足夠了：
+      <a href="https://gist.github.com/MohamedAlaa/2961058" target="_blank" rel="noopener">MohamedAlaa 的 gist</a>（一頁版）
+      以及
+      <a href="https://tmuxcheatsheet.com/" target="_blank" rel="noopener">tmuxcheatsheet.com</a>（支援關鍵字搜尋）。
+    </p>
+    <p>
+      <strong>如何驗證：</strong>輸入 <code>tmux new -s test</code> 之後，如果你的終端機底部出現一條漂亮的綠色狀態列（status bar），那就代表你成功了！接著按下 <kbd>Ctrl-b</kbd> 然後再按 <kbd>d</kbd> 就可以 detach 跳出來；輸入 <code>tmux a -t test</code> 就可以 attach 再次跳回去。
+    </p>
+
+    <h3>Tailscale</h3>
+    <ol>
+      <li>先到 <a href="https://tailscale.com" target="_blank" rel="noopener">tailscale.com</a> 註冊一個帳號（免費版本就可以綁定高達 100 台個人裝置，非常佛心對不對？）。</li>
+      <li>自家主機：如果是 macOS 可以用 <code>brew install --cask tailscale</code>；Windows 使用者則可以直接到 <a href="https://tailscale.com/download" target="_blank" rel="noopener">tailscale.com/download</a> 下載安裝檔。</li>
+      <li>手機（iOS）：直接去 App Store 下載 Tailscale，然後登入你剛才註冊的同一個帳號。</li>
+      <li>最後記得要在網頁版的 admin console 裡把 <strong>MagicDNS</strong> 功能打開（路徑是 admin console → DNS），這樣你以後要連家裡主機時，就可以直接用 <code>ssh arthur-laptop</code> 這種好記的名字，而不用去背難記的 IP 位址囉。</li>
+    </ol>
+    <p>
+      <strong>如何驗證：</strong>確認你手機上的 Tailscale app 裡有看見你的自家主機顯示為「Active」狀態。這時你隨便在主機上跑一個本地開發伺服器，並直接在手機 Safari 瀏覽器上輸入 <code>http://&lt;home-box&gt;:&lt;port&gt;</code>，如果能正常連上，那就代表搞定啦！
+    </p>
+
+    <h3>Termius</h3>
+    <ol>
+      <li>到手機 App Store 搜尋並安裝 Termius（免費的版本功能就完全夠用了）。</li>
+      <li>在 Hosts 選單裡點選「New Host」。主機名稱填寫你剛才設定的 Tailscale MagicDNS hostname，port 填 22，填入你的 username，並貼上你的 SSH private key。</li>
+      <li>在 Settings → Terminal → Bottom bar 裡，手動加入 <kbd>Esc</kbd>、<kbd>Ctrl</kbd>、<kbd>Tab</kbd>、方向鍵以及 <kbd>Shift+Tab</kbd>。這個快捷鍵工具列絕對是 Termius 裡的「殺手級功能」，真的千萬不要漏掉它喔！</li>
+      <li>最後到 Settings 裡，確認有啟用「Auto-Reconnect」功能，這樣當你人在外面，手機在 4G/5G 行動網路與 Wi-Fi 之間切換時，你的連線才不會莫名其妙地斷掉。</li>
+    </ol>
+
+    <h3 id="install-auto-attach">SSH 連線時自動 attach 到 tmux</h3>
+    <p>
+      這個步驟的目的是讓你的每次 SSH 連線都能夠「直達」你的 tmux 工作區，而不是落到一個冷冰冰的、全新的 shell 裡。有兩種做法：
+    </p>
+    <p><strong>做法一：在 Server 端設定</strong> — 直接加在遠端主機的 <code>~/.bashrc</code> 或 <code>~/.zshrc</code> 檔案底部：</p>
+    <pre><code>if [[ -z "$TMUX" &amp;&amp; -n "$SSH_CONNECTION" &amp;&amp; $- == *i* ]]; then
+  tmux attach -t main 2&gt;/dev/null || tmux new -s main
+fi</code></pre>
+    <p>
+      這裡面的判斷條件（guards）非常關鍵，因為它能確保只有在「互動式（interactive）的 SSH 連線」時才會觸發這條規則，所以你平常在用 <code>scp</code> 或者是 <code>rsync</code> 傳輸檔案時，完全不會受到任何干擾喔。
+    </p>
+    <p><strong>做法二：在 Termius 端設定</strong> — 在 Termius 的 Hosts 點選 Edit → Startup Command，並貼入：</p>
+    <pre><code>tmux attach -t main || tmux new -s main</code></pre>
+    <p>
+      欸，你知道嗎？這段指令其實還身兼第二個重要的任務：它能在你的主機重開機之後，自動為 <a href="#install-persistence">tmux-continuum</a> 提供一個可以讓它進行自動恢復（restore）的 live server！
+    </p>
+
+    <h3>快速測試（Smoke Test）</h3>
+    <ol>
+      <li>在你的自家主機上輸入：<code>tmux new -s claude</code> → 啟動你的 Claude Code → 按下組合鍵 <kbd>Ctrl-b</kbd> 再按下 <kbd>d</kbd> → 直接把這個 terminal 視窗關掉。這時你的 agent 會繼續在後台歡樂地跑。</li>
+      <li>拿出你的手機：打開 Termius App，點選連線，並輸入 <code>tmux a -t claude</code>。隨便對你的 agent 輸入一條指令或訊息。</li>
+      <li>哇，你看！你現在已經可以坐在馬桶上，透過私人的安全網路，直接操控你桌上型電腦裡的 CLI 程式碼 agent 了！這整套架構，就是這麼地簡單，就結束了。</li>
+    </ol>
+
+    <h3 id="install-persistence">讓 session 在重開機後依然活著</h3>
+    <p>
+      因為 tmux server 是活在系統的隨機存取記憶體（RAM）裡的。這代表什麼？這代表只要一遇到跳電、作業系統更新、或者是你不小心手賤打了 <code>killall tmux</code>，你所有的 session 就會瞬間灰飛煙滅！對於我們這種需要跑長時間任務的 agent 工作流來說，這簡引領世界末日啊，因為這可能代表你剛剛累積了好幾個小時的 agent context 直接歸零了耶！
+    </p>
+    <p>
+      怎麼辦呢？
+    </p>
+    <p>
+      幸好，這世界上有三個強大的 plugins 可以拯救我們：分別是 <strong>TPM</strong>（tmux 的 plugin 管理器）、<strong>tmux-resurrect</strong>（用來把目前的狀態存成 snapshot 並在未來進行 restore），以及 <strong>tmux-continuum</strong>（它會像小天使一樣，定時在後台自動幫你存 snapshot，並在 tmux server 啟動時自動幫你做 restore）。
+    </p>
+    <p>我們先來安裝 TPM：</p>
+    <pre><code>git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm</code></pre>
+    <p>
+      接著，如果你是用 Oh My Tmux 設定，請把下面這段加在 <code>~/.tmux.conf.local</code>；如果你用的是傳統的 tmux 設定，就加在 <code>~/.tmux.conf</code>：
+    </p>
+    <pre><code># Plugins
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-continuum'
+
+# Capture pane scrollback so output is restored too
+set -g @resurrect-capture-pane-contents 'on'
+
+# Restore vim/nvim sessions and keep ssh panes alive
+set -g @resurrect-strategy-vim  'session'
+set -g @resurrect-strategy-nvim 'session'
+set -g @resurrect-processes 'ssh psql mysql sqlite3 "~vim-&gt;vim" "~nvim-&gt;nvim"'
+
+# Autosave every 15 min, auto-restore on tmux server start
+set -g @continuum-save-interval '15'
+set -g @continuum-restore 'on'
+
+# TPM init — must be the LAST line
+run '~/.tmux/plugins/tpm/tpm'
+</code></pre>
+    <p>
+      加完之後，在 terminal 輸入 <code>tmux source-file ~/.tmux.conf</code> 重新載入設定，然後隨便進到一個 tmux session 裡面，按下 <kbd>prefix + I</kbd>（注意是大寫的 I），TPM 就會自動幫你把這些 plugins 通通抓下來了，真的蠻方便的！
+    </p>
+    <p>
+      那這裡要特別注意的是，Continuum 只有在主機上有 live tmux server 的時候才能發揮自動恢復（auto-restore）的威力。而我們前面寫的那段<a href="#install-auto-attach">自動 attach snippet</a>，正是每次登入時自動幫它把 tmux server 叫起來的關鍵核心喔。
+    </p>
+    <p>
+      <strong>如何驗證這個恢復的迴圈（loop）：</strong>隨便開一個 session、執行幾個指令，然後按下 <kbd>prefix + Ctrl-s</kbd> 來手動拍一張 snapshot。接著大膽地輸入 <code>killall tmux</code> 把 tmux 殺光光，然後重新打開一個新的 shell——你就會看見 continuum 已經乖乖地幫你恢復了剛才的 layout、工作目錄，甚至連你剛才終端機畫面上看得見的那些 output 歷程都完好如初（因為我們有設定 <code>capture-pane-contents</code>）！這真的蠻厲害的耶！
+    </p>
+    <p>
+      不過這裡也有一個小小的警告（caveat）要提醒大家：因為 <code>@resurrect-capture-pane-contents 'on'</code> 會把你在終端機面板上的 scrollback 歷史紀錄，以純文字的方式直接寫進 <code>~/.local/share/tmux/resurrect/</code> 資料夾裡。所以如果你的 terminal 上常常會閃過敏感的 API keys、或者是各種不能公開的密碼，建議你要嘛把這行設定拿掉，要嘛就是確保你主機的 FileVault 或者是硬碟加密功能是有開啟的，就這樣子。
+    </p>
+
+    <hr />
+    <h2 id="configs">附錄：~/.vimrc</h2>
+    <p>
+      我的 <code>~/.tmux.conf</code> 其實完全沒有做任何花哨的客製化修改，就直接是用 <a href="https://github.com/gpakosz/.tmux" target="_blank" rel="noopener">gpakosz/.tmux</a> 的原裝版本。畢竟人家寫得那麼好，我直接在這裡貼 1900 行人家的 repo 也沒什麼意思對不對？我所有的個人 tweaks 都是放在 <code>~/.tmux.conf.local</code> 裡，而且寫得非常精簡。
+    </p>
+    <p>
+      相反地，我覺得非常值得分享給大家看的是下面這份 <code>.vimrc</code> 設定：這是我個人使用的、而且特意保持極度精簡的設定。
+    </p>
+
+    <h3>~/.vimrc</h3>
+    <pre><code>&quot; Comments in Vimscript start with a `&quot;`.
+
+&quot; If you open this file in Vim, it&#x27;ll be syntax highlighted for you.
+
+&quot; Vim is based on Vi. Setting `nocompatible` switches from the default
+&quot; Vi-compatibility mode and enables useful Vim functionality. This
+&quot; configuration option turns out not to be necessary for the file named
+&quot; &#x27;~/.vimrc&#x27;, because Vim automatically enters nocompatible mode if that file
+&quot; is present. But we&#x27;re including it here just in case this config file is
+&quot; loaded some other way (e.g. saved as `foo`, and then Vim started with
+&quot; `vim -u foo`).
+set nocompatible
+
+&quot; Turn on syntax highlighting.
+syntax on
+colorscheme delek
+
+&quot; Disable the default Vim startup message.
+set shortmess+=I
+
+&quot; Show line numbers.
+set number
+set nu
+set ai
+set tabstop=4
+set ls=2
+set autoindent
+
+&quot; This enables relative line numbering mode. With both number and
+&quot; relativenumber enabled, the current line shows the true line number, while
+&quot; all other lines (above and below) are numbered relative to the current line.
+&quot; This is useful because you can tell, at a glance, what count is needed to
+&quot; jump up or down to a particular line, by {count}k to go up or {count}j to go
+&quot; down.
+set relativenumber
+
+&quot; Always show the status line at the bottom, even if you only have one window open.
+set laststatus=2
+
+&quot; The backspace key has slightly unintuitive behavior by default. For example,
+&quot; by default, you can&#x27;t backspace before the insertion point set with &#x27;i&#x27;.
+&quot; This configuration makes backspace behave more reasonably, in that you can
+&quot; backspace over anything.
+set backspace=indent,eol,start
+
+&quot; By default, Vim doesn&#x27;t let you hide a buffer (i.e. have a buffer that isn&#x27;t
+&quot; shown in any window) that has unsaved changes. This is to prevent you from &quot;
+&quot; forgetting about unsaved changes and then quitting e.g. via `:qa!`. We find
+&quot; hidden buffers helpful enough to disable this protection. See `:help hidden`
+&quot; for more information on this.
+set hidden
+
+&quot; This setting makes search case-insensitive when all characters in the string
+&quot; being searched are lowercase. However, the search becomes case-sensitive if
+&quot; it contains any capital letters. This makes searching more convenient.
+set ignorecase
+set smartcase
+
+&quot; Enable searching as you type, rather than waiting till you press enter.
+set incsearch
+
+&quot; Unbind some useless/annoying default key bindings.
+nmap Q &lt;Nop&gt; &quot; &#x27;Q&#x27; in normal mode enters Ex mode. You almost never want this.
+
+&quot; Disable audible bell because it&#x27;s annoying.
+set noerrorbells visualbell t_vb=
+
+&quot; Enable mouse support. You should avoid relying on this too much, but it can
+&quot; sometimes be convenient.
+set mouse+=a
+
+&quot; Try to prevent bad habits like using the arrow keys for movement. This is
+&quot; not the only possible bad habit. For example, holding down the h/j/k/l keys
+&quot; for movement, rather than using more efficient movement commands, is also a
+&quot; bad habit. The former is enforceable through a .vimrc, while we don&#x27;t know
+&quot; how to prevent the latter.
+
+&quot; Do this in normal mode...
+nnoremap &lt;Left&gt;  :echoe &quot;Use h&quot;&lt;CR&gt;
+nnoremap &lt;Right&gt; :echoe &quot;Use l&quot;&lt;CR&gt;
+nnoremap &lt;Up&gt;    :echoe &quot;Use k&quot;&lt;CR&gt;
+nnoremap &lt;Down&gt;  :echoe &quot;Use j&quot;&lt;CR&gt;
+&quot; ...and in insert mode
+inoremap &lt;Left&gt;  &lt;ESC&gt;:echoe &quot;Use h&quot;&lt;CR&gt;
+inoremap &lt;Right&gt; &lt;ESC&gt;:echoe &quot;Use l&quot;&lt;CR&gt;
+inoremap &lt;Up&gt;    &lt;ESC&gt;:echoe &quot;Use k&quot;&lt;CR&gt;
+inoremap &lt;Down&gt;  &lt;ESC&gt;:echoe &quot;Use j&quot;&lt;CR&gt;
+</code></pre>
+
+    <hr />
+
+    <p>
+      大家看完了這堂課之後，有沒有什麼問題？或者是你也有你自己一套很酷的設定想要跟大家分享？甚至是你想要搶先試用我們今天聊到的這款控制面板？都非常歡迎你直接在 <a href="https://linkedin.com/in/arthur-yau" target="_blank" rel="noopener">LinkedIn</a> 或者 <a href="https://x.com/imitation_alpha" target="_blank" rel="noopener">X</a> 上找到我來跟我聊聊喔。
+    </p>
+
+    <section class="post__references" aria-labelledby="further-reading">
+      <h2 id="further-reading">延伸閱讀</h2>
+      <p>
+        如果你對我們今天講的這些底層核心概念（像是 shell、工具鏈、vim、tmux，或者是整個「住在 terminal 裡」的極客思維）感到有一點陌生，那我今天在下課前，想毫不猶豫推薦給大家一個終極神級資源，那就是 MIT 開設的：
+        <a href="https://missing.csail.mit.edu/2020/" target="_blank" rel="noopener">Missing Semester（2020 年版）</a>。
+      </p>
+      <p>
+        這門課真的太棒了，這根本就是每一個大學 CS 系都應該要開、但卻不知道為什麼大家都沒有開的一門基礎課！雖然他們最近也推出了
+        <a href="https://missing.csail.mit.edu/" target="_blank" rel="noopener">2026 年新版</a>（我自己其實也還沒有時間把它全部看完），但我可以保證，光是把 2020 年的版本徹底弄懂、在接下來的幾年裡，它能為你帶來複利成長絕對是非常驚人的！
+      </p>
+    </section>
+
+    <p>
+      好，在今天這堂課結束之前呢，我們來做一個簡短的溫馨回顧：
+    </p>
+    <ol>
+      <li>第一個是，我們用 <strong>tmux</strong> 作為後台的避風港，來保證不論你的網路怎麼斷、筆電怎麼蓋，那些正在辛勤寫 code 的 agent 魔族都絕對不會死掉。</li>
+      <li>第二個是，我們用 <strong>Tailscale</strong> 建立一個無比安全、不用對公網曝光的私人網路，再搭配手機上的 <strong>Termius</strong>，讓我們即使人在火車上、捷運上，也能用快捷工具列單手操控這一切。</li>
+      <li>第三個是，當我們有多達 10 個以上的並行 session 時，我們可以用像 <strong>vmux</strong> 這樣的控制卡片面板，來幫我們過濾狀態、即時通知、並直接對話，從根本上解決多工切換時的摩擦力和心智負擔。</li>
+    </ol>
+    <p>
+      以上就是我今天想跟大家分享的內容。好，那我們今天的課呢，就上到這邊。
+    </p>
+    </div><!-- /.post__body -->
+<footer class="post__footer" aria-label="文章導覽">
+      <ul class="post__nav" aria-label="較新與較舊文章">
+        <li class="post__nav__item post__nav__item--previous">
+          <a href="ai-agent-systems-hung-yi-lee-summary.html">
+            <span class="post__nav__label">較新文章</span>
+            <span class="post__nav__title">agent-00 · 從李宏毅 2026 年課程看 AI agent stack</span>
+          </a>
+        </li>
+        <li class="post__nav__item post__nav__item--next">
+          <span class="post__nav__disabled" aria-disabled="true">
+            <span class="post__nav__label">較舊文章</span>
+            <span class="post__nav__title">最舊文章</span>
+          </span>
+        </li>
+      </ul>
+    </footer>
+  </article>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <p>© <span id="year">2026</span> Arthur</p>
+      <p class="footer__links">
+        <a href="https://linkedin.com/in/arthur-yau" target="_blank" rel="noopener">LinkedIn</a> ·
+        <a href="https://github.com/imitation-alpha" target="_blank" rel="noopener">GitHub</a> ·
+        <a href="https://x.com/imitation_alpha" target="_blank" rel="noopener">X</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js" defer></script>
+<!-- GoatCounter pageview tracking (privacy-friendly, no cookies) -->
+  <script data-goatcounter="https://imitation-alpha.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

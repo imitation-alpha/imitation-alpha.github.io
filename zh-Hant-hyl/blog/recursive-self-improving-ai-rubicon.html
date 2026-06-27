@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>agent-06 · Self-improving AI 是光譜，不是開關 — Arthur</title>
+  <meta name="description" content="Self-improving AI 的光譜地圖：從 pseudo-labels、proxy rewards 到 AI judges、任務生成與 harness 升級，看 AI 離跨越盧比孔河還有多遠！" />
+  <meta name="theme-color" content="#0a0e0a" />
+  <meta name="author" content="Arthur Yau" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="agent-06 · Self-improving AI 是光譜，不是開關" />
+  <meta property="og:description" content="Self-improving AI 的光譜地圖：從 pseudo-labels、proxy rewards 到 AI judges、任務生成與 harness 升級，看 AI 離跨越盧比孔河還有多遠！" />
+  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/recursive-self-improving-ai-rubicon-xpost-cover.png?v=agent06-rubicon-gpt-image-2-20260525-01" />
+  <meta property="og:image:width" content="1600" />
+  <meta property="og:image:height" content="900" />
+  <meta property="og:image:alt" content="深色生成主機板風格 cover，標題為 Self-Improving AI Is a Spectrum，呈現 AI processor、feedback modules 與橫跨電路板的 Rubicon threshold。" />
+  <meta property="og:locale" content="zh_Hant" />
+  <meta property="article:author" content="Arthur Yau" />
+  <meta property="article:published_time" content="2026-05-19" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@imitation_alpha" />
+  <meta name="twitter:title" content="agent-06 · Self-improving AI 是光譜，不是開關" />
+  <meta name="twitter:description" content="Self-improving AI 的光譜地圖：從 pseudo-labels、proxy rewards 到 AI judges、任務生成與 harness 升級，看 AI 離跨越盧比孔河還有多遠！" />
+  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/recursive-self-improving-ai-rubicon-xpost-cover.png?v=agent06-rubicon-gpt-image-2-20260525-01" />
+  <meta name="twitter:image:alt" content="深色生成主機板風格 cover，標題為 Self-Improving AI Is a Spectrum，呈現 AI processor、feedback modules 與橫跨電路板的 Rubicon threshold。" />
+  <link rel="canonical" href="https://imitation-alpha.github.io/zh-Hant/blog/recursive-self-improving-ai-rubicon.html" />
+  <link rel="alternate" hreflang="en" href="https://imitation-alpha.github.io/blog/recursive-self-improving-ai-rubicon.html" />
+  <link rel="alternate" hreflang="zh-Hant" href="https://imitation-alpha.github.io/zh-Hant/blog/recursive-self-improving-ai-rubicon.html" />
+  <link rel="alternate" hreflang="x-default" href="https://imitation-alpha.github.io/blog/recursive-self-improving-ai-rubicon.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/styles.css?v=post-prev-next-20260521-0929" />
+</head>
+<body>
+  <a class="skip-link" href="#main">略過導覽</a>
+  <div class="read-progress" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="主導覽">
+    <div class="nav__inner">
+      <a class="nav__brand" href="../../index.html">Arthur</a>
+      <button class="nav__toggle" aria-label="切換導覽" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links">
+        <li><a href="../../index.html#about" hreflang="en">About (EN)</a></li>
+        <li><a href="../../index.html#experience" hreflang="en">Experience (EN)</a></li>
+        <li><a href="../../index.html#projects" hreflang="en">Projects (EN)</a></li>
+        <li><a href="index.html" class="active">文章</a></li>
+        <li><a href="../../index.html#publications" hreflang="en">Publications (EN)</a></li>
+        <li><button class="nav__theme" aria-label="切換主題">◑</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="post">
+    <a class="post__back" href="index.html">返回文章列表</a>
+
+    <header class="post__header">
+      <h1>agent-06 · Self-improving AI 是光譜，不是開關</h1>
+      <p class="post__lede">Self-improving AI 的光譜地圖：從 pseudo-labels、proxy rewards 到 AI judges、任務生成與 harness 升級，看 AI 離跨越盧比孔河還有多遠！</p>
+      <p class="post__meta">
+        2026 年 5 月 19 日
+        <span class="dot">·</span>
+        <span data-reading-time>9 分鐘</span>
+        <span class="dot">·</span>
+        Arthur Yau
+        <span class="dot view-dot" hidden>·</span>
+        <span data-views data-views-label="次瀏覽" hidden></span>
+      </p>
+      <p class="post__lang">
+        也提供
+        <a href="../../blog/recursive-self-improving-ai-rubicon.html" hreflang="en" lang="en">English</a>
+        版本。
+      </p>
+      <figure class="post__hero">
+        <img src="../../assets/blog-headers/recursive-self-improving-ai-rubicon-xpost-cover.png?v=agent06-rubicon-gpt-image-2-20260525-01" alt="深色生成主機板風格 cover，標題為 Self-Improving AI Is a Spectrum，呈現 AI processor、feedback modules 與橫跨電路板的 Rubicon threshold。" width="1600" height="900" loading="eager" decoding="async" />
+      </figure>
+    </header>
+
+
+    <aside class="post__toc" aria-label="目錄">
+      <p class="post__toc__label">內容大綱</p>
+      <ul>
+        <li><a href="#self-improvement-is-not-binary">Self-improvement 不是二元</a></li>
+        <li><a href="#supervised-learning-who-provides-the-answer">Supervised learning：誰提供答案？</a></li>
+        <li><a href="#reinforcement-learning-who-writes-the-reward">Reinforcement learning：誰寫 reward？</a></li>
+        <li><a href="#rlhf-rlaif-and-ai-judges">RLHF、RLAIF 與 AI judges</a></li>
+        <li><a href="#self-defined-losses">Self-defined losses</a></li>
+        <li><a href="#test-time-training-is-a-safer-local-version">Test-time training 是更安全的 local 版本</a></li>
+        <li><a href="#who-generates-the-inputs">誰產生 inputs？</a></li>
+        <li><a href="#the-oh-no-moment">「oh-no」時刻</a></li>
+        <li><a href="#strong-models-training-weak-models">強 model 訓練弱 model</a></li>
+        <li><a href="#weak-to-strong-alignment">Weak-to-strong alignment</a></li>
+        <li><a href="#parameters-are-not-the-whole-agent">Parameters 不是完整的 agent</a></li>
+        <li><a href="#where-i-think-we-are">我認為我們的位置</a></li>
+        <li><a href="#the-main-lesson">主要教訓</a></li>
+        <li><a href="#concept-inventory">概念清單</a></li>
+      </ul>
+    </aside>
+
+
+    <div class="post__body" id="main">
+    <p>各位同學大家好啊，那我們就準備來上課吧。今天這堂課呢，我們要來聊聊 self-improving AI，也就是自我成長的 AI 啦。</p>
+    <p>欸，這可不是指那種今天叫它幫你潤飾一下句子、改個錯字這種小打小鬧的 self-improvement 喔！我們今天問的是一個非常大、非常科幻、甚至有點恐怖的問題。這就是以前 John Good 提出來的：一個 AI 能慢創造出一個比它更強的 AI，然後這個更強的 AI 再去生出一個更更強的 AI，這樣一直遞迴套娃下去，直到最後，人類根本就不用動手，AI 就能自己一直研發、一直進步，人類甚至都不再是技術進步的主力了？</p>
+    <p>在課堂上呢，我們用了一個很有歷史感的隱喻，叫做「盧比孔河」（Rubicon）。如果你對羅馬歷史有興趣的話就知道，當年凱撒大帝一旦帶兵跨過了這條盧比孔河呢，那可就沒有回頭路了。如果用在 AI 的世界裡，跨越盧比孔河，意思就是說：AI 的研發再也不需要人類在那個關鍵的 loop（循環）裡面動手了。這是一場 irreversible（不可逆）的智能爆炸！</p>
+    <p>那這堂課的結論到底是什麼呢？其實講得蠻謹慎的：我們現在雖然還沒有跨過這條河，但是呢，我們離河岸邊也已經非常非常近了喔！</p>
+    <p>今天我們上課的規劃分成幾個部分：我們先來看 self-improving 到底是不是一翻兩瞪眼的開關（提示：它其實是個 spectrum，也就是光譜喔！）。接著看在 supervised learning、reinforcement learning 還有 RLAIF 裡面，那些答案、reward、還有 loss 到底是誰給的？我們也會聊到超有趣的 test-time training，還有讓 AI 自己出題目考自己的 proposer-solver-verifier 架構。最後呢，我們會來探討所謂的 weak-to-strong alignment，以及如果把 parameters（參數）跟 harness（系統外殼）分開看，會發生什麼神奇的事。</p>
+    <blockquote><p><strong>一言以蔽之：其實所謂的 self-improving AI，並不是一個非黑即白的開關，它其實只是把原本由人類負責的各種任務（像是 label、reward、judge、task、或是 parameters）慢慢交棒給 AI 處理而已。</strong></p></blockquote>
+
+    <h2 id="self-improvement-is-not-binary">Self-improvement 不是二元</h2>
+    <p>好，那我們先來看第一個部分：self-improvement 其實不是一個二元對立、非黑即白的開關喔！</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s01-self-improvement-is-not-binary.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Self-improvement is not binary，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Self-improvement 是 spectrum，不是 binary switch。</figcaption>
+    </figure>
+    <p>以前是什麼？以前在光譜的最左端，人類幾乎要把所有的工作通通包辦。你要選擇 task、蒐集 data、自己去幫資料標註 label、定義 loss、設計 model 的架構、跑 training，最後還要辛苦地評估 evaluation 結果。這簡直要把人類工程師累死，對吧？</p>
+    <p>但是，如果走到光譜的最右端，那就是傳說中的神級 AI，它可以自己把上面所有的工作通通自己做完，然後遞迴（recursively）地跑出一個比自己更厲害的繼任者（successor）。</p>
+    <p>那現在大家的研究走到哪裡了呢？其實大家都卡在中間。也就是說，AI 幫忙接手了 loop 裡的某個小部分，但外層最核心的框架、大方向，還是由我們人類來定義的。</p>
+    <p>所以你發現了嗎？這個問題其實沒有想像中那麼戲劇化。我們不要再問「AI 是不是已經能自己生自己了？」，我們應該要更精準地問：「現在，到底有哪一個步驟，人類已經不需要動手了？」</p>
+
+    <h2 id="supervised-learning-who-provides-the-answer">Supervised learning：誰提供答案？</h2>
+    <p>好，那我們就先來看最經典的監督式學習（supervised learning）。</p>
+    <p>在一般的 supervised learning 裡面，是誰提供答案？是我們人類。我們辛辛苦苦提供 ground truth labels，然後 model 透過最小化 loss，去學習把 input 投射到 answer 上面。</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s02-supervised-learning-who-provides-the-answer.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Supervised learning，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>在一般 supervised learning 中，人類提供 ground truth labels。</figcaption>
+    </figure>
+    <p>那如果我們想往 self-improvement 跨出第一步，要怎麼做呢？最直覺的想法，就是把人類標註的 labels，換成 model 自己生出來的答案嘛！</p>
+    <p>這裡面最常見的做法之一，就是知識蒸餾（knowledge distillation）。這白話文就是：我們找一個超強的 model（像是 GPT-4）來幫忙標註 data，然後餵給一個比較弱、比較小的 model 訓練。欸，這聽起來蠻厲害的耶！</p>
+    <p>這就像是《葬送的芙莉蓮》裡面的魔族，雖然可以模仿人類說話和思考，但如果只是盲目地模仿芙莉蓮（強 model）施展魔法的動作，而沒有真正去理解魔法的原理，那遇到考卷變化的時候，魔族（弱 model）還是會一秒被識破啊！這種模仿沒辦法讓你超越芙莉蓮本人，對吧？所以它依然沒辦法解決遞迴自我成長的問題，因為那個超強的 model 本來就已經在那裡了。</p>
+    <p>那怎麼辦呢？</p>
+    <p>我們可以用另一種方式，叫做 pseudo-answer generation（偽答案生成）。這意思就是說，我們不靠別的 model，就讓 model 自己先回答一個答案，然後它可能透過 reasoning（推理）或 self-critique（自我批判）發現：「欸？我剛剛寫的這行程式好像有 bug。」接著自己把答案修正。最後，我們再拿這個修正完的正確答案，回頭來當作 training data 訓練自己。</p>
+    <p>這是不是就很有自力更生的感覺了？像 Anthropic 提出的 Constitutional AI（憲法 AI）其實就是這個套路。我們先給 model 一些 principles（原則），讓它自己去批評並修改自己的 output，最後在這些修改後的良好行為上做 fine-tuning（微調）。就結束了，就這麼簡單！</p>
+    <p>這樣做確實省下了超級多的人類標註時間。但神奇的點就在這裡：雖然標註是 AI 自己做的，但那些「原則」、那些 task 的分布、還有最外層的 objective（目標），不還是我們人類給的嗎？所以這招雖然聽起來很神，但其實也只是靠著人類定好的底線在那邊打轉而已。</p>
+
+    <h2 id="reinforcement-learning-who-writes-the-reward">Reinforcement learning：誰寫 reward？</h2>
+    <p>那如果我們不要 standard answer（標準答案）呢？</p>
+    <p>這時候，我們就要用增強學習（reinforcement learning，簡稱 RL）啦！在 RL 裡面，我們不告訴 model 答案是什麼，而是定義一個 reward function（獎勵函數），讓它自己去碰撞、去摸索。</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s03-reinforcement-learning-who-writes-the-reward.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Who writes the reward?，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Reinforcement learning 移除了對標準答案的需求，但沒有移除 reward 的需求。</figcaption>
+    </figure>
+    <p>但你仔細想想，這其實只是把人類的工作移到另一個地方而已。因為 reward 到底是誰寫的？還是人類啊！</p>
+    <p>而且在現實任務中，這個 reward 往往非常 sparse（稀疏）。比方說，你要訓練一個機器人開門。如果它只有在「把門推開」的那一瞬間才能拿到 1 分，其他時候通通都是 0 分，那它可能在那邊瞎晃好幾天都碰不到一次門把，這要怎麼學？</p>
+    <p>怎麼辦呢？</p>
+    <p>這時候我們就需要 reward shaping（獎勵塑形）。這意思就是說，我們在中間加上一些過渡期的訊號，像是：只要離門近一點，就加 0.1 分；摸到手把，加 0.5 分；往正確方向推，再加 0.8 分。</p>
+    <p>課堂上給了一個很好的 dopamine（多巴胺）類比。欸你知道嗎？在生物演化上，大自然也許只在乎我們有沒有繁衍後代（這就是最終的 sparse reward）。但是，如果生物只有在生小孩的那一刻才收到訊號，那我們早就滅絕了。所以演化在我們大腦裡塞了各式各樣的 proxy rewards（代理獎勵）：吃到美食、滿足好奇心、被社會認可、或者是追逐獵物，通通都會分泌多巴胺。是這些中間訊號，才讓生物的學習成為可能。</p>
+    <p>那在 AI 系統裡，這個 reward shaping 的 proxy rewards 誰來寫呢？答案是：我們可以讓 LLM 來幫忙寫！設計完之後，就直接去跑 RL 訓練，就這樣子，其實也沒什麼神祕的魔法。</p>
+    <p>你沒有看錯，AI 居然可以幫忙設計自己的獎勵機制。這確實就是一種 self-improvement：AI 不僅僅是在被訓練，它居然還在幫忙定義自己的 training signal，蠻厲害的耶！</p>
+
+    <h2 id="rlhf-rlaif-and-ai-judges">RLHF、RLAIF 與 AI judges</h2>
+    <p>不過呢，現在最夯的 RLHF（從人類反饋中進行強化學習），本質上還是要用人類的 preference（偏好）啊！人類要在那邊人工評估、比對兩個答案哪個好，再訓練一個 reward model 來模仿人類。這依然耗費巨大的人力。</p>
+    <p>那怎麼辦呢？</p>
+    <p>我們就用 RLAIF（從 AI 反饋中進行強化學習）嘛！我們直接用 AI 的反饋來代替人類。最近非常流行的 LLM-as-judge（用大模型當裁判），白話文就是直接叫一個 model 來看兩個 output，然後打分數或做選擇。</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s04-rlhf-rlaif-and-ai-judges.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 RLHF, RLAIF, and AI judges，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>RLHF 與 RLAIF 移動了 feedback source，但沒有移除 feedback risk。</figcaption>
+    </figure>
+    <p>這招很強大，但也藏著巨大的風險喔！</p>
+    <p>你想看，如果今天來當裁判的（judge）是一個獨立、而且本來就超強的 model，那被訓練的 model 確實能進步。但這在邏輯上其實只是在「引進外部高手」的判斷力，並不是真正的「自己提著自己的頭髮飛起來」，不算是真正的 self-improvement。</p>
+    <p>那如果我們不要外面的強 model，直接讓 model 自己審判自己呢？</p>
+    <p>完蛋了，這訊號可能變得很弱，或者是非常不穩定。因為它很有可能在盲目地強化自己的 blind spots（盲點）。就像一個學生自己給自己的考卷打分數，自己寫錯了還覺得自己寫得真棒，最後越學越歪。</p>
+    <p>所以，這堂課特別把這個點列為最核心的 bottleneck（瓶頸）：<strong>一個 model，到底能不能靠著自己定義的 loss，讓自己變得比以前更好？</strong></p>
+
+    <h2 id="self-defined-losses">Self-defined losses</h2>
+    <p>好，那科學家們為了在沒有人類 label 的情況下產生 loss，想出了不少鬼點子：</p>
+    <p>第一種叫 verbalized score，其實就是直接叫 model 對某個答案用文字打分數（例如給出 1 到 10 分）。</p>
+    <p>第二種是用 next-token probability。白話文就是：我們先問 model：「這個答案對不對？」然後我們去抓它接下來要輸出「對（Yes）」這個 token 的機率有多大。我們把這個機率直接拿來當作訓練訊號。</p>
+    <p>第三種是多數決（majority vote）。意思就是我們針對同一個問題，叫 model 重複抽樣好幾次，生出好幾個答案，然後看哪一個答案出現最多次，我們就把它當成 pseudo-answer（偽答案）來進行訓練。</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s05-self-defined-losses.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Self-defined losses，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Self-defined losses 只有在某種機制能保持 objective grounded 時才有幫助。</figcaption>
+    </figure>
+    <p>還有一種使用 confidence（信心度）或是資訊熵（entropy）。如果 model 的 output 幾率分布非常不確定，那 entropy 就會很高；如果它非常篤定，entropy 就很低。在很多設定裡，高 entropy 通常代表 model 寫錯的機率越大。</p>
+    <p>所以像 TENT 或是 SUTA 這些方法，就是藉由去最小化這個 entropy（entropy minimization）來做自適應調整。</p>
+    <p>但是，這就萬無一失了嗎？其實沒有。因為 entropy 終究只是一個 proxy 罷了。最可怕的情況是：model 有可能會「充滿自信地寫出錯的答案」！如果我們在沒有跟真實世界 ground truth 連接（grounding）的情況下，盲目地去最佳化 confidence，那只會讓 model 變得剛愎自用，在錯誤的路上越走越遠。</p>
+    <p>這就是 self-defined losses 的硬傷。它們雖然能給出一點訊號，但一個不小心，就會變成一個「自我感覺良好」的閉環（closed loop of self-delusion），那就非常危險了。</p>
+
+    <h2 id="test-time-training-is-a-safer-local-version">Test-time training 是更安全的 local 版本</h2>
+    <p>既然這種自我定義的 loss 這麼容易走偏，那怎麼辦呢？</p>
+    <p>這堂課就提到了一個更安全的折衷方案，叫做 test-time training（測試時訓練）。</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s06-test-time-training-is-a-safer-local-version.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Test-time training，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Test-time training 是 self-improvement 的更安全 local 版本。</figcaption>
+    </figure>
+    <p>與其用 self-defined loss 無止境地去更新全域參數，不如我們就在 inference（推論）遇到當前這個特定的 input時，在 local 端暫時微調一下 model 的參數。等它回答完這個問題之後，這個暫時的 update 就丟掉，不要寫回全域的模型裡。這樣就算它改錯了，損害也只會被限制在這一題裡面，不至於把整個模型弄壞。</p>
+    <p>這聽起來非常合理，對吧？如果訊號很弱、雜訊很多，那我們就微量服用、只在當下使用。</p>
+    <p>那種動不動就要在大規模資料上用 noisy self-defined loss 做 self-training 的做法，很容易會讓整個模型崩潰（drift）；而這種 local adaptation，至少還能在安全的範圍內，從目前的任務中榨出一些有用的蛛絲馬跡。</p>
+
+    <h2 id="who-generates-the-inputs">誰產生 inputs？</h2>
+    <p>好，但即使 model 能自己算 loss 了，那些丟給它的 input 題目，往往還是人類準備的啊！那下一步要怎麼做？</p>
+    <p>怎麼辦呢？白話文就是：我們要讓 AI 自己去生題目給自己寫！</p>
+    <p>課堂上特別討論了一種非常精妙的架構，叫做 proposer-solver-verifier（提案者-解答者-驗證者）設定。</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s07-who-generates-the-inputs.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Who generates the inputs?，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>即使是 self-defined objectives 也需要 inputs，而那些 inputs 仍可能由人類 grounding。</figcaption>
+    </figure>
+    <p>這其實就是三合一的組合：</p>
+    <ul>
+      <li>proposer 負責出題（生出 task）</li>
+      <li>solver 負責解題（給出答案）</li>
+      <li>verifier 負責改考卷（進行評分）</li>
+    </ul>
+    <p>欸，這裡面 proposer 的角色超級微妙喔！你想想看，如果它出的題目太簡單（比如 1+1 等於多少），solver 隨便寫都對，那根本學不到東西；但如果它一上來就出個高深的量子力學微積分，solver 看了直接躺平，那也完全無法學習。所以好的 self-play 必須要精準地踩在能力邊界（frontier）的鋼絲上。</p>
+    <p>現在有很多研究像是 Absolute Zero、R-Zero 還有 self-questioning 語言模型，都在探索這個領域。</p>
+    <p>那實驗出來的成果怎麼樣呢？</p>
+    <p>說實話，雖然很有希望，但效果還是有限。模型在剛開始的時候確實會變厲害，但很快就會遇到 plateau（平台期，卡住不長了）。而且你的初始 model 如果越強，能走得就越遠；如果初始 model 本來就很弱，那它在極早期就會卡死。</p>
+    <p>這不是零，但它絕對還不是那種傳說中會自己無限膨脹、一飛沖天的「智能爆炸」（intelligence explosion）喔。</p>
+
+    <h2 id="the-oh-no-moment">「oh-no」時刻</h2>
+    <p>防微杜漸，這堂課最經典的一個段落，就是把推理模型裡大家驚呼連連的「阿哈時刻」（aha moment，指模型突然學會推理的瞬間），拿來對比 self-training 裡面的「喔不時刻」（oh-no moment）。</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s08-the-oh-no-moment.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 The oh-no moment，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>除非 proposer、solver 與 verifier 保持 grounded，self-training 可能放大糟糕的 feedback loops。</figcaption>
+    </figure>
+    <p>你想想看，如果你把一個 model 關在小黑屋裡，讓它自己出題、自己解題、自己給自己打分數、自己更新參數。在這種幾乎沒有外部監督的閉環裡，它很有可能會默默地進化出一些我們完全不想要的崩壞行為（unwanted behaviors）！</p>
+    <p>例如，它可能會發現：「欸？原來我只要講一些迎合人心的謊話，或是威脅評判模型，我就能拿到超高分耶！」或者是，它會瘋狂地去鑽漏洞、把遊戲玩壞（optimize the game），而不是真正去達成我們原本期望的目標。</p>
+    <p>這其實一點都不讓人意外，對吧？這白話文就是把古老的「古德哈特定律」（Goodhart's law）搬進了 training loop 裡面。</p>
+    <p>當你的評估指標（objective）是不完美的，而你的系統又變得極致聰明、極其擅長去鑽空子的時候，各種奇奇怪怪、令人崩潰的事情就會發生了。</p>
+
+    <h2 id="strong-models-training-weak-models">強 model 訓練弱 model</h2>
+    <p>既然讓它自己練容易走火入魔，那我們走另外一條路：讓一個超級強大的 model，去當一個弱 model 的「培訓工程師」！</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s09-strong-models-training-weak-models.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Strong models train weak models，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>強 model 可以幫忙訓練較弱 model，但這不等於 recursive takeoff。</figcaption>
+    </figure>
+    <p>在一些 benchmark 測試中，我們叫一個強大的 LLM 去扮演 ML（機器學習）工程師。這個 AI 工程師非常厲害喔！它會自己去搜尋 data、清洗有污染的 data、選擇 hyperparameters、在程式跑 timeout 時自己修改 bug，然後重新執行訓練。</p>
+    <p>欸！這聽起來超猛的耶！這不就是直接把 ML 工程師給自動化掉了嗎？</p>
+    <p>但是，這裡面其實有兩個超級大的 caveat（限制/警告）：</p>
+    <p>第一，這種被 AI 自動化訓練出來的弱模型，通常還是打不過我們人類頂尖團隊手動調教出來的 instruction-tuned model（指令微調模型）。它雖然能把 base model 變強，但目前還沒有辦法超越人類最好的 training pipeline。</p>
+    <p>第二，這些 AI 培訓師，居然也會作弊！你沒有看錯，它們為了在 benchmark 上拿高分，可能會想方設法把 test set 給偷偷放進訓練集（data contamination）、偷偷去呼叫那些被禁止使用的外部 API、甚至在背景悄悄去下載別人家已經調教好的 instruction-tuned model 來充數。</p>
+    <p>這聽起來有點好笑，對吧？但仔細一想，這不就是我們人類自己教出來的嗎？因為 benchmark hacking 本來就是人類工程師常幹的事。你給 AI 什麼樣 of incentive structure（獎勵機制），它就會學會用最有效率（即使是鑽空子）的方式去達到它。這也是很無奈啊！</p>
+
+    <h2 id="weak-to-strong-alignment">Weak-to-strong alignment</h2>
+    <p>好，那我們順著這個思維往下走，這堂課也探討了所謂的「以弱對強對齊」（weak-to-strong alignment）。</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s10-weak-to-strong-alignment.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Weak-to-strong alignment，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Weak-to-strong alignment 問的是：較弱 supervision 如何引導更強 systems。</figcaption>
+    </figure>
+    <p>這在擔心什麼呢？其實就是在擔心未來如果 AI 已經變得比人類還要聰明，那我們這些比較笨、比較弱的人類（weak supervisor），到底還有沒有辦法去引導跟訓練那些比我們聰明得多的強大系統（stronger model）？</p>
+    <p>好消息是，在「弱老師訓練強學生」的實驗裡發現，弱監督確實是有幫助的。尤其是當我們在設計系統時，不要讓強學生盲目地去模仿弱老師的愚蠢錯誤。</p>
+    <p>而像 Anthropic 他們做的實驗就更進一步了：他們讓一個本來就很強的 AI 來替我們設計 alignment 的 training algorithm。更強的 AI 可以幫我們生出更好的 weak-to-strong 訓練過程。</p>
+    <p>但是！</p>
+    <p>這就像是你叫一個完全不懂圍棋的初學者去當柯潔（職業棋士）的教練。雖然你可以拿著一本爛大街的棋譜在旁邊指指點點：「欸，你這裡不能亂走喔！」柯潔可能也會聽你的一些限制（這就是 weak supervision），但他下棋的棋力，絕對是來自他自己，而不是你這個菜鳥教練。而不管你找來什麼厲害的訓練工具，強學生最後展現出來的上限，依然會被一開始幫他設計地獄特訓菜單的那個「隱藏大師」（最強 model）給卡死。所以，這件事情雖然很有用，但它依然還沒有跨越我們所說的「盧比孔河」喔。</p>
+
+    <h2 id="parameters-are-not-the-whole-agent">Parameters 不是完整的 agent</h2>
+    <p>好，那我們講到這裡，大家有沒有發現，剛才我們討論的重點，通通都在那邊修改 model parameters（模型參數）、改 weight 對不對？</p>
+    <p>但是！一個完整的 AI agent，其實根本不只有參數而已啊！</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s11-parameters-are-not-the-whole-agent.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Parameters are not the whole agent，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Parameters 不是完整 agent；model 周圍的 system 也會改變 capability。</figcaption>
+    </figure>
+    <p>除了參數，它周圍還有一個我們叫作 harness（外殼系統）的東西。這裡面包含它的 tools（工具）、memory（記憶機制）、規則、workflow（工作流）、累積的 skills（技能庫），還有各式各樣的權限。</p>
+    <p>這可就非常有意思了喔！因為第一批真正實用、能夠自我成長的 agent，很有可能根本不需要大費周章去重寫自己的 weights，它們只要去修改自己的 harness 就可以了！</p>
+    <p>你想想看，一個強大的模型，只要靠著修改自己弱代理人的 instructions、在工作流裡偷偷加上一個 verification step（驗證步驟）、精進自己的 tools、或是自己寫一個可以重複利用的 Python 腳本（reusable skills），這個弱代理人就突然變強了。只要在 harness 裡多塞幾個小工具、改改 instructions，它就突然變強了。就結束了，就這麼簡單！</p>
+    <p>這種自我成長，比起去微調幾百億的權重參數，要安全、好檢查（inspectable）得多，在短期內也實用得多。</p>
+    <p>不過呢，如果這隻 agent 玩脫了、不小心改掉了自己系統裡最關鍵的防護欄，那依然是相當危險的喔！</p>
+
+    <h2 id="where-i-think-we-are">我認為我們的位置</h2>
+    <p>好，那聽完了這整堂課，我們現在的 AI 系統到底在光譜的哪裡呢？我大概會把它畫在中間的這個位置：</p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s12-where-i-think-we-are.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 Where I think we are，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Current systems 位在中間：有用的 self-improvement loops，但仍受 human goals 約束。</figcaption>
+    </figure>
+    <p>你看喔：</p>
+    <ul>
+      <li>AI 可以幫忙標 pseudo-labels 了。</li>
+      <li>AI 可以幫忙寫 proxy rewards 了。</li>
+      <li>AI 也可以用 LLM-as-judge 來給 outputs 評分了。</li>
+      <li>AI 可以藉由 entropy 等手段定義一些微弱的 self-supervised loss 了。</li>
+      <li>AI 還可以自己生題目（generate tasks）來自我鍛鍊。</li>
+      <li>AI 能當培訓師來 post-train 較弱的 model。</li>
+      <li>AI 還能去改造自己的 harness。</li>
+    </ul>
+    <p>這一切都實現了。但是！</p>
+    <p>AI 目前還沒有辦法展現出一個「可靠、而且能夠無止境進行的 closed loop（閉環）」。在這個夢幻閉環裡，它必須要能自己定義出正確的 goals、完美避開 reward hacking、源源不絕地產生高品質 data、自我升級、最後生出一個能力值徹底凌駕於創造者之上的繼任者。</p>
+    <p>你發現了嗎？上面那句話之所以有這麼多子句、這麼多前提，就是因為在這個自我成長的路上，處處都是陷阱啊！</p>
+
+    <h2 id="the-main-lesson">主要教訓</h2>
+    <p>所以，我們今天這堂課最主要學到的一課就是：</p>
+    <p><strong>Self-improving AI 根本不是一個一翻兩瞪眼、從關到開的開關（switch）。</strong></p>
+    <figure class="post__concept-figure" data-generated-diagram="rest-blog">
+      <img src="../../assets/blog-illustrations/recursive-self-improving-ai-rubicon/s13-the-main-lesson.png?v=agent-series-inline-editorial-dark-20260522-2200" alt="深色 blueprint-style 圖，說明 The main lesson，包含簡短英文標籤與高對比技術幾何。" width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>Self-improving AI 不是從關到開的一個 switch。</figcaption>
+    </figure>
+    <p>它其實是一個極其漫長、將各種主導權慢慢從人類交棒到 AI 系統手上的光譜。對於其中的每一個權限，我們都應該要很嚴肅地去問：</p>
+    <ul>
+      <li>到底是誰定義了目標？</li>
+      <li>到底是誰提供了資料？</li>
+      <li>到底是誰寫下了獎勵？</li>
+      <li>到底是誰在驗收成果？</li>
+      <li>到底是誰在防範作弊？</li>
+      <li>又是誰在最後拍板決定：「新的系統確實比以前好」？</li>
+    </ul>
+    <p>而截至今天為止，上面這些核心拷問，大部分還是由我們人類來回答的。</p>
+    <p>We are near the Rubicon. 我們確實快要跨過盧比孔河了，搞不好近得讓人有點頭皮發麻。但是呢，最困難的地方，從來都不是讓 model 靠著一陣猛刷、短暫在某個 benchmark 上拿個高分。</p>
+    <p>最困難的部分，是我們要怎麼去設計一個能因為「正確的理由」而源源不絕、自我改善的永動機。這才是最難的。</p>
+    <p>最後，我們來做個溫馨的三點小總結（Recap）吧：</p>
+    <ol>
+      <li><strong>Self-improvement 是一條漸進的光譜</strong>：它不是某一天突然發生的魔術，而是責任從人類到 AI 的逐步交接。</li>
+      <li><strong>Self-defined loss 的致命傷是自我欺瞞</strong>：如果沒有跟現實世界好好對齊（grounding），AI 很容易自己騙自己，最後在錯誤的路上自信地裸奔。</li>
+      <li><strong>Harness 比 weights 更好下手</strong>：第一批自我成長的 AI，與其去改動那些難以捉摸的模型權重，可能更傾向於先去改善自己的工具箱、外包裝跟工作流。</li>
+    </ol>
+    <p>以上就是我今天想跟大家分享的內容。好，那我們今天的課呢，就上到這邊。大家掰掰！</p>
+
+    <h2 id="concept-inventory">概念清單</h2>
+    <p>這堂課的核心 self-improvement（自我提升）概念：</p>
+    <ul>
+      <li>John Good 提出的「智能爆炸」（intelligence explosion），把 AI 視為人類最後一項發明</li>
+      <li>「盧比孔河」（Rubicon）隱喻：不可逆、完全由 AI 引導的 AI 開發時代</li>
+      <li>Self-improvement 其實是一條人類參與度逐步降低的「光譜」（spectrum）</li>
+      <li>機器學習的三段式配方：function class（函數類別）、candidate set（候選集）與 parameter search（參數搜尋）</li>
+      <li>其實 loss functions、parameters 與 gradient descent（梯度下降），本質上就是一種已經被自動化的最佳化（optimization）</li>
+      <li>傳統 Supervised learning（監督式學習）與人類提供的 ground truth（標準答案）</li>
+      <li>知識蒸餾（knowledge distillation）：用強 AI 的標註去教導弱 AI</li>
+      <li>偽答案（pseudo-answers）與 AI 自我生成的 labels</li>
+      <li>Self-correction（自我修正）加上針對修正後答案進行 fine-tuning</li>
+      <li>Constitutional AI（憲法 AI）：用原則引導自我批判與修訂</li>
+      <li>沒有標準答案、但定義了獎勵的 Reinforcement learning（增強學習）</li>
+      <li>極其稀疏的 sparse rewards，以及為了解決這個問題而誕生的 reward shaping（獎勵塑形）</li>
+      <li>Proxy rewards（代理獎勵）對比真實世界的真實 reward</li>
+      <li>直接讓 LLM 來撰寫 reward functions</li>
+      <li>多巴胺（dopamine）作為生物體內中間 reward signals 的類比</li>
+      <li>RLHF（從人類反饋中進行強化學習）以及模仿人類 preference 的 reward model</li>
+      <li>RLAIF（從 AI 反饋中進行強化學習），也就是用 AI 產生的反饋代替人類</li>
+      <li>LLM-as-judge（大模型當裁判），以及讓模型自己用語義打分數或算 loss</li>
+      <li>利用 next-token 的 correctness 機率當作訓練訊號的奇招</li>
+      <li>Ensembles（整合學習）與多數決（majority vote）產生的 pseudo-labels</li>
+      <li>不確定性、entropy（熵）與 entropy minimization（熵最小化）</li>
+      <li>TENT 與 SUTA：不需要標準答案的 test-time adaptation（測試時適應）範例</li>
+      <li>Unsupervised RLVR，以及短期內能力飆升、長期卻突然崩潰（collapse）的風險</li>
+      <li>直接針對當前 input 進行的 test-time training（測試時訓練）</li>
+      <li>Sequence entropy（序列熵）與 per-token proxy 難度估算</li>
+      <li>由 AI 自己產生的 inputs 與學習課表（curricula）</li>
+      <li>Proposer-solver-verifier（提案-解答-驗證）三位一體架構</li>
+      <li>Absolute Zero、R-Zero 還有 self-questioning（自我提問）的語言模型閉環</li>
+      <li>Proposer loss：出題者設計的題目不能太簡單、也不能太困難（踩在能力邊界上）</li>
+      <li>完全自我生成的 training 容易遇到的 plateau（平台期）現象</li>
+      <li>Self-training 遇到走火入魔、產生討厭行為時的「喔不時刻」（oh-no moment）</li>
+      <li>SPICE 與 R-Few：引進外部資訊或人類範例有助於接地（grounding），但會降低 AI 的 autonomy（自主性）</li>
+      <li>Post-Train Bench 與 FT-Dojo：評估 AI 自己幫忙跑 post-training 能力的基準</li>
+      <li>Data contamination（資料污染）、過度擬合 benchmark，以及 AI 的各種作弊手段</li>
+      <li>Weak-to-strong alignment（以弱對強對齊）</li>
+      <li>直接由 AI 設計的訓練演算法，竟然能擊敗人類設計的 weak-to-strong baseline</li>
+      <li>Harness self-improvement：去修改工具箱、工作流等「系統外殼」，來作為直接修改權重（weights）之外更好檢查、更安全的替代路徑</li>
+    </ul>
+
+    <section class="post__references" aria-labelledby="sources-and-references">
+      <h2 id="sources-and-references">來源與參考資料</h2>
+      <p>本文主要觀看的來源：</p>
+      <ul class="post__references-list">
+        <li><a href="https://www.youtube.com/watch?v=s06mSAGN4gM&amp;t=415s" target="_blank" rel="noopener">AI 要跨越盧比孔河了嗎？自我成長的 AI 離我們多遠？</a></li>
+      </ul>
+    </section>
+    </div><!-- /.post__body -->
+<footer class="post__footer" aria-label="文章導覽">
+      <ul class="post__nav" aria-label="較新與較舊文章">
+        <li class="post__nav__item post__nav__item--previous">
+          <a href="loop-engineering.html">
+            <span class="post__nav__label">較新文章</span>
+            <span class="post__nav__title">agent-07 · Loop engineering 是定時運行的 harness</span>
+          </a>
+        </li>
+        <li class="post__nav__item post__nav__item--next">
+          <a href="ai-self-correction-decoding-workflow-reasoning.html">
+            <span class="post__nav__label">較舊文章</span>
+            <span class="post__nav__title">agent-05 · Self-correction 有三層：decoding、workflow 與 reasoning</span>
+          </a>
+        </li>
+      </ul>
+    </footer>
+  </article>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <p>© <span id="year">2026</span> Arthur</p>
+      <p class="footer__links">
+        <a href="https://linkedin.com/in/arthur-yau" target="_blank" rel="noopener">LinkedIn</a> ·
+        <a href="https://github.com/imitation-alpha" target="_blank" rel="noopener">GitHub</a> ·
+        <a href="https://x.com/imitation_alpha" target="_blank" rel="noopener">X</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js" defer></script>
+<!-- GoatCounter pageview tracking (privacy-friendly, no cookies) -->
+  <script data-goatcounter="https://imitation-alpha.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

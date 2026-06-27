@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>agent-00 · 用電腦硬體架構來理解 AI agent 系統！ — Arthur</title>
-  <meta name="description" content="各位同學大家好，那我們就準備來上課吧。今天我們要聊聊 AI agent 系統架構，我們用電腦硬體（processor, working set, storage, OS, I/O）的角度來理解它！" />
+  <title>agent-00 · 用電腦硬體架構來理解 AI agent 系統！ (李宏毅老師經典的教學風格版) — Arthur</title>
+  <meta name="description" content="好，各位同學大家好啊，那我們就準備來上課吧！今天這堂課呢，我們要用最硬核、最接地氣的電腦硬體架構，把 AI agent 從頭到尾拆解給你看！" />
   <meta name="theme-color" content="#0a0e0a" />
   <meta name="author" content="Arthur Yau" />
   <meta property="og:type" content="article" />
-  <meta property="og:title" content="agent-00 · 用電腦硬體架構來理解 AI agent 系統！" />
-  <meta property="og:description" content="各位同學大家好，那我們就準備來上課吧。今天我們要聊聊 AI agent 系統架構，我們用電腦硬體（processor, working set, storage, OS, I/O）的角度來理解它！" />
+  <meta property="og:title" content="agent-00 · 用電腦硬體架構來理解 AI agent 系統！ (李宏毅老師經典的教學風格版)" />
+  <meta property="og:description" content="好，各位同學大家好啊，那我們就準備來上課吧！今天這堂課呢，我們要用最硬核、最接地氣的電腦硬體架構，把 AI agent 從頭對答案，拆解給你看！" />
   <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-systems-llm-computer-system-peripherals-gpt-image-2-xpost-cover.png?v=agent00-llm-computer-system-peripherals-gpt-image-2-20260525-01" />
   <meta property="og:image:width" content="1600" />
   <meta property="og:image:height" content="900" />
@@ -19,16 +19,15 @@
   <meta property="article:published_time" content="2026-05-19" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:creator" content="@imitation_alpha" />
-  <meta name="twitter:title" content="agent-00 · 用電腦硬體架構來理解 AI agent 系統！" />
-  <meta name="twitter:description" content="各位同學大家好，那我們就準備來上課吧。今天我們要聊聊 AI agent 系統架構，我們用電腦硬體（processor, working set, storage, OS, I/O）的角度來理解它！" />
+  <meta name="twitter:title" content="agent-00 · 用電腦硬體架構來理解 AI agent 系統！ (李宏毅老師經典的教學風格版)" />
+  <meta name="twitter:description" content="好，各位同學大家好啊，那我們就準備來上課吧！今天這堂課呢，我們要用最硬核、最接地氣的電腦硬體架構，把 AI agent 從頭對答案，拆解給你看！" />
   <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-systems-llm-computer-system-peripherals-gpt-image-2-xpost-cover.png?v=agent00-llm-computer-system-peripherals-gpt-image-2-20260525-01" />
   <meta name="twitter:image:alt" content="生成的主機板風格 architecture map，呈現圍繞 LLM processor 的 AI agent system，並以人工標籤標出 context、memory、retrieval、tools、feedback 與 harness layers。" />
-  <link rel="canonical" href="https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-systems-hung-yi-lee-summary.html" />
+  <link rel="canonical" href="https://imitation-alpha.github.io/zh-Hant-hyl/blog/ai-agent-systems-hung-yi-lee-summary.html" />
   <link rel="alternate" hreflang="en" href="https://imitation-alpha.github.io/blog/ai-agent-systems-hung-yi-lee-summary.html" />
   <link rel="alternate" hreflang="zh-Hant" href="https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-systems-hung-yi-lee-summary.html" />
   <link rel="alternate" hreflang="zh-Hant-x-hyl" href="https://imitation-alpha.github.io/zh-Hant-hyl/blog/ai-agent-systems-hung-yi-lee-summary.html" />
   <link rel="alternate" hreflang="x-default" href="https://imitation-alpha.github.io/blog/ai-agent-systems-hung-yi-lee-summary.html" />
-  <link rel="alternate" type="application/rss+xml" title="arthuryau's blog RSS" href="feed.xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
@@ -59,10 +58,10 @@
     <a class="post__back" href="index.html">返回文章列表</a>
 
     <header class="post__header">
-      <h1>agent-00 · 用電腦硬體架構來理解 AI agent 系統！</h1>
-      <p class="post__lede">這堂課我們不講玄學！我們用最硬核、最接地氣的電腦硬體架構，把 AI agent 從頭到尾拆解給你看！</p>
+      <h1>agent-00 · 用電腦硬體架構來理解 AI agent 系統！ (李宏毅老師經典的教學風格版)</h1>
+      <p class="post__lede">這堂課我們不講玄學！我們用最硬核、最接地氣的電腦硬體架構，把 AI agent 從頭對答案，拆解給你看！</p>
       <p class="post__meta">
-        2026 年 5 月 19 日
+         2026 年 5 月 19 日
         <span class="dot">·</span>
         <span data-reading-time>10 分鐘</span>
         <span class="dot">·</span>
@@ -71,17 +70,16 @@
         <span data-views data-views-label="次瀏覽" hidden></span>
       </p>
       <p class="post__lang">
-        本文為繁體中文版。
+        本文為「李宏毅老師經典的教學風格版」全新重寫。
         另有
         <a href="../../blog/ai-agent-systems-hung-yi-lee-summary.html" hreflang="en" lang="en">英文原文</a> 與
-        <a href="../../zh-Hant-hyl/blog/ai-agent-systems-hung-yi-lee-summary.html" hreflang="zh-Hant-x-hyl" lang="zh-Hant-x-hyl">李宏毅老師經典的教學風格版</a>
+        <a href="../../zh-Hant/blog/ai-agent-systems-hung-yi-lee-summary.html" hreflang="zh-Hant" lang="zh-Hant">繁體中文版</a>
         可供對照。
       </p>
       <figure class="post__hero">
         <img src="../../assets/blog-headers/ai-agent-systems-llm-computer-system-peripherals-gpt-image-2-xpost-cover.png?v=agent00-llm-computer-system-peripherals-gpt-image-2-20260525-01" alt="生成的主機板風格 architecture map，呈現圍繞 LLM processor 的 AI agent system，並以人工標籤標出 context、memory、retrieval、tools、feedback 與 harness layers。" width="1600" height="900" loading="eager" decoding="async" />
       </figure>
     </header>
-
 
     <aside class="post__toc" aria-label="目錄">
       <p class="post__toc__label">內容大綱</p>
@@ -101,17 +99,16 @@
       </ul>
     </aside>
 
-
     <div class="post__body" id="main">
-    <p>各位同學大家好啊，那我們就準備來上課吧。今天這堂課呢，我們要來聊聊 AI agent 系統架構，我們用電腦硬體的角度來理解它...</p>
+    <p>好，各位同學大家好啊，那我們就準備來上課吧！今天這堂課呢，我們要來聊聊一個很神奇的技術，叫做用電腦硬體架構來理解 AI Agent 系統。那這個部分我不會講太長，我們預計三十分鐘內可以結束。</p>
 
-    <p>今天我們分成幾個部分：我們先來看<strong>為什麼用這個角度看很有用</strong>，接著看整個系統的<strong>架構圖 (Architecture map)</strong>，然後我們會一個一個元件來拆解，從 processor、working set、storage 到 I/O peripherals。最後，我們再來看 multi-agent 還有 self-correction，當然還有大家最喜歡的實戰檢查清單喔！</p>
+    <p>今天我們分成幾個部分：我們先來看<strong>為什麼用這個角度看很有用</strong>（去破除一些大家常有的迷思啦），接著看整個系統的<strong>架構圖 (Architecture map)</strong>，然後我們會一個個元件來拆解，從 CPU processor、working memory、external storage 一路講到 I/O peripherals。最後，我們再來看 multi-agent 還有 self-correction，當然還有大家最期待的實戰檢查清單喔！</p>
 
-    <p>如果你把 AI agent 當成一個 model 加上一個 chat box，那每次事情搞砸了，你就會覺得：『啊，一定是 model 壞掉了！』。對不對？</p>
+    <p>好，那我們先來問大家一個問題。假設你今天想要寫一個修 bug 的 AI agent。結果呢，事情搞砸了，你回去看 log 發現它沒修好。這時候，第一個出現在你腦海裡的診斷（diagnosis）是什麼？</p>
 
-    <p>你會說：『哎呀，model 忘記了啦！』、『model 又在 hallucinate（幻覺）了！』、『model 不夠聰明啦！』或者是『model 需要更大的 context window！』</p>
+    <p>你可能會想說：『啊，這很簡單嘛！一定是 model 不夠聰明啦！』、『哎呀，model 又在 hallucinate（幻覺）了啦！』、『model 忘記了！』或者是『model 需要更大的 context window！』對不對？</p>
 
-    <p>欸，有時候這是真的。但很多時候，這根本是下錯診斷（diagnosis）啦！</p>
+    <p>欸，有時候這是真的。但很多時候，這根本是下錯診斷啦！</p>
 
     <p><strong>一言以蔽之，AI agent 其實就是圍繞著 LLM processor 打造出來的電腦系統而已。</strong></p>
 
@@ -163,7 +160,7 @@
 
     <h2 id="the-llm-is-the-processor-not-the-whole-computer">LLM 只是 processor 喔，不是整台電腦啦</h2>
 
-    <p>我們說 LLM 是 processor，是因為所有的核心推理步驟（reasoning step）都是在這裡發生的。</p>
+    <p>我們說 LLM is processor，是因為所有的核心推理步驟（reasoning step）都是在這裡發生的。</p>
 
     <p>它接收序列化後的輸入 token，吐出輸出 token。它的 weights 編碼了它的語言能力、程式撰寫模式、世界知識、推理習慣，以及在 pretraining 和 post-training 階段學到的一切行為。</p>
 
@@ -192,9 +189,7 @@
 
     <p>這個方法在短短的聊天中還可以，但如果要做複雜的 agent，**完蛋了！** 為什麼？因為 tool outputs 變得太大，讀取檔案會瞬間淹沒 prompt，舊的錯誤也會一直留在裡面，重要的限制也被埋到最底下。這時候，你的 context window 根本不是什麼工作記憶體，它直接變成垃圾掩埋場（landfill）啦！</p>
 
-    <p>那怎麼辦呢？</p>
-
-    <p>怎麼辦呢？這時候我們就需要一個更聰明的函數 `F`，也就是：</p>
+    <p>那怎麼辦呢？這時候我們就需要一個更聰明的函數 `F`，也就是：</p>
 
     <pre><code class="language-text">C_next = F(C_current, new_input, model_output)</code></pre>
 
@@ -214,11 +209,9 @@
 
     <p>好，那問題來了：如果我們有一個超級龐大的專案，裡面有幾萬個檔案，我們能把整個硬碟的資料（M）一次塞進 RAM（P）裡面嗎？那肯定是不行嘛！即使你用的 model 號稱有百萬 token 的 context window，你硬塞進去，它也只會像我們前面講的《葬送的芙莉蓮》裡的魔族一樣，看花了眼，根本找不到重點，對不對？而且速度還慢到爆、算力費用貴到你想哭。</p>
 
-    <p>那怎麼辦呢？</p>
+    <p>那怎麼辦呢？這時候我們就需要 **Retrieval（檢索）** 機制！它就像是作業系統的分頁載入器（page-loading layer）。它的工作就是：在外部 memory 裡找到最相關的那一小塊分頁（page），然後把它精準地帶進 active working set 裡面。雖然 vector index 不是真的 page table，但它們在架構上的角色是一模一樣的——讓系統不用背負所有東西，也能隨時拿到需要的 stored state。</p>
 
-    <p>怎麼辦呢？這時候我們就需要 **Retrieval（檢索）** 機制！它就像是作業系統的分頁載入器（page-loading layer）。它的工作就是：在外部 memory 裡找到最相關的那一小塊分頁（page），然後把它精準地帶進 active working set 裡面。雖然 vector index 不是真的 page table，但它們在架構上的角色是一模一樣的——讓系統不用背負所有東西，也能隨時拿到需要的 stored state。</p>
-
-    <p>這時候你就會發現，**sub-agents 其實也是一種 context-compression devices 喔！** 欸，這蠻厲害的耶！Parent agent 不需要自己去看一堆亂七八糟的 log，它只要把這個 messy branch 丟給 sub-agent 去處理，最後拿回一個精簡的報告（比如一個 code、一個 boolean，或是一個檔案路徑）就結束了。就這麼簡單！</p>
+    <p>這時候你就會發現，**sub-agents 其實也是一種 context-compression devices 喔！** 欸，這蠻厲害的耶！Parent agent 不需要自己去看一堆亂七八糟的 log，它只要把這個 messy branch 丟給 sub-agent 去處理，最後拿回一個精簡的報告（比如一個 code、一個 boolean，或是一個檔案路徑）就結束了。就這樣子，一點都不神秘。</p>
 
     <h2 id="tools-are-peripherals-accelerators-and-interfaces">Tools 其實就是 peripherals、accelerators 與 interfaces</h2>
 
@@ -242,7 +235,7 @@
 
     <p>接下來我們聊聊 **Self-correction（自我修正）**。如果一個 agent 只會自己寫 code，寫完之後就在那裡「自我反省」（self-reflection），這有用嗎？</p>
 
-    <p>這就像是一個工程師寫完代碼後，完全不編譯、不跑測試，只坐在椅子上閉著眼睛發呆想：『嗯...我覺得我寫得真完美。』這根本是玄學，對不對？它遲早會跟現實脫節，進入幻覺的無盡深淵。怎麼辦呢？</p>
+    <p>這就像是一個工程師寫完代碼後，完全不編譯、不跑測試，只坐在椅子上閉著眼睛發呆想：『編譯成功...我覺得我寫得真完美。』這根本是玄學，對不對？它遲早會跟現實脫節，進入幻覺的無盡深淵。怎麼辦呢？</p>
 
     <p>怎麼辦呢？我們不能只靠虛無飄渺的 vibes（感覺），我們需要實實在在的 **Feedback 還有 test signals（診斷信號）**！</p>
 
@@ -305,13 +298,13 @@
 
     <p>這完全是**分散式系統（distributed systems）**的邏輯。不管是 chain（鏈式）、tree（樹狀）、star（星狀）、mesh（網狀）、debate（辯論）、還是 manager-worker（管理者與員工）架構，它們的行為都完全不同。</p>
 
-    <p>處理器變多，電腦不一定會變快；溝通變多，結果也不一定會變好。拓樸結構會徹底改變你的演算法。例如，chain 很簡單，但只要前面的人出錯，錯誤就會像傳話遊戲一樣一路錯到底；mesh 可以互相監督，但它的 token 成本高到嚇人，還會產生很多干擾資訊；tree 可以分支成 variations，但方向和 merge policy 很重要。</p>
+    <p>處理器變多，電腦不一定會變快；溝通變多，結果也不一定會變好。拓樸結構會徹底改變你的演算法。例如，chain 很簡單，但只要前面的人出錯，錯誤就會像傳話遊戲一樣一路錯到底；mesh 可以互相監督，但它的 token 成本高到嚇人，還會產生很多干擾資訊；tree 可以分支成 variations，但方向 and merge policy 很重要。</p>
 
     <p>所以，不要再傻傻地問『到底要用一個 agent 還是多個 agent？』，你應該要問：**『你正在建構哪種通訊網路？每個邊界（boundary）會跨過什麼 state？什麼 summary 被允許回到主迴圈？』**</p>
 
     <h2 id="self-correction-is-a-control-loop">Self-correction 就是一種 control loop</h2>
 
-    <p>同樣地，很多人把 Self-correction（自我自我修正）神格化了，覺得它像是人類的自我反思，是什麼高級的靈魂覺醒。其實——</p>
+    <p>同樣地，很多人把 Self-correction（自我修正）神格化了，覺得它像是人類的自我反思，是什麼高級的靈魂覺醒。其實——</p>
 
     <p>如果沒有外在的物理信號，LLM 就像一個在小黑屋裡自我安慰的人，它無論怎麼想，都只會在自己的幻覺世界裡打轉。怎麼辦呢？</p>
 
@@ -347,7 +340,7 @@
       <li>Harness 知道什麼時候該 retry、何時該 stop，或者何時該 escalate（向上求助）嗎？</li>
     </ul>
 
-    <p>這就是為什麼 agent engineering 玩起來會覺得有點髒、有點混亂的原因。因為這裡面根本沒有什麼單一的神奇旋鈕，我們是在 LLM processor 的周圍建造整套電腦系統，而每一層，都會徹底改變這個 model 展現出來的能力！</p>
+    <p>這就是為什麼 agent engineering 玩起來會覺得有點髒、有點混亂的原因。因為這裡面根本沒有什麼單一裝飾性的神奇旋鈕，我們是在 LLM processor 的周圍建造整套電腦系統，而每一層，都會徹底改變這個 model 展現出來的能力！</p>
 
     <p>我認識最強的 agent builders，他們從不只會問『這個模型是不是不夠聰明？』，他們一定會問：**『今天是系統架構的哪一層壞掉了？』**</p>
 
@@ -372,7 +365,7 @@
       <li><strong>Debug 時請逐層檢查</strong>：遇到失敗時，請對照我們的 builder checklist，從 working set、storage、I/O peripherals 一路檢查到 OS harness 層，找出到底是哪裡噴錯。</li>
     </ol>
 
-    <p>以上就是我今天想跟大家分享的內容。好，那我們今天的課呢，就上到這邊。</p>
+    <p>以上就是我今天想跟大家分享的內容。好，那今天的課呢，我們其實就上到這邊。各位同學，下課啦！👋</p>
 
     <section class="post__references" aria-labelledby="sources-and-references">
       <h2 id="sources-and-references">來源與參考資料</h2>
