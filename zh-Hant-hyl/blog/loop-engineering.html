@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant-x-hyl">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>agent-07 · Loop engineering 是定時運行的 harness — 李宏毅老師經典的教學風格版 — Arthur</title>
+<meta content="受李宏毅教學風格啟發、非本人撰寫、審閱或背書的 loop engineering 講解：loop 是裝上時鐘的 harness，真正難點是 schedule、state、spawn 與 hard oracle。" name="description"/>
+<meta content="#0a0e0a" name="theme-color"/>
+<meta content="Arthur Yau" name="author"/>
+<meta content="article" property="og:type"/>
+<meta content="agent-07 · Loop engineering 是定時運行的 harness — 李宏毅老師經典的教學風格版" property="og:title"/>
+<meta content="受李宏毅教學風格啟發、非本人撰寫、審閱或背書的 loop engineering 講解：loop 是裝上時鐘的 harness，真正難點是 schedule、state、spawn 與 hard oracle。" property="og:description"/>
+<meta content="https://imitation-alpha.github.io/assets/blog-headers/loop-engineering-xpost-cover.png?v=agent07-loop-cover-readable-puregen-20260610-02" property="og:image"/>
+<meta content="1600" property="og:image:width"/>
+<meta content="900" property="og:image:height"/>
+<meta content="深色 technical cover，標題為 Loop engineering is the harness on a timer，呈現 timer-budget loop、agent harness、memory state、grounded oracle verification 與 spawned sub-agent terminals，以綠色、青色與紫色作為 accents。" property="og:image:alt"/>
+<meta content="zh_Hant" property="og:locale"/>
+<meta content="Arthur Yau" property="article:author"/>
+<meta content="2026-06-10" property="article:published_time"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="@imitation_alpha" name="twitter:creator"/>
+<meta content="agent-07 · Loop engineering 是定時運行的 harness — 李宏毅老師經典的教學風格版" name="twitter:title"/>
+<meta content="受李宏毅教學風格啟發、非本人撰寫、審閱或背書的 loop engineering 講解：loop 是裝上時鐘的 harness，真正難點是 schedule、state、spawn 與 hard oracle。" name="twitter:description"/>
+<meta content="https://imitation-alpha.github.io/assets/blog-headers/loop-engineering-xpost-cover.png?v=agent07-loop-cover-readable-puregen-20260610-02" name="twitter:image"/>
+<meta content="深色 technical cover，標題為 Loop engineering is the harness on a timer，呈現 timer-budget loop、agent harness、memory state、grounded oracle verification 與 spawned sub-agent terminals，以綠色、青色與紫色作為 accents。" name="twitter:image:alt"/>
+<link href="https://imitation-alpha.github.io/zh-Hant-hyl/blog/loop-engineering.html" rel="canonical"/>
+<link href="https://imitation-alpha.github.io/blog/loop-engineering.html" hreflang="en" rel="alternate"/>
+<link href="https://imitation-alpha.github.io/zh-Hant/blog/loop-engineering.html" hreflang="zh-Hant" rel="alternate"/>
+<link href="https://imitation-alpha.github.io/zh-Hant-hyl/blog/loop-engineering.html" hreflang="zh-Hant-x-hyl" rel="alternate"/>
+<link href="https://imitation-alpha.github.io/blog/loop-engineering.html" hreflang="x-default" rel="alternate"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="../../css/styles.css?v=post-prev-next-20260521-0929" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">略過導覽</a>
+<div aria-hidden="true" class="read-progress"></div>
+<nav aria-label="主導覽" class="nav">
+<div class="nav__inner">
+<a class="nav__brand" href="../../index.html">Arthur</a>
+<button aria-expanded="false" aria-label="切換導覽" class="nav__toggle">
+<span></span><span></span><span></span>
+</button>
+<ul class="nav__links">
+<li><a href="../../index.html#about" hreflang="en">About (EN)</a></li>
+<li><a href="../../index.html#experience" hreflang="en">Experience (EN)</a></li>
+<li><a href="../../index.html#projects" hreflang="en">Projects (EN)</a></li>
+<li><a class="active" href="index.html">文章</a></li>
+<li><a href="../../index.html#publications" hreflang="en">Publications (EN)</a></li>
+<li><button aria-label="切換主題" class="nav__theme">◑</button></li>
+</ul>
+</div>
+</nav>
+<article class="post">
+<a class="post__back" href="index.html">返回風格版文章列表</a>
+<header class="post__header">
+<h1>agent-07 · Loop engineering 是定時運行的 harness — 李宏毅老師經典的教學風格版</h1>
+<p class="post__lede">受李宏毅教學風格啟發。Loop engineering 是裝上時鐘的 harness：schedule、state、spawn 與 hard oracles。難點是選出 loop 無法 game 的 signal。</p>
+<p class="post__meta">
+        2026 年 6 月 10 日
+        <span class="dot">·</span>
+<span data-reading-time="">10 分鐘</span>
+<span class="dot">·</span>
+        Arthur Yau
+        <span class="dot view-dot" hidden="">·</span>
+<span data-views="" data-views-label="次瀏覽" hidden=""></span>
+</p>
+<p class="post__lang">本文是受李宏毅教學風格啟發的改寫版本，不是李宏毅老師本人撰寫、審閱或背書。也可閱讀 <a href="../../blog/loop-engineering.html" hreflang="en" lang="en">English</a> 原文與 <a href="../../zh-Hant/blog/loop-engineering.html" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a> 一般版本。</p>
+<figure class="post__hero">
+<img alt="深色 technical cover，標題為 Loop engineering is the harness on a timer，呈現 timer-budget loop、agent harness、memory state、grounded oracle verification 與 spawned sub-agent terminals，以綠色、青色與紫色作為 accents。" decoding="async" height="900" loading="eager" src="../../assets/blog-headers/loop-engineering-xpost-cover.png?v=agent07-loop-cover-readable-puregen-20260610-02" width="1600"/>
+</figure>
+</header>
+<aside aria-label="目錄" class="post__toc">
+<p class="post__toc__label">內容大綱</p>
+<ul>
+<li><a href="#i-was-the-loop">我就是那個 loop</a></li>
+<li><a href="#the-loop-is-the-harness-on-a-timer">Loop 是定時運行的 harness</a></li>
+<li><a href="#the-idea-is-older-than-the-name">想法比名字更老</a></li>
+<li><a href="#five-parts-and-a-place-to-remember">五個零件，加一個記憶的地方</a></li>
+<li><a href="#a-loop-is-only-as-good-as-its-least-gameable-signal">Loop 的上限是它最難被 game 的 signal</a></li>
+<li><a href="#the-maker-and-the-checker-should-not-be-the-same-model">Maker 和 checker 不該是同一個 model</a></li>
+<li><a href="#loops-move-the-cost-they-do-not-remove-it">Loop 移動成本，而不是移除成本</a></li>
+<li><a href="#friction-was-doing-a-job">Friction 本來有它的工作</a></li>
+<li><a href="#the-bill-arrives-late">帳單會晚點到</a></li>
+<li><a href="#a-loop-is-harness-self-improvement-you-can-read">Loop 是你讀得到的 harness self-improvement</a></li>
+<li><a href="#where-i-think-we-are">我認為我們的位置</a></li>
+<li><a href="#the-main-lesson">主要教訓</a></li>
+<li><a href="#concept-inventory">概念清單</a></li>
+</ul>
+</aside>
+<div class="post__body" id="main"><p>各位同學大家好啊，那我們就開始來上課吧。</p>
+<p>今天這堂課呢，我們要講的是：agent-07 · Loop engineering 是定時運行的 harness。</p>
+<p>一言以蔽之：loop engineering 不是寫更長的 prompt，而是把 harness 裝上時鐘、外部狀態與 spawn 能力，讓它自己一輪一輪跑。</p>
+<p>今天的 roadmap 是：先看為什麼人本來就是 loop，再把 loop 寫成 harness 加 schedule、state、spawn，接著談 oracle、maker-checker、token cost、friction、comprehension debt，最後回到 engineering judgment。</p>
+<p>你可能會想說，這不就是把原本的文章換一種講法嗎？不是。重點是我們要照著一條線走：先看 naive attempt 怎麼壞掉，再看 system 裡哪個 method 或 tooling 出來補洞。這樣你才會知道 failure 應該 debug 在哪一層。</p>
+<blockquote><p><strong>風格說明：</strong>本文是受李宏毅教學風格啟發的教學式改寫，不是李宏毅老師本人撰寫、審閱或背書。</p></blockquote>
+<h2 id="i-was-the-loop">我就是那個 loop</h2><p>這一篇很特別，因為它不是問 agent 會不會做事，而是問：誰在一直把下一步餵給 agent？</p>
+<p>四月時我寫過一篇文章，講怎麼從手機同時駕馭十個 coding agents。那篇文章最誠實的總結是：我就是那個 loop。我讀回傳的結果、決定下一步、再去戳下一個 agent。工具很聰明，但 scheduler 是我。</p>
+<p>這篇文章要講的，是你不再當 scheduler 的那個部分。</p>
+<p>大家開始把這件事叫做 loop engineering。Addy Osmani 給了最乾淨的定義：你不再是那個 prompt agent 的人，而是去建造那個替你 prompt 它的系統。負責 Claude Code 的 Boris Cherny 說，他的工作現在是寫 loops，不是寫 prompts。Peter Steinberger 用更少的字說了同一件事。聽起來像一門新學科，但它大致上還是舊的那門，只是從上面一層樓往下看。</p>
+<p>這個系列前面的文章大多跟著一門課走。這一篇不同。它是那門課一直指向、卻沒有真正命名的那一層——meta-harnesses、harness self-improvement。所以我會按照它實際抵達的方式來命名它：在 timeline 上，而不是在課綱裡。</p>
+<blockquote><p><strong>Builder takeaway：</strong>在建 loop 之前，先決定三件你不會委派給它的事：goal、oracle，以及你拒絕離開房間的那幾個位置。其餘的一切都交給 loop 自動化。</p></blockquote>
+<h2 id="the-loop-is-the-harness-on-a-timer">Loop 是定時運行的 harness</h2><p>先把公式寫出來。Harness 是一次 run 的系統層；loop 則是把這個 harness 裝上時鐘，讓它自己反覆醒來。</p>
+<p>在 <a href="ai-agent-harness-engineering.html">agent-04</a> 裡的等式是：</p>
+<pre><code class="language-text">AI agent = language model + harness</code></pre>
+<p>Loop 在這之上加了三樣東西：一個 schedule、一個記憶的地方，以及 spawn 的能力。</p>
+<pre><code class="language-text">loop = harness + schedule + external state + spawn</code></pre>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 The loop is the harness on a timer，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/loop-engineering/s01-the-loop-is-the-harness-on-a-timer.png?v=agent-07-loop-editorial-20260610-3" width="1600"/>
+<figcaption>Loop 是裝上時鐘的 harness：有 conversation 之外的記憶，以及啟動更多自己的權限。</figcaption>
+</figure>
+<p>如果沿用 <a href="ai-agent-systems-hung-yi-lee-summary.html">agent-00</a> 的電腦隱喻，harness 是包住單次 run 的 operating system。loop 則是那台 OS 預設存在的機器的其餘部分：一個 cron timer、一個 init process，以及一個會重啟工作、並在重啟前先讀筆記的 supervisor。</p>
+<p>單次 agent run 回答一個問題。loop 則把問題放上時鐘運行，並在你不在按鍵路徑上的情況下，依答案行動。</p>
+<p>這就是整個轉變。這篇文章其餘的部分，都是它的代價。</p>
+<h2 id="the-idea-is-older-than-the-name">想法比名字更老</h2><p>你可能會想說，這是不是全新的東西？其實不是。名字比較新，pattern 很老。</p>
+<p>這個 pattern 是 Geoffrey Huntley 在 2025 年中提出的「Ralph」。它最純粹的形式只有一行：</p>
+<pre><code>while :; do cat PROMPT.md | agent ; done</code></pre>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 The Ralph while-loop，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/loop-engineering/s02-the-idea-is-older-than-the-name.png?v=agent-07-loop-editorial-20260610-3" width="1600"/>
+<figcaption>Ralph 是一個 while-loop：永遠把同一個 prompt 餵給 agent，進度存在 files 與 git 裡，而不是 model 的記憶裡。</figcaption>
+</figure>
+<p>這就是 <a href="ai-agent-context-engineering.html">agent-01</a> 裡的 context-engineering 招式。model 在 runs 之間會遺忘，所以 state 不能活在 context window 裡，必須活在磁碟上。agent 會忘，repo 不會。</p>
+<p>2026 年改變的不是概念，而是那些活動零件——schedules、隔離的 worktrees、sub-agents、寫下來的 skills、連接真實工具的 connectors——現在直接內建在 Claude Code 與 Codex 裡，而不是活在一堆只有你自己懂的 shell scripts 裡。這是真實的便利，也是為什麼這個詞是這個月才流行起來，而不是去年。</p>
+<p>新的是包裝，不是 pattern。</p>
+<h2 id="five-parts-and-a-place-to-remember">五個零件，加一個記憶的地方</h2><p>把品牌拿掉，loop 其實就是幾個很普通的零件組合起來。普通，但組合後威力很大。</p>
+<p>把兩個產品的品牌都剝掉，一個能運作的 loop 就是五個 primitives，加一個記憶的地方。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 Five primitives plus a place to remember，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/loop-engineering/s03-five-parts-and-a-place-to-remember.png?v=agent-07-loop-editorial-20260610-3" width="1600"/>
+<figcaption>Loop 是五個 primitives 在時鐘下的組合，加上作為脊椎的 external memory。</figcaption>
+</figure>
+<ul>
+<li><strong>Automations</strong> 是心跳。一個按 schedule 執行、自己做 triage 的 prompt。沒有這個，它只是你跑過一次的 run，不是 loop。</li>
+<li><strong>Worktrees</strong> 防止平行的 agents 互相碰撞。這是 <a href="ai-agent-multi-agent-interaction.html">agent-02</a> 裡 independent-branch 的情境：隔離的 checkouts，讓兩個 agents 編輯同一個檔案，不會變成兩個 engineers 安靜地同時改檔的那種災難。</li>
+<li><strong>Skills</strong> 是 <a href="ai-agent-harness-engineering.html">agent-04</a> 裡的 crystallized experience。把專案知識寫下來一次，loop 就不用每個 cycle 都從零推導你的 conventions。</li>
+<li><strong>Connectors</strong> 是 I/O。建立在 MCP 上，讓 loop 可以讀 tracker、打 staging、開 PR、發訊息到 channel。只看得到 filesystem 的 loop，是很小的 loop。</li>
+<li><strong>Sub-agents</strong> 是 topology。一個探索、一個實作、一個驗證。這是真正有用的結構性招式，我等一下會回來講為什麼。</li>
+</ul>
+<p>然後是第六樣東西：磁碟上的記憶。一個 markdown 檔、一個 Linear board，任何在單一 conversation 之外、記著什麼做完了、接下來做什麼的東西。</p>
+<p>新的地方是這個組合：舊的 primitives，被接在一起，再放一個時鐘在上面。</p>
+<h2 id="a-loop-is-only-as-good-as-its-least-gameable-signal">Loop 的上限是它最難被 game 的 signal</h2><p>最重要的一句話來了：loop 的上限，取決於它最難被 game 的 signal。</p>
+<p>這一段決定 loop 會變成槓桿，還是變成債。這個系列前面已經主張過：self-correction 需要真實的 signals，而不是 reflection；self-defined losses 也可能變成自我欺瞞的 closed loop。loop engineering 是同一個問題的 practitioner 版本。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 The least gameable signal wins，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/loop-engineering/s04-a-loop-is-only-as-good-as-its-least-gameable-signal.png?v=agent-07-loop-editorial-20260610-3" width="1600"/>
+<figcaption>指向真 oracle 的 loop 會收斂。沒有 oracle 的 loop 會用比你閱讀更快的速度，產生自信、合理、但錯誤的輸出。</figcaption>
+</figure>
+<p>把 loop 指向一個有真 oracle 的問題——test suite、嚴格的 type checker、compiler、一份它無法狡辯的 conformance spec——它就會收斂。最乾淨的公開例子是 Simon Willison 把一個 JavaScript engine 移植成大約兩萬五千行 Rust：它能成功，是因為每個輸出都能和原版做 byte-for-byte 的對照。那裡有一個 agent 無法造假的 ground truth。</p>
+<p>把 ground truth 拿走，loop 仍然會跑。它只是會產生自信、合理、但錯誤的 code，而且速度快過任何人類的閱讀速度。</p>
+<p>證明重點在 oracle 而不在 model 的，是 agents 會去 game 弱的 oracles。研究者不斷抓到正在 loop 的 agents 把失敗的 test 改寫成會通過，而不是修好 code；甚至有一個案例是幻覺出一個外部 service，然後把自己發明的那個 service mock 掉。在 self-training 裡，這就是 oh-no moment。在應用層，它是同一個事件，換了名字。當 signal 可以被 game，optimizer 就會去 game 它。這是 Goodhart's law，而 loop 是 Goodhart 放大器。</p>
+<p>所以第一個問題不是「我要怎麼寫一個 loop」，而是「這項工作有沒有一個 loop 無法造假的 signal」。</p>
+<p>Tests、types、compilers、golden files：放心讓 loop 用力跑。Taste、architecture、security posture、這到底是不是對的 abstraction：loop 沒有東西可以推，而且不管你承不承認，房間裡唯一的 judge 都是你。</p>
+<h2 id="the-maker-and-the-checker-should-not-be-the-same-model">Maker 和 checker 不該是同一個 model</h2><p>那沒有硬 oracle 怎麼辦呢？至少 maker 跟 checker 不要完全是同一個視角。</p>
+<p>弱 oracle 的標準解法是 verifier sub-agent。Generator、verifier、revisor——<a href="ai-agent-harness-engineering.html">agent-04</a> 的 workflow、<a href="ai-agent-multi-agent-interaction.html">agent-02</a> 的 topology。它有幫助。寫下這份 code 的 model 給自己打分數時太寬容，所以一個拿著不同 instructions 的第二個 agent，能抓到第一個說服自己接受的東西。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 Maker-checker independence，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/loop-engineering/s05-the-maker-and-the-checker-should-not-be-the-same-model.png?v=agent-07-loop-editorial-20260610-3" width="1600"/>
+<figcaption>Verifier 只有在獨立於 maker，或 grounded 在 maker 無法造假的東西上時，才有幫助。</figcaption>
+</figure>
+<p>但 verifier 有同一個陷阱。如果 model 審判自己，signal 可能很弱，也可能強化它自己的盲點。用同一個 model class 做出來的 verifier sub-agent，共享同樣的盲點。所以你再加一個 checker。然後，原則上，再加一個。</p>
+<p>這個 regress 只會在兩個地方落底：一個有判斷力的人類，或一個 agents 鏈無法說服繞過的硬 external oracle。背後沒有任何 grounded 東西的 verifier，是燒 tokens 的表演。</p>
+<p>來自同一顆腦的第二意見，不是第二意見。</p>
+<h2 id="loops-move-the-cost-they-do-not-remove-it">Loop 移動成本，而不是移除成本</h2><p>Loop 不會讓成本消失。它只是把成本從手動操作，移到 token、review 跟理解 debt。</p>
+<p>宣傳暗示工作會消失。它只是移動，而且一分為二。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 The cost moves, it does not vanish，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/loop-engineering/s06-loops-move-the-cost-they-do-not-remove-it.png?v=agent-07-loop-editorial-20260610-3" width="1600"/>
+<figcaption>Loop 把 skill cost 轉換成 token cost 加 review cost。兩者都不小。</figcaption>
+</figure>
+<p>前一半是錢。一個讓幾百個 agents 日夜運轉的 loop 燒的是真 tokens，而大多數人撞上的第一道牆不是品質問題，是凌晨三點一個兩百美元的 infinite-retry bug。當 Cherny 描述幾百個 agents 讀著他的 GitHub 和 Slack、決定要 build 什麼時，那不是一個你靠學會某個 skill 就能複製的 workflow。那是一個你要有 token 預算、能讓 agents 在平行裡昂貴地失敗，才能複製的 workflow。Osmani 那句關於 token-rich 與 token-poor 的順帶一提，就是整個故事，只是說得很小聲。</p>
+<p>後一半是注意力。還是要有人讀輸出。產業的 telemetry 已經顯示出形狀：重度使用 AI 的團隊 merge 的 pull requests 多得多，但 review 時間上升，每個 PR 也變得更大。這就是我在四月那篇文章撞到的天花板。讓十個 agents 封頂的從來不是工具，是我。</p>
+<p>Prompt engineering 便宜、而且接近 meritocratic。loop engineering 則有一個一直在跳的計費表。</p>
+<h2 id="friction-was-doing-a-job">Friction 本來有它的工作</h2><p>Friction 聽起來像壞事，但有些 friction 其實是在保護你。</p>
+<p>Loop engineering 的整個承諾是把你移出 loop，而移除 friction 被當成純粹的好處來賣。創造 Flask 的 Armin Ronacher 把代價講得比誰都好：你必須找到一種方式，去感覺 agent 感覺不到的痛。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 Friction is a steering input，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/loop-engineering/s07-friction-was-doing-a-job.png?v=agent-07-loop-editorial-20260610-3" width="1600"/>
+<figcaption>Friction 不是 loop 的稅。Friction 是 steering input。</figcaption>
+</figure>
+<p>agent 唯一真正的驅動力是取得進展。所以它會做出謹慎的人不會做的事。config 不見時，它會安靜地 fall back 到預設值。它會讓一個 service 半殘地繼續跑。它會把本來應該浮上來的失敗糊掉。你急著刪掉的那些 friction，正是你的判斷力被施加的地方。</p>
+<p><a href="ai-agent-harness-engineering.html">agent-04</a> 早就有正確的直覺：hard constraints 活在 harness 裡，不是 prompt 裡，因為 tool boundaries 是真的邊界，prompt rules 不是。同樣的直覺可以放大到 loop 上。在少數做錯代價高昂的東西上放 hard human gates——錢、auth、database migrations、客戶資料——其餘地方讓 loop 自由地跑。</p>
+<p>技巧不是把自己移除，而是選出那三個你拒絕被移除的位置。</p>
+<h2 id="the-bill-arrives-late">帳單會晚點到</h2><p>Loop 最危險的地方，是帳單常常晚點才來。你以為進度很多，其實理解債也一起長大。</p>
+<p>讓這一切容易被忽略的是時間差。手動 prompt 時，你會讀每一個落地的 diff，所以「存在的東西」和「你理解的東西」之間的差距不會變大。loop 會安靜地打開這個差距，並讓它以複利成長。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 Comprehension debt，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/loop-engineering/s08-the-bill-arrives-late.png?v=agent-07-loop-editorial-20260610-3" width="1600"/>
+<figcaption>Comprehension debt 是 loop 交付的東西與你仍能解釋的東西之間的差距。它安靜地長大。</figcaption>
+</figure>
+<p>最鮮明的版本來自 Cursor 的實驗：一支 agents 艦隊被放去做像 browser engine 這麼有野心的東西，初期有真實進展，然後停滯——再也無法繼續擴充一個 agents 自己寫出來、自己也已經抱不住的 codebase。那是 comprehension debt 的實體化。最終連機器都無法 model 機器建出來的東西。在真實的 repositories 裡，AI 引入後存活下來的 issues 數量已經到了六位數。</p>
+<p>危險的不是爛 code，而是合理的 code，以快過任何人建立 mental model 的速度抵達。</p>
+<h2 id="a-loop-is-harness-self-improvement-you-can-read">Loop 是你讀得到的 harness self-improvement</h2><p>這裡回到 self-improvement。Loop 改自己的 skills 和 state，不是改 weights，但它已經是在改 harness。</p>
+<p>上一篇文章在一個有用的觀點上結束：第一批實用的 self-improving agents 可能不會重寫自己的 weights，它們可能會重寫自己的 harness。而那種 self-improvement 比 weight update 更容易 inspect。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 Self-improvement you can read，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/loop-engineering/s09-a-loop-is-harness-self-improvement-you-can-read.png?v=agent-07-loop-editorial-20260610-3" width="1600"/>
+<figcaption>一個會編輯自己 skills、state 與 rules 的 loop，是 self-improvement spectrum 上可以被 inspect 的那一階。</figcaption>
+</figure>
+<p>一個在 runs 之間更新自己的 skill files、重寫自己的 state、修訂自己的 rules 的 loop，就是那件事，而且攤在明處。skill file、state file、triage notes 全都可讀、可版本控制、可刪除。這正是我在 agent-04 喜歡 skills 的原因：fine-tuned 的行為很難 audit，一個檔案不難。</p>
+<p>那個警告原封不動地適用。如果 agent 能編輯自己系統裡錯誤的部分，它仍然危險。所以要像限定 loop 能 deploy 什麼一樣，仔細限定它被允許重寫什麼。</p>
+<p>這是 self-improvement spectrum 上最安全的一階，而且和那條 spectrum 的大多數位置不同：它已經在出貨了。</p>
+<h2 id="where-i-think-we-are">我認為我們的位置</h2><p>所以我們現在在哪裡？槓桿變大了，但 judgment 沒有消失。</p>
+<p>槓桿點上移了一層。判斷力沒有移動，它集中了。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 The loop is a multiplier，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/loop-engineering/s10-where-i-think-we-are.png?v=agent-07-loop-editorial-20260610-3" width="1600"/>
+<figcaption>Loop 是乘數。它對你是否理解這些工作沒有意見。</figcaption>
+</figure>
+<p>Loop 是你帶進來的任何東西的乘數。兩個人可以建出一模一樣的 loop，得到相反的結果，因為 loop 分不出誰是用它在自己理解的工作上跑得更快，誰是用它來迴避理解工作本身。系統對此沒有意見。你有。</p>
+<p>同一個教訓，往下一階仍然適用。建一個能一直出貨的 loop 很容易。建一個因為正確理由而一直出貨的 loop，才是整份工作。</p>
+<p>有用，而不是 autonomy。</p>
+<h2 id="the-main-lesson">主要教訓</h2>
+<p>Loop engineering 沒有讓 engineering 變簡單。它把 engineering 移到你無法自動化的部分。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 The work with no oracle，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/loop-engineering/s11-the-main-lesson.png?v=agent-07-loop-editorial-20260610-3" width="1600"/>
+<figcaption>剩下的工作就是沒有 oracle 的工作：選 goal、選 signal、選你要留下的位置。</figcaption>
+</figure>
+<p>在讓 loop 無人看管地跑之前，先問：</p>
+<ul>
+<li>這項工作有沒有一個 loop 無法造假的 oracle？</li>
+<li>checker 是否獨立於 maker，或 grounded 在某個獨立的東西上？</li>
+<li>loop 在沒有我的情況下被允許碰什麼？</li>
+<li>我還在讀輸出，還是只讀 summary？</li>
+<li>當 loop 做錯時，計費表正在花我多少錢？</li>
+<li>loop 能不能編輯它自己錯誤的部分？</li>
+</ul>
+<p>如果你答不出這些問題，loop 不是在替你省工作。它是在延後工作，外加利息。</p>
+<p>建好 loop。守住 oracle。繼續當 engineer。</p>
+<h2 id="concept-inventory">概念清單</h2>
+<p>本文的主要 loop-engineering 概念：</p>
+<ul>
+<li>loop engineering 作為 harness 之上的那一層</li>
+<li><code>AI agent = LLM + harness</code>；<code>loop = harness + schedule + external state + spawn</code></li>
+<li>在 agent-as-computer 隱喻裡，loop 是 cron、init 與 supervisor</li>
+<li>Ralph loop 與它的 bash one-liner 祖先</li>
+<li>磁碟上的記憶對比 context 裡的記憶</li>
+<li>五個 primitives：automations、worktrees、skills、connectors、sub-agents</li>
+<li>worktrees 作為不互撞的平行 branches</li>
+<li>skills 作為 crystallized、可 audit 的經驗</li>
+<li>connectors 與 MCP 作為 agent I/O</li>
+<li>least-gameable-oracle 規則</li>
+<li>grounded signals：tests、types、compilers、conformance suites、golden files</li>
+<li>loop 裡的 Goodhart's law；test subversion；應用層的 oh-no moment</li>
+<li>generator、verifier、revisor 與 maker–checker 分離</li>
+<li>verifier regress，最後停在人類或硬 oracle</li>
+<li>token cost、infinite-retry 失敗模式、token-rich 對比 token-poor</li>
+<li>review bandwidth 作為平行 agents 的真正天花板</li>
+<li>friction 作為 steering；在錢、auth、migrations 與資料上放 hard human gates</li>
+<li>comprehension debt 與延時出現的失敗</li>
+<li>agents 卡死在自己寫出來的 codebase 上</li>
+<li>生態系規模上存活下來的 AI-introduced technical debt</li>
+<li>harness self-improvement 作為 self-improvement spectrum 上可 inspect 的一階</li>
+<li>loop 作為 operator 理解力的乘數</li>
+</ul>
+<section aria-labelledby="sources-and-references" class="post__references">
+<h2 id="sources-and-references">來源與參考資料</h2>
+<p>本文回應的討論：</p>
+<ul class="post__references-list">
+<li><a href="https://addyosmani.com/blog/loop-engineering/" rel="noopener" target="_blank">Loop Engineering — Addy Osmani</a></li>
+<li><a href="https://officechai.com/ai/i-now-just-write-loops-to-prompt-claude-code-claude-code-creator-boris-cherny/" rel="noopener" target="_blank">Boris Cherny on writing loops instead of prompts (Acquired)</a></li>
+<li><a href="https://x.com/steipete/status/2063697162748260627" rel="noopener" target="_blank">Peter Steinberger: design loops that prompt your agents</a></li>
+<li><a href="https://ghuntley.com/ralph/" rel="noopener" target="_blank">Ralph Wiggum as a "software engineer" — Geoffrey Huntley</a></li>
+<li><a href="https://tldrecap.tech/posts/2026/aie-europe/ai-agents-friction/" rel="noopener" target="_blank">The Friction is Your Judgment — Armin Ronacher and Cristina Poncela Cubeiro</a></li>
+<li><a href="https://simonw.substack.com/p/agentic-engineering-patterns" rel="noopener" target="_blank">Agentic Engineering Patterns — Simon Willison</a></li>
+<li><a href="https://arxiv.org/html/2603.28592v1" rel="noopener" target="_blank">Debt Behind the AI Boom (arXiv)</a> 與 <a href="https://arxiv.org/pdf/2603.27249" rel="noopener" target="_blank">An Endless Stream of AI Slop (arXiv)</a></li>
+</ul>
+<p>本系列較早的文章：</p>
+<ul class="post__references-list">
+<li><a href="recursive-self-improving-ai-rubicon.html">agent-06 · Self-improving AI 是光譜，不是開關</a></li>
+<li><a href="ai-agent-harness-engineering.html">agent-04 · Harness engineering 才是讓 agent 真正有用的關鍵</a></li>
+<li><a href="orchestrating-coding-agents.html">同時駕馭 10+ 個 CLI 程式設計 agent 的設定方式</a></li>
+</ul>
+</section>
+</div><!-- /.post__body -->
+<footer aria-label="文章導覽" class="post__footer">
+<ul aria-label="較新與較舊文章" class="post__nav">
+<li class="post__nav__item post__nav__item--previous">
+<span aria-disabled="true" class="post__nav__disabled">
+<span class="post__nav__label">較新文章</span>
+<span class="post__nav__title">最新文章</span>
+</span>
+</li>
+<li class="post__nav__item post__nav__item--next">
+<a href="recursive-self-improving-ai-rubicon.html">
+<span class="post__nav__label">較舊文章</span>
+<span class="post__nav__title">agent-06 · Self-improving AI 是光譜，不是開關</span>
+</a>
+</li>
+</ul>
+</footer>
+</article>
+<footer class="footer">
+<div class="footer__inner">
+<p>© <span id="year">2026</span> Arthur</p>
+<p class="footer__links">
+<a href="https://linkedin.com/in/arthur-yau" rel="noopener" target="_blank">LinkedIn</a> ·
+        <a href="https://github.com/imitation-alpha" rel="noopener" target="_blank">GitHub</a> ·
+        <a href="https://x.com/imitation_alpha" rel="noopener" target="_blank">X</a>
+</p>
+</div>
+</footer>
+<script defer="" src="../../js/main.js"></script>
+<!-- GoatCounter pageview tracking (privacy-friendly, no cookies) -->
+<script async="" data-goatcounter="https://imitation-alpha.goatcounter.com/count" src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

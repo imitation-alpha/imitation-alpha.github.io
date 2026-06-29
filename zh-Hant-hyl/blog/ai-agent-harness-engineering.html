@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant-x-hyl">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>agent-04 · Harness engineering 才是讓 agent 真正有用的關鍵 — 李宏毅老師經典的教學風格版 — Arthur</title>
+<meta content="受李宏毅教學風格啟發、非本人撰寫、審閱或背書的 harness engineering 講解：LLM 不是完整 agent，tools、permissions、workflow、feedback、memory 與 verification 才把 model 變成可委派系統。" name="description"/>
+<meta content="#0a0e0a" name="theme-color"/>
+<meta content="Arthur Yau" name="author"/>
+<meta content="article" property="og:type"/>
+<meta content="agent-04 · Harness engineering 才是讓 agent 真正有用的關鍵 — 李宏毅老師經典的教學風格版" property="og:title"/>
+<meta content="受李宏毅教學風格啟發、非本人撰寫、審閱或背書的 harness engineering 講解：LLM 不是完整 agent，tools、permissions、workflow、feedback、memory 與 verification 才把 model 變成可委派系統。" property="og:description"/>
+<meta content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-harness-engineering-xpost-cover.png?v=agent-series-cover-badge-fix-20260525-04" property="og:image"/>
+<meta content="1600" property="og:image:width"/>
+<meta content="900" property="og:image:height"/>
+<meta content="深色 campaign cover，標題為 Most Agent Failures Are Harness Failures，並呈現橙色技術 system layout。" property="og:image:alt"/>
+<meta content="zh_Hant" property="og:locale"/>
+<meta content="Arthur Yau" property="article:author"/>
+<meta content="2026-05-19" property="article:published_time"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="@imitation_alpha" name="twitter:creator"/>
+<meta content="agent-04 · Harness engineering 才是讓 agent 真正有用的關鍵 — 李宏毅老師經典的教學風格版" name="twitter:title"/>
+<meta content="受李宏毅教學風格啟發、非本人撰寫、審閱或背書的 harness engineering 講解：LLM 不是完整 agent，tools、permissions、workflow、feedback、memory 與 verification 才把 model 變成可委派系統。" name="twitter:description"/>
+<meta content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-harness-engineering-xpost-cover.png?v=agent-series-cover-badge-fix-20260525-04" name="twitter:image"/>
+<meta content="深色 campaign cover，標題為 Most Agent Failures Are Harness Failures，並呈現橙色技術 system layout。" name="twitter:image:alt"/>
+<link href="https://imitation-alpha.github.io/zh-Hant-hyl/blog/ai-agent-harness-engineering.html" rel="canonical"/>
+<link href="https://imitation-alpha.github.io/blog/ai-agent-harness-engineering.html" hreflang="en" rel="alternate"/>
+<link href="https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-harness-engineering.html" hreflang="zh-Hant" rel="alternate"/>
+<link href="https://imitation-alpha.github.io/zh-Hant-hyl/blog/ai-agent-harness-engineering.html" hreflang="zh-Hant-x-hyl" rel="alternate"/>
+<link href="https://imitation-alpha.github.io/blog/ai-agent-harness-engineering.html" hreflang="x-default" rel="alternate"/>
+<link href="../../blog/feed.xml" rel="alternate" title="arthuryau's blog RSS" type="application/rss+xml"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="../../css/styles.css?v=post-prev-next-20260521-0929" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">略過導覽</a>
+<div aria-hidden="true" class="read-progress"></div>
+<nav aria-label="主導覽" class="nav">
+<div class="nav__inner">
+<a class="nav__brand" href="../../index.html">Arthur</a>
+<button aria-expanded="false" aria-label="切換導覽" class="nav__toggle">
+<span></span><span></span><span></span>
+</button>
+<ul class="nav__links">
+<li><a href="../../index.html#about" hreflang="en">About (EN)</a></li>
+<li><a href="../../index.html#experience" hreflang="en">Experience (EN)</a></li>
+<li><a href="../../index.html#projects" hreflang="en">Projects (EN)</a></li>
+<li><a class="active" href="index.html">文章</a></li>
+<li><a href="../../index.html#publications" hreflang="en">Publications (EN)</a></li>
+<li><button aria-label="切換主題" class="nav__theme">◑</button></li>
+</ul>
+</div>
+</nav>
+<article class="post">
+<a class="post__back" href="index.html">返回風格版文章列表</a>
+<header class="post__header">
+<h1>agent-04 · Harness engineering 才是讓 agent 真正有用的關鍵 — 李宏毅老師經典的教學風格版</h1>
+<p class="post__lede">受李宏毅教學風格啟發。面向 agent builders 的 harness engineering：tools、permissions、workflows、feedback、memory 與 verification loops 如何讓 LLM 變得可用。</p>
+<p class="post__meta">
+        2026 年 5 月 19 日
+        <span class="dot">·</span>
+<span data-reading-time="">8 分鐘</span>
+<span class="dot">·</span>
+        Arthur Yau
+        <span class="dot view-dot" hidden="">·</span>
+<span data-views="" data-views-label="次瀏覽" hidden=""></span>
+</p>
+<p class="post__lang">本文是受李宏毅教學風格啟發的改寫版本，不是李宏毅老師本人撰寫、審閱或背書。也可閱讀 <a href="../../blog/ai-agent-harness-engineering.html" hreflang="en" lang="en">English</a> 原文與 <a href="../../zh-Hant/blog/ai-agent-harness-engineering.html" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a> 一般版本。</p>
+<figure class="post__hero">
+<img alt="深色 campaign cover，標題為 Most Agent Failures Are Harness Failures，並呈現橙色技術 system layout。" decoding="async" height="900" loading="eager" src="../../assets/blog-headers/ai-agent-harness-engineering-xpost-cover.png?v=agent-series-cover-badge-fix-20260525-04" width="1600"/>
+</figure>
+</header>
+<aside aria-label="目錄" class="post__toc">
+<p class="post__toc__label">內容大綱</p>
+<ul>
+<li><a href="#the-model-is-not-the-agent">model 不是 agent</a></li>
+<li><a href="#natural-language-harnesses-agentsmd-and-claudemd">自然語言 harness：<code>agents.md</code> 與 <code>CLAUDE.md</code></a></li>
+<li><a href="#tool-boundaries-are-real-boundaries">tool 邊界是真正的邊界</a></li>
+<li><a href="#agent-first-tools-are-different-from-human-first-tools">agent-first tool 不同於 human-first tool</a></li>
+<li><a href="#workflows-beat-vibes">workflow 勝過感覺</a></li>
+<li><a href="#textual-gradients">文字梯度</a></li>
+<li><a href="#lifelong-agents-need-memory-hygiene">長期運作的 agent 需要 memory hygiene</a></li>
+<li><a href="#skills-are-crystallized-experience">skill 是結晶化的經驗</a></li>
+<li><a href="#evaluating-agents-is-harder-than-it-looks">評估 agent 比看起來更難</a></li>
+<li><a href="#meta-harnesses">Meta-harness</a></li>
+<li><a href="#the-main-lesson">核心教訓</a></li>
+<li><a href="#concept-inventory">概念清單</a></li>
+</ul>
+</aside>
+<div class="post__body" id="main"><p>各位同學大家好啊，那我們就開始來上課吧。</p>
+<p>今天這堂課呢，我們要講的是：agent-04 · Harness engineering 才是讓 agent 真正有用的關鍵。</p>
+<p>一言以蔽之：大部分 agent failure 不該第一時間怪 model，很多時候是 harness 沒有給它正確工具、邊界與 feedback。</p>
+<p>今天的 roadmap 是：先用小 model 修 bug 的例子看 naive setup 怎麼壞掉，再把 harness 拆成 rules、tools、permissions、workflow、feedback、memory、skills 與 evaluation，最後問怎麼做出真的可委派的 agent。</p>
+<p>你可能會想說，這不就是把原本的文章換一種講法嗎？不是。重點是我們要照著一條線走：先看 naive attempt 怎麼壞掉，再看 system 裡哪個 method 或 tooling 出來補洞。這樣你才會知道 failure 應該 debug 在哪一層。</p>
+<blockquote><p><strong>風格說明：</strong>本文是受李宏毅教學風格啟發的教學式改寫，不是李宏毅老師本人撰寫、審閱或背書。</p></blockquote>
+<h2 id="the-model-is-not-the-agent">model 不是 agent</h2><p>第一個重點先寫在黑板上：model 不是 agent。Model 是核心 processor，harness 才讓它碰到世界。</p>
+<p>很多人談 agent 時，好像 model 本身就是 agent。這堂課推了一個不同的等式：</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 The model is not the agent，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/ai-agent-harness-engineering/s01-the-model-is-not-the-agent.png?v=agent-series-inline-editorial-dark-20260522-2200" width="1600"/>
+<figcaption>不要把 model 和它周圍的完整 agent system 混在一起。</figcaption>
+</figure>
+<pre><code class="language-text">AI agent = language model + harness</code></pre>
+<p>Harness 是 model 周圍所有讓它能運作的東西：</p>
+<ul>
+<li>tool</li>
+<li>權限</li>
+<li>file system access</li>
+<li>browser access</li>
+<li>memory</li>
+<li>規則</li>
+<li>workflow</li>
+<li>evaluation loop</li>
+<li>feedback channel</li>
+<li>safety boundary</li>
+<li>skill library</li>
+</ul>
+<p>當 agent 失敗時，問題可能出在 model。但很多時候，問題其實出在 harness。</p>
+<p>這是一個重要的 debugging 習慣。在升級 model 之前，先問系統是不是要求 model 做了不合理的事。它知道檔案在哪裡嗎？它能檢查環境嗎？它有測試嗎？它拿得到錯誤訊息嗎？它知道「完成」是什麼意思嗎？</p>
+<p>在 Gemma 的例子裡，缺的不是抽象智慧，而是程序。</p>
+<h2 id="natural-language-harnesses-agentsmd-and-claudemd">自然語言 harness：<code>agents.md</code> 與 <code>CLAUDE.md</code></h2><p>那最便宜的 harness 是什麼？常常就是一份自然語言規則檔，比如 agents.md 或 CLAUDE.md。</p>
+<p>一種實用的 harness pattern，是自然語言規則檔。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 Natural language harnesses，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/ai-agent-harness-engineering/s02-natural-language-harnesses-agents-md-and-claud.png?v=agent-series-inline-editorial-dark-20260522-2200" width="1600"/>
+<figcaption>當自然語言 rules file 能把 behavior 對應到 verification，它就能成為 harness。</figcaption>
+</figure>
+<p>不同系統用不同名稱：<code>agents.md</code>、<code>CLAUDE.md</code>、project instructions、memory files、skill files。想法相同：agent 讀一份短文件，知道在這個環境裡該怎麼工作。</p>
+<p>這堂課提出一個好觀點：這份檔案應該是地圖，不是百科全書。</p>
+<p>糟糕的 <code>agents.md</code> 會試著塞進每條規則、每個細節、每段 memory、每份 tool manual，以及每個例外。它會膨脹 context，讓重要部分更難被找到。</p>
+<p>好的 <code>agents.md</code> 會告訴 agent 該去哪裡找資訊，以及哪些原則重要：</p>
+<ul>
+<li>編輯前先檢查環境</li>
+<li>宣稱完成前先跑測試</li>
+<li>用 memory folder 存長期筆記</li>
+<li>只在相關時載入 skill</li>
+<li>未經批准不要編輯受保護檔案</li>
+<li>偏好小而可驗證的變更</li>
+</ul>
+<p>這份檔案應該引導行為，而不是取代系統其他部分。</p>
+<p>自然語言規則也不是絕對的。它們比較像法律，而不是物理定律。model 可能忽略、誤解，或被後續 context 拉走。硬性約束仍然需要存在於 harness code 裡。</p>
+<h2 id="tool-boundaries-are-real-boundaries">tool 邊界是真正的邊界</h2><p>但是同學要注意，prompt rule 是軟的，tool boundary 才是真的邊界。</p>
+<p>這堂課最清楚的區分之一，是寫在 prompt 裡的規則，和由 tool 強制執行的邊界。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 Tool boundaries are real boundaries，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/ai-agent-harness-engineering/s03-tool-boundaries-are-real-boundaries.png?v=agent-series-inline-editorial-dark-20260522-2200" width="1600"/>
+<figcaption>Prompt 裡的 rules 比由 tools 與 permissions 強制執行的 boundaries 更軟。</figcaption>
+</figure>
+<p>如果一個 cloud agent 沒有人類批准就不能掛載資料夾，對它說「不要再問我」也沒有用。harness 仍然會擋下這個動作。</p>
+<p>這就是安全與便利之間的取捨。擁有廣泛 file access 的 local agent 能做更多事，也能造成更多損害。sandboxed cloud agent 比較安全，但它可能無法完成需要 local files、browsers 或 credentials 的任務。</p>
+<p>這聽起來很平凡，但它是 agent capability 的核心。agent 能不能成為 YouTuber、deploy 網站、編輯 repo，或寄出 email，可能更少取決於 model，而更多取決於 harness 暴露了什麼。</p>
+<p>Capability 是 product decision。</p>
+<h2 id="agent-first-tools-are-different-from-human-first-tools">agent-first tool 不同於 human-first tool</h2><p>人類好用的 interface，不一定是 agent 好用的 interface。Agent 需要清楚狀態、結構化輸入、bounded output。</p>
+<p>人類喜歡圖形介面、視覺掃描，以及彈性的詮釋。agent 通常偏好結構化文字、明確狀態、確定性的命令，以及有界輸出。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 Agent-first tools，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/ai-agent-harness-engineering/s04-agent-first-tools-are-different-from-human-fir.png?v=agent-series-inline-editorial-dark-20260522-2200" width="1600"/>
+<figcaption>Agent-first tools 不同於 human-first interfaces。</figcaption>
+</figure>
+<p>這堂課討論 search tool、edit tool、linting，以及 CLI design。pattern 很一致：為人類設計的 tool，不一定是適合 agent 的好 tool。</p>
+<p>類似 Google 的搜尋頁面對人可能很合適。對 model 來說，它可能把太多無關文字倒進 context。能回傳精簡摘要與檔案引用的 search tool 可能更好。</p>
+<p>原始的 edit tool 也許能讓 model patch 一小段區域，但如果 model 看不到足夠的周邊 code，就可能引入 syntax error。加上 linting，agent 突然就得到具體的錯誤訊號。</p>
+<p>GUI 對人可能很容易。JSON command 對 agent 可能更容易。</p>
+<p>這是 agent engineering 裡最不華麗、也最重要的部分。tool interface 會塑造 model 看起來有多聰明。</p>
+<h2 id="workflows-beat-vibes">workflow 勝過感覺</h2><p>怎麼辦呢？不要只靠感覺。把 agent 放進 workflow，讓它 plan、execute、verify、revise。</p>
+<p>這堂課涵蓋幾種 workflow pattern：</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 Workflows beat vibes，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/ai-agent-harness-engineering/s05-workflows-beat-vibes.png?v=agent-series-inline-editorial-dark-20260522-2200" width="1600"/>
+<figcaption>Workflows beat vibes，因為它們迫使 agent 通過可驗證的 steps。</figcaption>
+</figure>
+<ul>
+<li>planner、generator、evaluator</li>
+<li>generator、verifier、revisor</li>
+<li>generator-evaluator contract</li>
+<li>Ralph Loop</li>
+</ul>
+<p>名字沒有結構重要。</p>
+<p>天真的 agent 會生成答案，然後希望它是對的。</p>
+<p>更好的 agent 會 plan、execute、check、revise。它可能在生成前先和 evaluator 對齊 criteria。它可能跑 verifier，然後把結果交給 revisor。它可能一直 loop，直到測試通過或 budget 用完。</p>
+<p>Ralph Loop 的 framing 刻意簡單：嘗試、取得 feedback、修正、重複。</p>
+<p>這就是為什麼 programming 是很適合 agent 的領域。環境能提供清楚的 feedback：compiler errors、failing tests、logs、type errors、lint warnings。agent 不需要猜自己有沒有變好。</p>
+<p>在其他領域，feedback channel 必須被設計出來。如果任務是物理動畫，就讓 agent 看到動畫，不只是 code。如果任務是教學影片，就讓它看到最終影片，不只是 script。</p>
+<p>Feedback 應該對齊真正的目標。</p>
+<h2 id="textual-gradients">文字梯度</h2><p>Feedback 在這裡像 textual gradient。它不改 weights，但它會改下一步 trajectory。</p>
+<p>這堂課用了很好的類比：prompt 裡的 feedback 就像文字梯度。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 Textual gradients，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/ai-agent-harness-engineering/s06-textual-gradients.png?v=agent-series-inline-editorial-dark-20260522-2200" width="1600"/>
+<figcaption>文字 feedback 可以像下一次嘗試的 gradient。</figcaption>
+</figure>
+<p>Gradient descent 會改變 model parameters。feedback loop 會改變下一個 prompt。它不會更新 weights，但仍然能改變行為。</p>
+<p>這不只是比喻。model 對有用 feedback、隨機 feedback、情緒性 feedback 的反應都不同。正確 feedback 能改善結果。隨機 feedback 可能讓結果變差。嚴厲或令人絕望的 feedback 可能把 model 推向更糟的軌跡，包含這堂課某些例子裡的作弊。</p>
+<p>實務教訓很無聊但真實：不要對你的 agent 吼叫。</p>
+<p>好的 feedback 會說明哪裡失敗、為什麼失敗，以及如何驗證下一次嘗試。糟糕的 feedback 只是把 noise 注入下一段 continuation。</p>
+<h2 id="lifelong-agents-need-memory-hygiene">長期運作的 agent 需要 memory hygiene</h2><p>Agent 如果只跑一次，memory 還不是大問題。可是 long-lived agent 會累積垃圾，所以要 memory hygiene。</p>
+<p>這堂課最後從一次性的 agent，走向長期運作的 agent。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 Memory hygiene，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/ai-agent-harness-engineering/s07-lifelong-agents-need-memory-hygiene.png?v=agent-series-inline-editorial-dark-20260522-2200" width="1600"/>
+<figcaption>Long-lived agents 需要 memory hygiene，而不只是更多 memory。</figcaption>
+</figure>
+<p>長期運作的 agent 需要 memory，但 memory 不會自動變好。它可能重複、過期、互相矛盾，或大到無法使用。這堂課提到 memory consolidation 與 AutoDream 類似的行為：agent 利用閒置時間整理自己的筆記。</p>
+<p>這正是我會期待 personal agent 需要的東西。</p>
+<p>如果一個 agent 跟我一起工作好幾個月，我不希望它只是累積 log。我希望它把經驗壓縮成可重用的 skill、project convention 和 preference。我也希望它忘記或封存已經不重要的細節。</p>
+<p>有用的 memory system 需要 garbage collection。</p>
+<h2 id="skills-are-crystallized-experience">skill 是結晶化的經驗</h2><p>Skill 是一個很實用的設計：把做過的 procedure 寫下來，下一次不要重新發明。</p>
+<p><code>skill.md</code> 這個想法，是這堂課最實用的部分之一。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 Skills crystallize experience，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/ai-agent-harness-engineering/s08-skills-are-crystallized-experience.png?v=agent-series-inline-editorial-dark-20260522-2200" width="1600"/>
+<figcaption>Skill 是結晶化的經驗：從已解決問題抽出的 reusable procedure。</figcaption>
+</figure>
+<p>如果 agent 學會怎麼做某件事，它不應該每次都重新發現流程。它可以把程序寫成 skill：何時使用、要跑哪些 command、預期會遇到什麼 error，以及如何驗證成功。</p>
+<p>這是一種低科技的 continual learning。model weights 沒有改變，但系統變好了，因為 harness 現在包含可重用的程序。</p>
+<p>我喜歡這點，因為它可稽核。fine-tuned behavior 很難檢查。skill file 可以被閱讀、編輯、versioned，也可以刪除。</p>
+<h2 id="evaluating-agents-is-harder-than-it-looks">評估 agent 比看起來更難</h2><p>最後不要忘了 evaluation。Benchmark 本身也是 harness，壞 benchmark 會讓 agent 看起來比實際更好。</p>
+<p>這堂課也提醒我們，小心那些用 LLM 模擬人類或評判輸出的 agent benchmark。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 Evaluating agents is hard，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/ai-agent-harness-engineering/s09-evaluating-agents-is-harder-than-it-looks.png?v=agent-series-inline-editorial-dark-20260522-2200" width="1600"/>
+<figcaption>Agent evaluation 很難，因為 benchmark 常常也是另一個 fragile system。</figcaption>
+</figure>
+<p>LLM customer 往往太樂於幫忙。它們解釋得很清楚、回答得很有禮貌，還會提供真實使用者可能省略的資訊。LLM judge 也可能高估互動品質。</p>
+<p>這代表 benchmark 可能讓 agent 看起來比實際更好。</p>
+<p>真實人類很混亂。他們給不完整的回答。他們會改變心意。他們沒耐心。他們會誤解問題。如果 agent 只在合作的模擬使用者面前能運作，到了野外可能就會失敗。</p>
+<p>這是一個反覆出現的主題：evaluation 是 harness 的一部分。</p>
+<h2 id="meta-harnesses">Meta-harness</h2><p>再往上一層，就是 meta-harness。強 model 幫弱 model 改規則、改 workflow、改 tools。</p>
+<p>這堂課以一個遞迴想法收尾：更強的 model 可以替較弱的 model 設計 harness。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 Meta-harnesses，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/ai-agent-harness-engineering/s10-meta-harnesses.png?v=agent-series-inline-editorial-dark-20260522-2200" width="1600"/>
+<figcaption>Meta-harnesses 用更強 models 設計系統，讓較弱 models 變得有用。</figcaption>
+</figure>
+<p>這不是科幻。它已經很合理。一個強 model 可以檢查 failure、編輯 <code>agent.md</code>、加入 workflow rules，並改善較弱 agent 的 benchmark score。</p>
+<p>這是通往 self-improving system 的重要橋梁。在 AI 重寫自己的 weights 之前，它可能先重寫自己的 scaffolding。這更容易檢查，也更安全地迭代，但仍然很強大。</p>
+<p>Harness improvement 可能是第一種實用的 agent self-improvement。</p>
+<h2 id="the-main-lesson">核心教訓</h2>
+<p>我能從這堂課萃取出的最好一句話是：不要把 model failure 和 system failure 混在一起。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 The main lesson，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/ai-agent-harness-engineering/s11-the-main-lesson.png?v=agent-series-inline-editorial-dark-20260522-2200" width="1600"/>
+<figcaption>不要把 model failure 和 system failure 混在一起。</figcaption>
+</figure>
+<p>當 agent 失敗時，問：</p>
+<ul>
+<li>它有正確的 tool 嗎？</li>
+<li>它知道完成標準嗎？</li>
+<li>它檢查過環境嗎？</li>
+<li>它收到有用的 feedback 嗎？</li>
+<li>它能驗證自己的答案嗎？</li>
+<li>它有可重用的 skill 嗎？</li>
+<li>context 乾淨嗎？</li>
+<li>硬性邊界是在 prompt 外部被強制執行的嗎？</li>
+</ul>
+<p>如果沒有，model 可能不是瓶頸。</p>
+<p>Harness engineering 是那個不性感的 layer，它把 language model 變成你真的可以委派工作的東西。</p>
+<h2 id="concept-inventory">概念清單</h2>
+<p>這堂課的主要 harness engineering 概念：</p>
+<ul>
+<li><code>AI agent = LLM + harness</code></li>
+<li>harness 作為 tool、權限、workflow、feedback、memory、規則、skill 與邊界</li>
+<li>Gemma 2B 修 bug 例子：同一個 model 在更好的程序後成功</li>
+<li>自然語言 harness，例如 <code>agents.md</code>、<code>CLAUDE.md</code> 與 project rules</li>
+<li>rules file 應該是地圖，而不是百科全書</li>
+<li>prompt rules 對比硬性的 tool 或 permission boundaries</li>
+<li>sandboxed 與 local agents 中安全與便利的取捨</li>
+<li>Agent-Computer Interface，或 ACI</li>
+<li>agent-first CLI 與 JSON-style tools，而不是 human-first GUI</li>
+<li>會摘要並引用來源，而不是倒出整頁內容的 search tool</li>
+<li>搭配 syntax check、lint 與 test 的 edit tool</li>
+<li>planner、generator、evaluator workflow</li>
+<li>開始工作前的 generator-evaluator contract</li>
+<li>generator、verifier、revisor loop</li>
+<li>Ralph Loop：嘗試、取得 feedback、修正、重複</li>
+<li>textual gradient：自然語言 feedback 塑造下一步</li>
+<li>task-specific feedback，例如 code 的 test，或動畫的 video playback</li>
+<li>model-specific harness 與 context-window-aware workflow</li>
+<li>steering vectors 與 emotional-state effects，例如絕望會增加作弊</li>
+<li>lifelong agents、memory consolidation 與 AutoDream-style cleanup</li>
+<li>skill 作為可重用的結晶化經驗</li>
+<li>verbalized feedback，例如 compile error 或 preference correction</li>
+<li>evaluation 中的 LLM customer bias 與 LLM judge bias</li>
+<li>PinchBench 與真實世界 agent task evaluation</li>
+<li>強 model 改善弱 model harness 的 meta-harness</li>
+</ul>
+<section aria-labelledby="sources-and-references" class="post__references">
+<h2 id="sources-and-references">來源與參考資料</h2>
+<p>本文主要觀看的來源：</p>
+<ul class="post__references-list">
+<li><a href="https://www.youtube.com/watch?v=R6fZR_9kmIw&amp;t=3950s" rel="noopener" target="_blank">Harness Engineering：有時候語言模型不是不夠聰明，只是沒有人類好好引導</a></li>
+</ul>
+</section>
+</div><!-- /.post__body -->
+<footer aria-label="文章導覽" class="post__footer">
+<ul aria-label="較新與較舊文章" class="post__nav">
+<li class="post__nav__item post__nav__item--previous">
+<a href="ai-self-correction-decoding-workflow-reasoning.html">
+<span class="post__nav__label">較新文章</span>
+<span class="post__nav__title">agent-05 · Self-correction 有三層：decoding、workflow 與 reasoning</span>
+</a>
+</li>
+<li class="post__nav__item post__nav__item--next">
+<a href="ai-agent-research-work.html">
+<span class="post__nav__label">較舊文章</span>
+<span class="post__nav__title">agent-03 · AI agent 會如何改變研究工作</span>
+</a>
+</li>
+</ul>
+</footer>
+</article>
+<footer class="footer">
+<div class="footer__inner">
+<p>© <span id="year">2026</span> Arthur</p>
+<p class="footer__links">
+<a href="https://linkedin.com/in/arthur-yau" rel="noopener" target="_blank">LinkedIn</a> ·
+        <a href="https://github.com/imitation-alpha" rel="noopener" target="_blank">GitHub</a> ·
+        <a href="https://x.com/imitation_alpha" rel="noopener" target="_blank">X</a>
+</p>
+</div>
+</footer>
+<script defer="" src="../../js/main.js"></script>
+<!-- GoatCounter pageview tracking (privacy-friendly, no cookies) -->
+<script async="" data-goatcounter="https://imitation-alpha.goatcounter.com/count" src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
