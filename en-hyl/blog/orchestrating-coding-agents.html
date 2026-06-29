@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en-x-hyl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My setup for running 10+ CLI coding agents at once — Lee Hung-yi-inspired teaching style — Arthur</title>
+  <meta name="description" content="A Lee Hung-yi-inspired, not written, reviewed, or endorsed by him, explanation of CLI agent orchestration: tmux as workspace, Tailscale as private network, Termius as mobile I/O, and a PWA panel as control room." />
+  <meta name="theme-color" content="#0a0e0a" />
+  <meta name="author" content="Arthur Yau" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="My setup for running 10+ CLI coding agents at once — Lee Hung-yi-inspired teaching style" />
+  <meta property="og:description" content="A Lee Hung-yi-inspired, not written, reviewed, or endorsed by him, explanation of CLI agent orchestration: tmux as workspace, Tailscale as private network, Termius as mobile I/O, and a PWA panel as control room." />
+  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/orchestrating-coding-agents.png?v=selected-headers-20260520-0635" />
+  <meta property="og:image:width" content="1600" />
+  <meta property="og:image:height" content="900" />
+  <meta property="og:image:alt" content="Abstract dark technical illustration of orchestrating many CLI coding agents through a tmux-style grid and mobile control panel." />
+  <meta property="og:locale" content="en_US" />
+  <meta property="article:author" content="Arthur Yau" />
+  <meta property="article:published_time" content="2026-04-28" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@imitation_alpha" />
+  <meta name="twitter:title" content="My setup for running 10+ CLI coding agents at once — Lee Hung-yi-inspired teaching style" />
+  <meta name="twitter:description" content="A Lee Hung-yi-inspired, not written, reviewed, or endorsed by him, explanation of CLI agent orchestration: tmux as workspace, Tailscale as private network, Termius as mobile I/O, and a PWA panel as control room." />
+  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/orchestrating-coding-agents.png?v=selected-headers-20260520-0635" />
+  <meta name="twitter:image:alt" content="Abstract dark technical illustration of orchestrating many CLI coding agents through a tmux-style grid and mobile control panel." />
+  <link rel="canonical" href="https://imitation-alpha.github.io/en-hyl/blog/orchestrating-coding-agents.html" />
+  <link rel="alternate" hreflang="en" href="https://imitation-alpha.github.io/blog/orchestrating-coding-agents.html" />
+  <link rel="alternate" hreflang="en-x-hyl" href="https://imitation-alpha.github.io/en-hyl/blog/orchestrating-coding-agents.html" />
+  <link rel="alternate" hreflang="zh-Hant" href="https://imitation-alpha.github.io/zh-Hant/blog/orchestrating-coding-agents.html" />
+  <link rel="alternate" hreflang="zh-Hant-x-hyl" href="https://imitation-alpha.github.io/zh-Hant-hyl/blog/orchestrating-coding-agents.html" />
+  <link rel="alternate" hreflang="x-default" href="https://imitation-alpha.github.io/blog/orchestrating-coding-agents.html" />
+  <link rel="alternate" type="application/rss+xml" title="arthuryau's blog RSS" href="../../blog/feed.xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/styles.css?v=post-prev-next-20260521-0929" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="read-progress" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="Primary">
+    <div class="nav__inner">
+      <a class="nav__brand" href="../../index.html">Arthur</a>
+      <button class="nav__toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links">
+        <li><a href="../../index.html#about">About</a></li>
+        <li><a href="../../index.html#experience">Experience</a></li>
+        <li><a href="../../index.html#projects">Projects</a></li>
+        <li><a href="index.html" class="active">Blog</a></li>
+        <li><a href="../../index.html#publications">Publications</a></li>
+        <li><button class="nav__theme" aria-label="Toggle theme">◑</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="post">
+    <a class="post__back" href="index.html">Back to style-version posts</a>
+
+    <header class="post__header">
+      <h1>My setup for running 10+ CLI coding agents at once — Lee Hung-yi-inspired teaching style</h1>
+      <p class="post__lede">Inspired by Lee Hung-yi's teaching style. In this lesson, we do not treat 10+ coding agents as “many chatbots.” We treat them as a computer system that needs scheduling, observation, remote I/O, and recovery.</p>
+      <p class="post__meta">
+        Apr 28, 2026
+        <span class="dot">·</span>
+        <span data-reading-time>13 min</span>
+        <span class="dot">·</span>
+        Arthur Yau
+        <span class="dot view-dot" hidden>·</span>
+        <span data-views data-views-label="views" hidden></span>
+      </p>
+      <p class="post__lang">
+        This is a teaching-style rewrite inspired by Lee Hung-yi. It was not written, reviewed, or endorsed by him. Also available as the
+        <a href="../../blog/orchestrating-coding-agents.html" hreflang="en" lang="en">English original</a>,
+        <a href="../../zh-Hant/blog/orchestrating-coding-agents.html" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a>, and
+        <a href="../../zh-Hant-hyl/blog/orchestrating-coding-agents.html" hreflang="zh-Hant-x-hyl" lang="zh-Hant-x-hyl">繁體中文李宏毅老師經典的教學風格版</a>.
+      </p>
+      <figure class="post__hero">
+        <img src="../../assets/blog-headers/orchestrating-coding-agents.png?v=selected-headers-20260520-0635" alt="Abstract dark technical illustration of orchestrating many CLI coding agents through a tmux-style grid and mobile control panel." width="1600" height="900" loading="eager" decoding="async" />
+      </figure>
+    </header>
+
+    <aside class="post__toc" aria-label="Contents">
+      <p class="post__toc__label">Content outline</p>
+      <ul>
+        <li><a href="#one-sentence">One sentence</a></li>
+        <li><a href="#why-it-breaks">Why 10 agents break the human first</a></li>
+        <li><a href="#stack">The whole stack is just four layers</a></li>
+        <li><a href="#tmux">tmux: every agent needs a fixed seat</a></li>
+        <li><a href="#tailscale">Tailscale: close the door before showing prototypes</a></li>
+        <li><a href="#termius">Termius: the phone is an emergency console</a></li>
+        <li><a href="#gui">When you actually need pixels</a></li>
+        <li><a href="#panel">PWA panel: not another terminal, a control room</a></li>
+        <li><a href="#what-id-add">What I would add next</a></li>
+        <li><a href="#install">Setup guide: tmux, Tailscale, Termius</a></li>
+        <li><a href="#persistence">Persist sessions across reboots</a></li>
+        <li><a href="#further-reading">Further reading</a></li>
+      </ul>
+    </aside>
+
+    <div class="post__body" id="main">
+      <p>All right, everyone, let's start class.</p>
+      <p>Today we are going to talk about something that sounds very cool, but in practice can become a small disaster very quickly: running 10+ CLI coding agents at the same time.</p>
+      <p>You might say, “Is that difficult? Just open ten terminals, launch Claude Code, Codex, Gemini CLI, assign ten tasks, and now I am a ten-times engineer.”</p>
+      <p>Very beautiful in theory. But in practice, you will discover something slightly annoying. Ten agents are not automatically ten times the output. Ten agents are more like opening a tiny software outsourcing company, except every employee walks to your desk every five minutes and asks, “Boss, should I press y?”</p>
+      <p>You did not read that wrong. The bottleneck is often not whether the model can write code. The bottleneck is whether you can find it, know where it is stuck, answer one small question from your phone, and verify that what it produced is actually correct.</p>
+
+      <h2 id="one-sentence">One sentence</h2>
+      <p>So today's one-sentence version is this:</p>
+      <p><strong>Running 10+ CLI agents is not mainly a prompt engineering problem. It is an operating system problem.</strong></p>
+      <p>You have to do process management. Which agent is running? Which one is idle? Which one is waiting for input? Which one should be killed? Which output deserves attention? A prompt alone cannot solve all of that.</p>
+      <p>So the roadmap is simple. First, we let the naive “open many terminals” approach crash into a wall. Then we look at the four layers I use to keep the system tractable: <code>tmux</code>, Tailscale, Termius, and a PWA panel. Finally, we walk through the setup so you can reproduce the smallest useful version.</p>
+      <p>At the end, you will find that nothing here is magical. Each layer is ordinary. The punchline is that when you compress the friction between you and the agents, orchestration becomes possible. That's it.</p>
+
+      <h2 id="why-it-breaks">Why 10 agents break the human first</h2>
+      <p>Let's start from the problem. Suppose today you have ten CLI agents:</p>
+      <ul>
+        <li>one implementing a feature,</li>
+        <li>one investigating a test failure,</li>
+        <li>one drafting a PR description,</li>
+        <li>one reading logs,</li>
+        <li>one doing code review,</li>
+        <li>and a few more running long jobs that you yourself may have already half-forgotten.</li>
+      </ul>
+      <p>If there is only one agent, life is simple. You watch it. It asks a question; you answer. It finishes; you verify.</p>
+      <p>But when there are ten agents, the problem changes. The question is no longer “can an agent do useful work?” The question becomes “how do I know which one needs me right now?”</p>
+      <p>For example, you open Termius, SSH into the box, attach tmux, switch session, switch window, scroll back, and look for the latest question. Maybe that takes 20 seconds. Sounds fine, right?</p>
+      <p>But 20 seconds times 10 sessions, times dozens of checks a day. Think about it. This is not deep ML. This is like ordering ten drinks when each drink only takes 20 seconds, and suddenly you are just standing at the counter watching your afternoon disappear.</p>
+      <p>So we need a system. The goal of the system is not to make the agent smarter. The goal is to shorten every step between human attention and agent state.</p>
+
+      <h2 id="stack">The whole stack is just four layers</h2>
+      <p>All right, the stack looks like this:</p>
+      <pre><code>  ┌──────────────┐                              ┌─ home box ──────────────────────┐
+  │ Mac          │                              │ tmux                            │
+  │ (iTerm /     │ ◀───────┐                    │  ├─ session: project-a          │
+  │  Ghostty)    │         │                    │  │   ├─ window: Claude Code     │
+  └──────────────┘         │                    │  │   ├─ window: tests / logs    │
+                           │      Tailscale     │  │   └─ window: git ops         │
+  ┌──────────────┐         ├──── (private ─────▶│  ├─ session: project-b          │
+  │ Phone        │ ◀───────┤      mesh)         │  │   └─ ...                     │
+  │ (Termius +   │         │                    │  └─ session: ...                │
+  │  PWA panel)  │ ◀───────┘                    │                                 │
+  └──────────────┘                              └─────────────────────────────────┘</code></pre>
+      <p>The diagram looks busy, but actually there are only four layers.</p>
+      <p>Layer one: <code>tmux</code>. It lets every agent live on the host, so the agent does not die when your laptop closes, Wi-Fi drops, or your phone switches networks.</p>
+      <p>Layer two: Tailscale. It lets your Mac and phone connect back to your home box without throwing SSH, Streamlit, Jupyter, or random prototype servers onto the public internet.</p>
+      <p>Layer three: Termius. It turns your phone into an emergency console. Not a full development environment. Just enough to answer, “yes, run the tests,” while you are on the train.</p>
+      <p>Layer four: a PWA panel. It lays the agents out as cards, so you do not keep getting lost inside tmux.</p>
+      <p>Four layers together turn “ten terminals” into an agent farm you can actually schedule.</p>
+
+      <h2 id="tmux">tmux: every agent needs a fixed seat</h2>
+      <p>Let's begin with tmux. tmux sounds like an old-school terminal tool, right? In this workflow, it is basically the process table.</p>
+      <p>tmux has three ideas: session, window, and pane. If you are hearing those words for the first time, they can feel annoying. That's okay. Imagine a classroom.</p>
+      <p>A session is a classroom. For example, the <code>home-page</code> project gets one room, and the <code>research-agent</code> project gets another. A window is a whiteboard section inside that room: one board for Claude Code, one for tests and logs, one for git operations. A pane is one whiteboard split into smaller pieces.</p>
+      <p>The analogy stops there. In the real system, the session lives in the tmux server, not in your terminal app. So when you close the laptop, the agent is still there. When your phone SSHs in later, you can attach back to the same session.</p>
+      <p>My layout is intentionally boring:</p>
+      <pre><code>tmux new -s &lt;project&gt;</code></pre>
+      <p>One session per project. Inside it, I usually keep a few windows:</p>
+      <ul>
+        <li><strong>agent</strong>: Claude Code, Codex, or Gemini CLI.</li>
+        <li><strong>tests/logs</strong>: test runs and development server output.</li>
+        <li><strong>pipeline</strong>: long-running jobs.</li>
+        <li><strong>git</strong>: diff, commit, branch, PR.</li>
+      </ul>
+      <p>Why does this matter? Because every agent gets an address. It is not “some agent in some terminal.” It is <code>project-a:agent</code>. It has a room and a seat.</p>
+      <p>When the number of agents grows, chaos usually does not come from the code. It comes from not having addresses.</p>
+
+      <h2 id="tailscale">Tailscale: close the door before showing prototypes</h2>
+      <p>Next, the second layer: Tailscale.</p>
+      <p>The agents run on a home box because that is where the GPU, disk, datasets, and long-lived sessions are. But you are not always sitting next to that box. So how do you connect back?</p>
+      <p>The naive answer is port forwarding or public hostnames. You expose SSH. You expose a dashboard. You expose a Streamlit prototype. Everything “works,” and then three weeks later you remember that half of those prototypes had no authentication.</p>
+      <p>What do we do?</p>
+      <p>This is where Tailscale is useful. Tailscale basically puts your Mac, phone, and home box into the same private mesh. In plain language, they can see each other like machines on the same dorm LAN, but random people on the internet cannot see them.</p>
+      <p>For example, if I run a Streamlit prototype on port 8501, I can open this from the phone:</p>
+      <pre><code>http://homebox:8501</code></pre>
+      <p>No nginx. No Let's Encrypt. No public hostname. No midnight moment where you suddenly think, “Wait, did I leave an unauthenticated prototype on the internet?”</p>
+      <p>Many local prototypes are simply not designed for strangers. Putting one on the public internet is like removing the door from your apartment because you are only going downstairs for noodles. Not very technical, but the image is clear.</p>
+      <p>So the role of Tailscale here is simple: work remotely, without opening the front door.</p>
+
+      <h2 id="termius">Termius: the phone is an emergency console</h2>
+      <p>Third layer: Termius.</p>
+      <p>You might say, “Operating CLI agents from a phone sounds painful.” Yes. It is painful. So the point is not to make the phone your main development machine. The point is to let the phone handle small interrupts.</p>
+      <p>For example, an agent may ask:</p>
+      <ul>
+        <li>Should I run the tests?</li>
+        <li>Should I apply this migration?</li>
+        <li>Should I open a PR?</li>
+        <li>There is a conflict; which direction should I take?</li>
+      </ul>
+      <p>These do not require 200 lines of typing. You just need a usable SSH console to push the workflow forward.</p>
+      <p>The key feature that makes Termius usable with tmux on iPhone is the shortcut bar. <kbd>Esc</kbd>, <kbd>Tab</kbd>, <kbd>Ctrl</kbd>, <kbd>Alt</kbd>, arrow keys, and <kbd>Shift+Tab</kbd> sit above the keyboard.</p>
+      <p>Without that row, using terminal on a phone feels like typing with boxing gloves. With that row, you can at least switch tmux sessions, answer one prompt, detach, and keep looking out the train window.</p>
+      <figure>
+        <img src="../../blog/assets/termius-ios.jpg" alt="Termius on iPhone showing a Claude Code CLI session inside tmux, with the shortcut bar (esc/tab/ctrl/alt/arrows) above the iOS keyboard." />
+        <figcaption>Termius on iOS. Not a full IDE, but as an emergency console, it is enough.</figcaption>
+      </figure>
+      <p>One small trick: auto-attach to tmux when SSH connects.</p>
+      <pre><code>if [[ -z "$TMUX" &amp;&amp; -n "$SSH_CONNECTION" &amp;&amp; $- == *i* ]]; then
+  tmux attach -t main 2&gt;/dev/null || tmux new -s main
+fi</code></pre>
+      <p>The meaning is simple. If this is an interactive SSH login and we are not already in tmux, attach to <code>main</code>. If <code>main</code> does not exist, create it. That's it.</p>
+
+      <h2 id="gui">When you actually need pixels</h2>
+      <p>Most work stays inside the terminal. But sometimes you really do need pixels.</p>
+      <p>For example, an agent launches a dashboard. Or a Jupyter UI. Or a tool simply refuses to run headless. Trying to solve that purely through terminal is like repairing a bicycle with chopsticks. Maybe possible, but you will question your life choices.</p>
+      <p>So I keep Chrome Remote Desktop and a VNC server on the home box. CRD is simpler and works through a browser. VNC is also fine, as long as it is bound to the Tailscale interface and not exposed publicly.</p>
+      <p>This layer is not for daily use. But for the 5% of tasks that really need a screen, it saves you.</p>
+
+      <h2 id="panel">PWA panel: not another terminal, a control room</h2>
+      <p>Up to this point, we have tmux, Tailscale, and Termius. Is the problem solved? Not yet.</p>
+      <p>Because the hardest thing is not “can I type into a session?” The hardest thing is “which session should I look at right now?”</p>
+      <p>This is where the PWA panel appears.</p>
+      <p>I built a small PWA that turns each running CLI agent into a card. Each card shows:</p>
+      <ul>
+        <li>status: <em>working</em>, <em>idle</em>, <em>waiting on input</em>, <em>offline</em>,</li>
+        <li>project tag,</li>
+        <li>last interaction time,</li>
+        <li>latest output,</li>
+        <li>and notification when it needs human attention.</li>
+      </ul>
+      <p>Tap a card and you get a chat-style view where you can send the next instruction directly. No SSH. No tmux navigation. No scrolling forever to find what it asked.</p>
+      <div class="figure-row">
+        <figure>
+          <img src="../../blog/assets/panel-list-view.jpg" alt="A PWA showing CLI agent sessions as cards, grouped by status — idle, working, needs input, offline — each with a project tag." />
+          <figcaption>List view: not fancy decoration, just the answer to “which agent needs me?”</figcaption>
+        </figure>
+        <figure>
+          <img src="../../blog/assets/panel-session-view.jpg" alt="A single CLI agent session opened inside the PWA, with a message input and a row of terminal shortcut keys." />
+          <figcaption>Session view: send one instruction without opening SSH.</figcaption>
+        </figure>
+      </div>
+      <p>You can imagine this panel as an anime-style command room. The point is not that you personally operate every machine. The point is that you need a radar screen: which tile is red, which one can keep running, which one needs attention.</p>
+      <p>The analogy stops there. In the real system, the panel is not doing judgment for you. It simply concentrates scattered terminal state into one view so you waste less attention.</p>
+      <p>The more polished, open-source version of this idea is called <a href="https://github.com/imitation-alpha/vmux/" target="_blank" rel="noopener">vmux</a>. The repo is currently just a placeholder. <strong>If it crosses 100 stars, I will start turning it into a real public project.</strong></p>
+
+      <h2 id="what-id-add">What I would add next</h2>
+      <p>There are three things I want to add next.</p>
+      <p>First, let one agent read another agent's output without a human copy-pasting between them. If the human is only relaying messages, the human is an expensive message bus.</p>
+      <p>Second, broadcast mode. Select a group of sessions and send the same prompt to all of them. For example: “Run the tests and report the failure summary.” You do not need this every day, but when you need it, it feels very good.</p>
+      <p>Third, voice input. This is genuinely useful on buses. You do not want to type a long prompt while the bus is shaking. You want to say, “Push that branch and open a draft PR,” and then be done.</p>
+
+      <h2 id="install">Setup guide: tmux, Tailscale, Termius</h2>
+      <p>All right. We have finished the concept part. Now let's enter the part you can actually copy. The goal is not to memorize every setting. The goal is to get the smallest useful version running, then add pieces slowly.</p>
+
+      <h3>tmux</h3>
+      <p>macOS:</p>
+      <pre><code>brew install tmux</code></pre>
+      <p>On Windows, use WSL. On Linux, use your package manager.</p>
+      <p>If you want comfortable defaults, use Oh My Tmux:</p>
+      <pre><code>git clone https://github.com/gpakosz/.tmux.git ~/.tmux
+ln -s -f ~/.tmux/.tmux.conf ~/.tmux.conf
+cp ~/.tmux/.tmux.conf.local ~/</code></pre>
+      <p>The commands you actually use all the time are basically these:</p>
+      <pre><code>tmux a                # attach to last session
+tmux new -s &lt;name&gt;    # create a new session
+&lt;C-b&gt; z               # zoom current pane
+&lt;C-b&gt; s               # pick a session
+&lt;C-b&gt; q               # show pane numbers, then jump
+&lt;C-b&gt; &lt;n&gt;             # jump to window n</code></pre>
+      <p>Verification is also simple:</p>
+      <pre><code>tmux new -s test</code></pre>
+      <p>If you see a green status bar, you are inside tmux. Press <kbd>Ctrl-b</kbd>, then <kbd>d</kbd> to detach. Then run:</p>
+      <pre><code>tmux a -t test</code></pre>
+      <p>You are back. That is the minimum loop.</p>
+
+      <h3>Tailscale</h3>
+      <ol>
+        <li>Sign up at <a href="https://tailscale.com" target="_blank" rel="noopener">tailscale.com</a>. The personal plan is free for up to 100 devices.</li>
+        <li>Install Tailscale on the home box. On macOS: <code>brew install --cask tailscale</code>. On Windows: download the installer from <a href="https://tailscale.com/download" target="_blank" rel="noopener">tailscale.com/download</a>.</li>
+        <li>Install the Tailscale app on the phone and sign in with the same account.</li>
+        <li>Turn on MagicDNS so you can connect by hostname instead of memorizing IPs.</li>
+      </ol>
+      <p>Verification: the phone Tailscale app shows the home box as Active. Then open this in phone Safari:</p>
+      <pre><code>http://&lt;home-box&gt;:&lt;port&gt;</code></pre>
+      <p>If you can see your local dev server, the private mesh is working.</p>
+
+      <h3>Termius</h3>
+      <ol>
+        <li>Install Termius from the App Store. The free tier is enough.</li>
+        <li>Hosts → New Host. Enter the Tailscale MagicDNS hostname, port 22, username, and SSH private key.</li>
+        <li>Settings → Terminal → Bottom bar. Add <kbd>Esc</kbd>, <kbd>Ctrl</kbd>, <kbd>Tab</kbd>, arrow keys, and <kbd>Shift+Tab</kbd>.</li>
+        <li>Enable Auto-Reconnect so Wi-Fi ↔ cellular handoffs are less likely to break the session.</li>
+      </ol>
+      <p>Smallest test:</p>
+      <ol>
+        <li>On the home box: <code>tmux new -s claude</code>, start Claude Code.</li>
+        <li><kbd>Ctrl-b</kbd> <kbd>d</kbd> to detach. Close the terminal.</li>
+        <li>On the phone: open Termius, connect, then <code>tmux a -t claude</code>.</li>
+        <li>Send one message to the agent.</li>
+      </ol>
+      <p>Now you can control a desktop CLI agent from a phone over a private network. The minimal stack is just that.</p>
+
+      <h3 id="install-auto-attach">Auto-attach to tmux on SSH</h3>
+      <p>If you do not want to type <code>tmux a</code> every time, add this to <code>~/.bashrc</code> or <code>~/.zshrc</code> on the home box:</p>
+      <pre><code>if [[ -z "$TMUX" &amp;&amp; -n "$SSH_CONNECTION" &amp;&amp; $- == *i* ]]; then
+  tmux attach -t main 2&gt;/dev/null || tmux new -s main
+fi</code></pre>
+      <p>Termius can also do this per host through Hosts → Edit → Startup Command:</p>
+      <pre><code>tmux attach -t main || tmux new -s main</code></pre>
+      <p>Pick one approach. Do not make both sides too clever. The worst configuration is the one that you yourself cannot understand three months later.</p>
+
+      <h2 id="persistence">Persist sessions across reboots</h2>
+      <p>The tmux server lives in memory. A reboot, OS update, or accidental <code>killall tmux</code> will erase the sessions.</p>
+      <p>For an agent workflow, this hurts. What disappears is not only a terminal layout. It is in-flight context.</p>
+      <p>What do we do? Use three plugins:</p>
+      <ul>
+        <li><strong>TPM</strong>: tmux plugin manager.</li>
+        <li><strong>tmux-resurrect</strong>: snapshot save and restore.</li>
+        <li><strong>tmux-continuum</strong>: automatic snapshots and auto-restore when tmux starts.</li>
+      </ul>
+      <p>Install TPM:</p>
+      <pre><code>git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm</code></pre>
+      <p>Add the following to <code>~/.tmux.conf.local</code> if you use the gpakosz config, or <code>~/.tmux.conf</code> otherwise:</p>
+      <pre><code># Plugins
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-continuum'
+
+# Capture pane scrollback so output is restored too
+set -g @resurrect-capture-pane-contents 'on'
+
+# Restore vim/nvim sessions and keep ssh panes alive
+set -g @resurrect-strategy-vim  'session'
+set -g @resurrect-strategy-nvim 'session'
+set -g @resurrect-processes 'ssh psql mysql sqlite3 "~vim-&gt;vim" "~nvim-&gt;nvim"'
+
+# Autosave every 15 min, auto-restore on tmux server start
+set -g @continuum-save-interval '15'
+set -g @continuum-restore 'on'
+
+# TPM init must be the LAST line
+run '~/.tmux/plugins/tpm/tpm'</code></pre>
+      <p>Reload:</p>
+      <pre><code>tmux source-file ~/.tmux.conf</code></pre>
+      <p>Then press <kbd>prefix + I</kbd> inside tmux to install the plugins.</p>
+      <p>Verification loop: open a session, run a few commands, press <kbd>prefix + Ctrl-s</kbd> to save a snapshot, then run <code>killall tmux</code>. Open a new shell. Continuum should restore the layout, working directory, and visible scrollback.</p>
+      <p>One caveat. <code>@resurrect-capture-pane-contents 'on'</code> writes pane scrollback as plain text under <code>~/.local/share/tmux/resurrect/</code>. If your panes may contain API keys or other secrets, either remove that line or make sure FileVault / disk encryption is on.</p>
+      <p>This is not paranoia. Agents often print surprising things. Do not let a recovery mechanism become a secret archive.</p>
+
+      <h2 id="recap">Recap</h2>
+      <p>All right, let's summarize.</p>
+      <p>First, the 10+ CLI agent problem is not just about making models stronger. It is orchestration. Who is running, who is stuck, who needs a reply — all of that needs management.</p>
+      <p>Second, <code>tmux</code> gives every agent a fixed seat. Tailscale gives you a private connection. Termius makes the phone an emergency console. The PWA panel concentrates the state.</p>
+      <p>Third, the real punchline is to shorten every step between you and the agent. One less session switch. One less log scroll. One less terminal hunt. Then you are more willing to run many agents in parallel.</p>
+      <p>So running 10+ CLI agents sounds like a very advanced AI workflow. But if you open the box, it is actually very plain system design.</p>
+      <p>That is what I wanted to share today.</p>
+
+      <section class="post__references" aria-labelledby="further-reading">
+        <h2 id="further-reading">Further reading</h2>
+        <p>If shell, vim, tmux, and the whole “living in the terminal” mindset are new to you, I recommend MIT's <a href="https://missing.csail.mit.edu/2020/" target="_blank" rel="noopener">Missing Semester (2020)</a>. It is the course every CS program should have, but often does not. There is also a <a href="https://missing.csail.mit.edu/" target="_blank" rel="noopener">2026 version</a>.</p>
+      </section>
+    </div><!-- /.post__body -->
+
+    <footer class="post__footer" aria-label="Post navigation">
+      <ul class="post__nav" aria-label="Newer and older posts">
+        <li class="post__nav__item post__nav__item--previous">
+          <a href="../../blog/ai-agent-systems-hung-yi-lee-summary.html">
+            <span class="post__nav__label">Newer post</span>
+            <span class="post__nav__title">agent-00 · The AI agent is a computer system around an LLM processor</span>
+          </a>
+        </li>
+        <li class="post__nav__item post__nav__item--next">
+          <span class="post__nav__disabled" aria-disabled="true">
+            <span class="post__nav__label">Older post</span>
+            <span class="post__nav__title">Oldest post</span>
+          </span>
+        </li>
+      </ul>
+    </footer>
+  </article>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <p>© <span id="year">2026</span> Arthur</p>
+      <p class="footer__links">
+        <a href="https://linkedin.com/in/arthur-yau" target="_blank" rel="noopener">LinkedIn</a> ·
+        <a href="https://github.com/imitation-alpha" target="_blank" rel="noopener">GitHub</a> ·
+        <a href="https://x.com/imitation_alpha" target="_blank" rel="noopener">X</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js" defer></script>
+  <!-- GoatCounter pageview tracking (privacy-friendly, no cookies) -->
+  <script data-goatcounter="https://imitation-alpha.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
