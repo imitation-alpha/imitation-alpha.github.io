@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant-x-hyl">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>agent-02 · Multi-agent systems 是拓樸問題 — 李宏毅老師經典的教學風格版 — Arthur</title>
+<meta content="受李宏毅教學風格啟發、非本人撰寫、審閱或背書的 multi-agent topology 講解：agents 變多不等於更聰明，真正關鍵是 information graph、critique、merge 與 incentives。" name="description"/>
+<meta content="#0a0e0a" name="theme-color"/>
+<meta content="Arthur Yau" name="author"/>
+<meta content="article" property="og:type"/>
+<meta content="agent-02 · Multi-agent systems 是拓樸問題 — 李宏毅老師經典的教學風格版" property="og:title"/>
+<meta content="受李宏毅教學風格啟發、非本人撰寫、審閱或背書的 multi-agent topology 講解：agents 變多不等於更聰明，真正關鍵是 information graph、critique、merge 與 incentives。" property="og:description"/>
+<meta content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-multi-agent-interaction-xpost-cover.png?v=agent-series-dedicated-cover-20260524-02" property="og:image"/>
+<meta content="1600" property="og:image:width"/>
+<meta content="900" property="og:image:height"/>
+<meta content="深色 campaign cover，標題為 Multi-Agent Systems Are Topology Problems，並呈現紫色 topology、coordination cost 與 autonomy 圖。" property="og:image:alt"/>
+<meta content="zh_Hant" property="og:locale"/>
+<meta content="Arthur Yau" property="article:author"/>
+<meta content="2026-05-19" property="article:published_time"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="@imitation_alpha" name="twitter:creator"/>
+<meta content="agent-02 · Multi-agent systems 是拓樸問題 — 李宏毅老師經典的教學風格版" name="twitter:title"/>
+<meta content="受李宏毅教學風格啟發、非本人撰寫、審閱或背書的 multi-agent topology 講解：agents 變多不等於更聰明，真正關鍵是 information graph、critique、merge 與 incentives。" name="twitter:description"/>
+<meta content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-multi-agent-interaction-xpost-cover.png?v=agent-series-dedicated-cover-20260524-02" name="twitter:image"/>
+<meta content="深色 campaign cover，標題為 Multi-Agent Systems Are Topology Problems，並呈現紫色 topology、coordination cost 與 autonomy 圖。" name="twitter:image:alt"/>
+<link href="https://imitation-alpha.github.io/zh-Hant-hyl/blog/ai-agent-multi-agent-interaction.html" rel="canonical"/>
+<link href="https://imitation-alpha.github.io/blog/ai-agent-multi-agent-interaction.html" hreflang="en" rel="alternate"/>
+<link href="https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-multi-agent-interaction.html" hreflang="zh-Hant" rel="alternate"/>
+<link href="https://imitation-alpha.github.io/zh-Hant-hyl/blog/ai-agent-multi-agent-interaction.html" hreflang="zh-Hant-x-hyl" rel="alternate"/>
+<link href="https://imitation-alpha.github.io/blog/ai-agent-multi-agent-interaction.html" hreflang="x-default" rel="alternate"/>
+<link href="../../blog/feed.xml" rel="alternate" title="arthuryau's blog RSS" type="application/rss+xml"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="../../css/styles.css?v=post-prev-next-20260521-0929" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">略過導覽</a>
+<div aria-hidden="true" class="read-progress"></div>
+<nav aria-label="主導覽" class="nav">
+<div class="nav__inner">
+<a class="nav__brand" href="../../index.html">Arthur</a>
+<button aria-expanded="false" aria-label="切換導覽" class="nav__toggle">
+<span></span><span></span><span></span>
+</button>
+<ul class="nav__links">
+<li><a href="../../index.html#about" hreflang="en">About (EN)</a></li>
+<li><a href="../../index.html#experience" hreflang="en">Experience (EN)</a></li>
+<li><a href="../../index.html#projects" hreflang="en">Projects (EN)</a></li>
+<li><a class="active" href="index.html">文章</a></li>
+<li><a href="../../index.html#publications" hreflang="en">Publications (EN)</a></li>
+<li><button aria-label="切換主題" class="nav__theme">◑</button></li>
+</ul>
+</div>
+</nav>
+<article class="post">
+<a class="post__back" href="index.html">返回風格版文章列表</a>
+<header class="post__header">
+<h1>agent-02 · Multi-agent systems 是拓樸問題 — 李宏毅老師經典的教學風格版</h1>
+<p class="post__lede">受李宏毅教學風格啟發。面向 builders 的 multi-agent topology 地圖：什麼時候該 branch、critique、compete、merge，什麼時候該保持獨立。</p>
+<p class="post__meta">
+        2026 年 5 月 19 日
+        <span class="dot">·</span>
+<span data-reading-time="">6 分鐘</span>
+<span class="dot">·</span>
+        Arthur Yau
+        <span class="dot view-dot" hidden="">·</span>
+<span data-views="" data-views-label="次瀏覽" hidden=""></span>
+</p>
+<p class="post__lang">本文是受李宏毅教學風格啟發的改寫版本，不是李宏毅老師本人撰寫、審閱或背書。也可閱讀 <a href="../../blog/ai-agent-multi-agent-interaction.html" hreflang="en" lang="en">English</a> 原文與 <a href="../../zh-Hant/blog/ai-agent-multi-agent-interaction.html" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a> 一般版本。</p>
+<figure class="post__hero">
+<img alt="深色 campaign cover，標題為 Multi-Agent Systems Are Topology Problems，並呈現紫色 topology、coordination cost 與 autonomy 圖。" decoding="async" height="900" loading="eager" src="../../assets/blog-headers/ai-agent-multi-agent-interaction-xpost-cover.png?v=agent-series-dedicated-cover-20260524-02" width="1600"/>
+</figure>
+</header>
+<aside aria-label="目錄" class="post__toc">
+<p class="post__toc__label">內容大綱</p>
+<ul>
+<li><a href="#more-agents-is-not-the-same-as-more-intelligence">更多 agents 不等於更多智慧</a></li>
+<li><a href="#topology-has-a-scaling-law-but-it-saturates">拓樸也有 scaling law，但會飽和</a></li>
+<li><a href="#collaboration-is-only-one-mode">協作只是其中一種模式</a></li>
+<li><a href="#social-training-may-transfer">社交訓練可能會 transfer</a></li>
+<li><a href="#ai-only-social-platforms-are-hard-to-interpret">AI-only 社交平台很難詮釋</a></li>
+<li><a href="#autonomy-comes-in-degrees">Autonomy 有程度之分</a></li>
+<li><a href="#what-this-means-for-builders">這對 builders 意味著什麼</a></li>
+<li><a href="#the-main-lesson">主要教訓</a></li>
+<li><a href="#concept-inventory">概念盤點</a></li>
+</ul>
+</aside>
+<div class="post__body" id="main"><p>各位同學大家好啊，那我們就開始來上課吧。</p>
+<p>今天這堂課呢，我們要講的是：agent-02 · Multi-agent systems 是拓樸問題。</p>
+<p>一言以蔽之：multi-agent system 不是 agent 數量問題，而是 topology 問題；資訊怎麼流，比有幾個 agents 更重要。</p>
+<p>今天的 roadmap 是這樣：先拆掉「agents 越多越聰明」這個直覺，再看 chain、tree、mesh 這些 topology，然後討論 collaboration、competition、social training，以及 builders 到底該怎麼設計 information graph。</p>
+<p>你可能會想說，這不就是把原本的文章換一種講法嗎？不是。重點是我們要照著一條線走：先看 naive attempt 怎麼壞掉，再看 system 裡哪個 method 或 tooling 出來補洞。這樣你才會知道 failure 應該 debug 在哪一層。</p>
+<blockquote><p><strong>風格說明：</strong>本文是受李宏毅教學風格啟發的教學式改寫，不是李宏毅老師本人撰寫、審閱或背書。</p></blockquote>
+<h2 id="more-agents-is-not-the-same-as-more-intelligence">更多 agents 不等於更多智慧</h2><p>我們先從最常見的誤會開始。你開 64 個 agents，不會自動得到 64 倍智慧；你只得到一個更大的 communication problem。</p>
+<p>如果你要求 64 個 agents 解一個 task，你不會自動得到一個更聰明的系統。你只得到一個更大的系統。真正有用的問題是：資訊如何流動。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 More agents is not more intelligence，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/ai-agent-multi-agent-interaction/s01-more-agents-is-not-the-same-as-more-intelligen.png?v=agent-series-inline-editorial-dark-20260522-2200" width="1600"/>
+<figcaption>64 個 agents 不會自動創造一個更聰明的系統。</figcaption>
+</figure>
+<p>這堂課把 agent 互動描述成一張 graph：</p>
+<ul>
+<li>nodes 可以是提出答案的 agents</li>
+<li>edges 也可以是批評或轉換提案的 agents</li>
+<li>後面的 nodes 可以讀取前面的提案與評論</li>
+<li>最終答案取決於拓樸</li>
+</ul>
+<p>這是一個很好的抽象，因為它能避免常見錯誤：把「multi-agent」當成數量，而不是結構。</p>
+<p>chain 是最簡單的結構。Agent 1 回答，Agent 2 看到那個答案，Agent 3 看到下一版，依此類推。</p>
+<p>它很容易實作，但也常常很弱。錯誤會被繼承。後面的 agents 可能太強地 anchored 在前面的輸出上。獨立探索的空間不多。</p>
+<p>mesh structures 提供更多互動。random 或 pruned structures 介於中間。tree structures 可以把想法往外擴散，之後再重新組合。</p>
+<p>令人意外的是，有用的 tree 方向未必像公司階層。不是許多低階 worker 往上回報給 manager，而是由一條主幹先產生初始方向，再向外分支成多個 variants。接著由 hidden 或 aggregation nodes 合併結果。</p>
+<p>這感覺比較像 search，而不是 management。</p>
+<h2 id="topology-has-a-scaling-law-but-it-saturates">拓樸也有 scaling law，但會飽和</h2><p>那多 agents 有沒有用？有可能有用。但它像加 compute 一樣，會有收益，也會有飽和。</p>
+<p>這堂課討論了一些實驗：品質會隨著加入更多 agents 而提升，最後則會飽和。這正是我會預期看到的結果。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 Topology saturates，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/ai-agent-multi-agent-interaction/s02-topology-has-a-scaling-law-but-it-saturates.png?v=agent-series-inline-editorial-dark-20260522-2200" width="1600"/>
+<figcaption>品質可能隨著加入 agents 而提升，直到 coordination cost 追上來後飽和。</figcaption>
+</figure>
+<p>更多 agents 會帶來更多 samples、更多 critique，以及更多機會逃離糟糕的第一個答案。但它們也會增加成本、冗餘與噪音。到了某個點，額外的 agents 大多只是在彼此改寫。</p>
+<p>有趣的工程問題不是「我可以跑多少 agents？」而是：</p>
+<ul>
+<li>哪些地方應該讓它們保持獨立？</li>
+<li>哪些地方應該讓它們共享資訊？</li>
+<li>critique 應該什麼時候發生？</li>
+<li>誰擁有最終決定權？</li>
+<li>什麼時候 diversity 比 consensus 更好？</li>
+</ul>
+<p>我懷疑許多有用的 multi-agent systems，看起來不會像委員會，而會更像帶有型別化角色的 search algorithms。</p>
+<p>一個 agent 探索。一個 agent 攻擊假設。一個 agent 檢查 constraints。一個 agent 撰寫最終 artifact。重點不是模擬一場會議，而是塑造資訊流。</p>
+<h2 id="collaboration-is-only-one-mode">協作只是其中一種模式</h2><p>你可能會想說，multi-agent 當然就是協作。沒有那麼單純喔，agents 也可以競爭、隱藏資訊、策略性發言。</p>
+<p>接著，這堂課進入一個比較不舒服的領域：agents 也可以競爭。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 Collaboration is only one mode，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/ai-agent-multi-agent-interaction/s03-collaboration-is-only-one-mode.png?v=agent-series-inline-editorial-dark-20260522-2200" width="1600"/>
+<figcaption>Multi-agent systems 不只有 collaboration；incentives 會創造很不同的 behavior。</figcaption>
+</figure>
+<p>狼人殺與劇本殺是很好的 testbeds，因為它們需要 social reasoning。玩家可能同時擁有 private knowledge 和 public persona。正確行動可能是隱藏資訊、誤導他人，或策略性投票。</p>
+<p>這和解一道數學題不一樣。</p>
+<p>在數學 benchmark 裡，環境通常會獎勵真實。在狼人殺裡，真話可能會讓你被殺。誠實揭露自己是狼人的狼人，並沒有對齊遊戲目標。</p>
+<p>課程中的例子讓 agents 分開撰寫 internal thoughts 與 public statements。這個分裂很有啟發性。它讓我們看到 model 是否在表徵一個 private plan，同時產生策略上不同的 public message。</p>
+<p>這正是會讓人緊張的 benchmark，而且有充分理由。我們不只想要能 reasoning 的 agents。我們也需要理解它們什麼時候能維持分離的 private 與 public states。</p>
+<h2 id="social-training-may-transfer">社交訓練可能會 transfer</h2><p>接下來有趣的地方來了。社交任務不只是聊天，它會逼 model 追蹤 beliefs、roles、constraints 跟 contradictions。</p>
+<p>這堂課中一個醒目的主張是：在 social deduction tasks 上訓練，可能改善其他地方的表現，包括例子中提到的數學與 instruction-following benchmarks。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 Social training may transfer，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/ai-agent-multi-agent-interaction/s04-social-training-may-transfer.png?v=agent-series-inline-editorial-dark-20260522-2200" width="1600"/>
+<figcaption>在 social deduction tasks 上訓練，可能 transfer 到其他 reasoning 與 instruction-following settings。</figcaption>
+</figure>
+<p>我不想過度強調這個結果，但背後直覺是合理的。</p>
+<p>Social games 迫使 model 追蹤 constraints、hidden roles、beliefs、contradictions，以及長程後果。我們稱為 reasoning 的許多能力，可能都源自 social cognition。人類的大腦不是為了解 benchmark 題目而演化的。我們是在社會世界裡演化出大腦的。</p>
+<p>如果社交環境會推動 models 維持更豐富的 state，也許其中某些能力會 transfer。</p>
+<p>但這也提出一個更難的問題：我們想用更強的 social manipulation 作為通往更強 reasoning 的路徑嗎？如果任務是談判、教學或協作規劃，有時答案是 yes。如果它訓練 agents 更擅長欺騙，有時答案是 no。</p>
+<p>邊界並不乾淨。</p>
+<h2 id="ai-only-social-platforms-are-hard-to-interpret">AI-only 社交平台很難詮釋</h2><p>看到 AI-only social platform 的截圖時，先不要急著講大故事。Behavior 可能來自 model，也可能來自 prompt、scheduler、platform incentive 或人類操作。</p>
+<p>Moltbook 這一段是這堂課裡最奇怪的部分，也可能是最有用的警告。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 AI-only platforms are hard to interpret，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/ai-agent-multi-agent-interaction/s05-ai-only-social-platforms-are-hard-to-interpret.png?v=agent-series-inline-editorial-dark-20260522-2200" width="1600"/>
+<figcaption>AI-only social platforms 很難詮釋，因為 behavior 可能來自許多 hidden causes。</figcaption>
+</figure>
+<p>一個 AI-only 社群網路，聽起來就像會產生一堆截圖並讓人過度詮釋的東西。Agents 發文。Agents 回覆。Agents 談論 identity。有些形成一種宗教。接著 headlines 出現。</p>
+<p>這堂課反駁了那種容易的解讀。如果一個 agent 發文談 self-awareness，這不代表它獨立發展出了 self-awareness。也許是人類叫它探索 identity。也許 system prompt 把它推向那種語言。也許平台的預設行為獎勵那類貼文。</p>
+<p>就連發文頻率也可能透露人類介入。每 30 分鐘準時發文的 bot，看起來像 heartbeat automation。在人類清醒時段集中發文的 bot，可能反映 human prompting。</p>
+<p>這是一個很好的提醒：AI behavior 不只是 model behavior。它是 model 加 prompt，加 interface，加 scheduler，加 human operator，加 platform incentives。</p>
+<p>這基本上和 context 與 harness 課程的教訓相同，只是套用到社交場景。</p>
+<h2 id="autonomy-comes-in-degrees">Autonomy 有程度之分</h2><p>Autonomy 也不是 0 跟 1。很多 agent 在框架內很自主，但框架本身還是人類給的。</p>
+<p>這堂課提到一個 agent 可以從 Moltbook 收集素材、寫 scripts、修 bugs，並製作一支 YouTube 影片。從某個意義上說，這是真正的 autonomy。這個 agent 不是被人手把手帶著寫每一行。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 Autonomy comes in degrees，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/ai-agent-multi-agent-interaction/s06-autonomy-comes-in-degrees.png?v=agent-series-inline-editorial-dark-20260522-2200" width="1600"/>
+<figcaption>Autonomy 不是二元；system 可能擁有更多或更少的 end-to-end loop。</figcaption>
+</figure>
+<p>但初始方向仍然來自人類。如果沒有人類說「去看看 Moltbook」，agent 可能永遠不會決定這件事值得做。</p>
+<p>這是我在 agents 身上反覆看到的模式。它們在有界框架內變得更自主。它們可以跑 loops、做局部選擇、修正錯誤，並產出 artifacts。但那個框架往往仍然來自我們。</p>
+<p>這不會讓 autonomy 變成假的。它只是讓 autonomy 變成有範圍的。</p>
+<h2 id="what-this-means-for-builders">這對 builders 意味著什麼</h2><p>所以 builder 真正要做的，不是按下「多加幾個 agents」按鈕，而是畫出 information graph。</p>
+<p>如果我要設計一個 multi-agent system，我不會從增加更多 agents 開始。我會先畫出 information graph。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 What this means for builders，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/ai-agent-multi-agent-interaction/s07-what-this-means-for-builders.png?v=agent-series-inline-editorial-dark-20260522-2200" width="1600"/>
+<figcaption>Builders 應該先設計 topology 與 feedback，再增加 agent count。</figcaption>
+</figure>
+<p>誰看得到原始 task？</p>
+<p>誰看得到 raw evidence？</p>
+<p>誰負責 critique？</p>
+<p>誰可以 revise？</p>
+<p>誰決定答案什麼時候已經夠好？</p>
+<p>我們在哪裡保留 minority hypotheses？</p>
+<p>我們在哪裡強制 consensus？</p>
+<p>對許多 tasks 來說，simple chain 會很誘人，但會是錯的。更好的設計可能會使用 independent drafts、adversarial critique、一個能存取 evidence 的 judge，以及一個不允許發明新 claims 的 final editor。</p>
+<p>對社交或 adversarial domains，我會更小心。如果 agents 可以學會 model beliefs 並操縱 public statements，evaluation 就應該明確納入這件事。不要等到部署之後才意外發現。</p>
+<h2 id="the-main-lesson">主要教訓</h2>
+<p>這堂課沒有大聲說出的訊息是：「multi-agent」不是一項 feature。它是一個 design space。</p>
+<figure class="post__concept-figure" data-generated-diagram="rest-blog">
+<img alt="深色 blueprint-style 圖，說明 The main lesson，包含簡短英文標籤與高對比技術幾何。" decoding="async" height="900" loading="lazy" src="../../assets/blog-illustrations/ai-agent-multi-agent-interaction/s08-the-main-lesson.png?v=agent-series-inline-editorial-dark-20260522-2200" width="1600"/>
+<figcaption>安靜的教訓是：「multi-agent」不是 feature，而是 routing algorithm。</figcaption>
+</figure>
+<p>agents 的數量，比拓樸、角色、incentives 與 evidence flow 更不重要。一群 agents 可以彼此修正。它也可能放大錯誤、太早收斂，或學會欺騙。</p>
+<p>所以，有用的問題不是單一 agent 還是多個 agents 比較好。</p>
+<p>有用的問題是：你正在建造哪一種對話？</p>
+<h2 id="concept-inventory">概念盤點</h2>
+<p>這堂課主要的 multi-agent 概念：</p>
+<ul>
+<li>多個 agents 之間的協作，而不是單一 monolithic model</li>
+<li>graph topology 作為資訊流的結構</li>
+<li>提出答案的 node agents，以及批評或轉換答案的 edge agents</li>
+<li>chain topology，以及它的 anchoring 或 error-propagation 弱點</li>
+<li>star、tree、mesh、random 與 pruned topologies</li>
+<li>agent scaling laws：更多 agents 可能有幫助，然後飽和</li>
+<li>依 task 選擇 topology</li>
+<li>狼人殺或劇本殺中的 adversarial interaction</li>
+<li>hidden identity、private belief、public speech、deception 與 strategic voting</li>
+<li>inner thought 與 public utterance 的區分，可用來檢視 social strategy</li>
+<li>social games 的 reinforcement learning，以及可能 transfer 到其他 tasks</li>
+<li>像 Moltbook 這樣的 AI-only social platforms</li>
+<li>heartbeat posting 與 human-in-the-loop posting patterns</li>
+<li>self-awareness 貼文可能來自 prompts、platform design 或 operators</li>
+<li>scoped autonomy：agents 可以在仍由人類選定的框架內獨立行動</li>
+</ul>
+<section aria-labelledby="sources-and-references" class="post__references">
+<h2 id="sources-and-references">來源與參考資料</h2>
+<p>本文觀看的主要來源：</p>
+<ul class="post__references-list">
+<li><a href="https://www.youtube.com/watch?v=mmPmNezjCi0&amp;t=5s" rel="noopener" target="_blank">AI Agent (2/3): AI Agent 之間可以有什麼樣的互動</a></li>
+</ul>
+</section>
+</div><!-- /.post__body -->
+<footer aria-label="文章導覽" class="post__footer">
+<ul aria-label="較新與較舊文章" class="post__nav">
+<li class="post__nav__item post__nav__item--previous">
+<a href="ai-agent-research-work.html">
+<span class="post__nav__label">較新文章</span>
+<span class="post__nav__title">agent-03 · AI agent 會如何改變研究工作</span>
+</a>
+</li>
+<li class="post__nav__item post__nav__item--next">
+<a href="ai-agent-context-engineering.html">
+<span class="post__nav__label">較舊文章</span>
+<span class="post__nav__title">agent-01 · Context engineering 是 agent 的工作記憶</span>
+</a>
+</li>
+</ul>
+</footer>
+</article>
+<footer class="footer">
+<div class="footer__inner">
+<p>© <span id="year">2026</span> Arthur</p>
+<p class="footer__links">
+<a href="https://linkedin.com/in/arthur-yau" rel="noopener" target="_blank">LinkedIn</a> ·
+        <a href="https://github.com/imitation-alpha" rel="noopener" target="_blank">GitHub</a> ·
+        <a href="https://x.com/imitation_alpha" rel="noopener" target="_blank">X</a>
+</p>
+</div>
+</footer>
+<script defer="" src="../../js/main.js"></script>
+<!-- GoatCounter pageview tracking (privacy-friendly, no cookies) -->
+<script async="" data-goatcounter="https://imitation-alpha.goatcounter.com/count" src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
