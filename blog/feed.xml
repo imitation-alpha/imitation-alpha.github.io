@@ -5,12 +5,20 @@
     <link>https://imitation-alpha.github.io/blog/</link>
     <description>Notes on agentic systems, ML infrastructure, and tooling.</description>
     <language>en</language>
-    <lastBuildDate>Tue, 19 May 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 10 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>agent-07 · Loop engineering is the harness on a timer</title>
+      <link>https://imitation-alpha.github.io/blog/loop-engineering.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/blog/loop-engineering.html</guid>
+      <description>Loop engineering is harness engineering on a timer: schedule, state, spawn, and hard oracles. The hard part is choosing signals the loop cannot game.</description>
+      <pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
     <item>
       <title>agent-06 · Self-improving AI is a spectrum, not a switch</title>
       <link>https://imitation-alpha.github.io/blog/recursive-self-improving-ai-rubicon.html</link>
       <guid isPermaLink="true">https://imitation-alpha.github.io/blog/recursive-self-improving-ai-rubicon.html</guid>
-      <description>A deep dive into AI self-improvement: pseudo-labels, reward shaping, self-defined losses, proposer-solver-verifier loops, and why we are still near the Rubicon.</description>
+      <description>A spectrum map for self-improving AI: pseudo-labels, rewards, AI judges, generated tasks, harness improvement, and why we are still near the Rubicon.</description>
       <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
       <dc:creator>Arthur Yau</dc:creator>
     </item>
@@ -18,7 +26,7 @@
       <title>agent-05 · Self-correction has three layers: decoding, workflow, and reasoning</title>
       <link>https://imitation-alpha.github.io/blog/ai-self-correction-decoding-workflow-reasoning.html</link>
       <guid isPermaLink="true">https://imitation-alpha.github.io/blog/ai-self-correction-decoding-workflow-reasoning.html</guid>
-      <description>A deep dive into AI self-correction, from contrastive decoding and external feedback loops to reasoning trained with verifiable rewards.</description>
+      <description>A practical map of AI self-correction: decoding tricks, workflow feedback, and trained reasoning all need real signals, not just reflection.</description>
       <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
       <dc:creator>Arthur Yau</dc:creator>
     </item>
@@ -26,7 +34,7 @@
       <title>agent-04 · Harness engineering is how we actually make agents useful</title>
       <link>https://imitation-alpha.github.io/blog/ai-agent-harness-engineering.html</link>
       <guid isPermaLink="true">https://imitation-alpha.github.io/blog/ai-agent-harness-engineering.html</guid>
-      <description>A deep dive into harness engineering: why small models can fail from bad scaffolding, how tools and feedback shape agent behavior, and why agents need more than prompts.</description>
+      <description>Harness engineering for agent builders: tools, permissions, workflows, feedback, memory, and verification loops that make an LLM usable.</description>
       <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
       <dc:creator>Arthur Yau</dc:creator>
     </item>
@@ -34,7 +42,7 @@
       <title>agent-03 · What AI agents change about research work</title>
       <link>https://imitation-alpha.github.io/blog/ai-agent-research-work.html</link>
       <guid isPermaLink="true">https://imitation-alpha.github.io/blog/ai-agent-research-work.html</guid>
-      <description>A deep dive into Hung-yi Lee's lecture on AI agents in academic research: research assistants, idea generation, AI review, and where human judgment still matters.</description>
+      <description>A practical map of how AI agents change research work: cheaper first passes, more verification pressure, and human judgment moving to problem choice and evidence.</description>
       <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
       <dc:creator>Arthur Yau</dc:creator>
     </item>
@@ -42,7 +50,7 @@
       <title>agent-02 · Multi-agent systems are topology problems</title>
       <link>https://imitation-alpha.github.io/blog/ai-agent-multi-agent-interaction.html</link>
       <guid isPermaLink="true">https://imitation-alpha.github.io/blog/ai-agent-multi-agent-interaction.html</guid>
-      <description>A deep dive into AI agent interactions: collaboration topologies, adversarial games, AI-only social platforms, and why more agents does not automatically mean better agents.</description>
+      <description>A builder-focused map of multi-agent systems as network topologies: when agents should branch, critique, compete, merge, or stay independent.</description>
       <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
       <dc:creator>Arthur Yau</dc:creator>
     </item>
@@ -50,15 +58,15 @@
       <title>agent-01 · Context engineering is the agent's working memory</title>
       <link>https://imitation-alpha.github.io/blog/ai-agent-context-engineering.html</link>
       <guid isPermaLink="true">https://imitation-alpha.github.io/blog/ai-agent-context-engineering.html</guid>
-      <description>A deep dive into Hung-yi Lee's lecture on context engineering: prompt versus context, memory, compression, sub-agents, and agentic context management.</description>
+      <description>A practical taxonomy for agent context: prompt-visible workspace, external memory, compression, bounded observations, sub-agents, and on-demand skills.</description>
       <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
       <dc:creator>Arthur Yau</dc:creator>
     </item>
     <item>
-      <title>agent-00 · The AI agent stack, as seen through Hung-yi Lee's 2026 lectures</title>
+      <title>agent-00 · The AI agent is a computer system around an LLM processor</title>
       <link>https://imitation-alpha.github.io/blog/ai-agent-systems-hung-yi-lee-summary.html</link>
       <guid isPermaLink="true">https://imitation-alpha.github.io/blog/ai-agent-systems-hung-yi-lee-summary.html</guid>
-      <description>A field guide to six Hung-yi Lee lectures on context engineering, multi-agent systems, harnesses, self-correction, and recursive self-improvement.</description>
+      <description>A computer-architecture map for AI agents: LLM as processor, context as working set, memory as storage, tools as I/O, feedback as diagnostics, and harness as OS.</description>
       <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
       <dc:creator>Arthur Yau</dc:creator>
     </item>

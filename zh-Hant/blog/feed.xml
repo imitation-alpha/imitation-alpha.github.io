@@ -5,12 +5,20 @@
     <link>https://imitation-alpha.github.io/zh-Hant/blog/</link>
     <description>關於 agentic systems、ML infrastructure 與 tooling 的繁體中文筆記。</description>
     <language>zh-Hant</language>
-    <lastBuildDate>Tue, 19 May 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 10 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>agent-07 · Loop engineering 是定時運行的 harness</title>
+      <link>https://imitation-alpha.github.io/zh-Hant/blog/loop-engineering.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/zh-Hant/blog/loop-engineering.html</guid>
+      <description>Loop engineering 是裝上時鐘的 harness：schedule、state、spawn 與 hard oracles。難點是選出 loop 無法 game 的 signal。</description>
+      <pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
     <item>
       <title>agent-06 · Self-improving AI 是光譜，不是開關</title>
       <link>https://imitation-alpha.github.io/zh-Hant/blog/recursive-self-improving-ai-rubicon.html</link>
       <guid isPermaLink="true">https://imitation-alpha.github.io/zh-Hant/blog/recursive-self-improving-ai-rubicon.html</guid>
-      <description>深入討論 AI self-improvement：pseudo-labels、reward shaping、self-defined losses、proposer-solver-verifier loops，以及為什麼我們仍接近 Rubicon。</description>
+      <description>Self-improving AI 的 spectrum map：pseudo-labels、rewards、AI judges、generated tasks、harness improvement，以及為什麼我們仍接近 Rubicon。</description>
       <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
       <dc:creator>Arthur Yau</dc:creator>
     </item>
@@ -18,7 +26,7 @@
       <title>agent-05 · Self-correction 有三層：decoding、workflow 與 reasoning</title>
       <link>https://imitation-alpha.github.io/zh-Hant/blog/ai-self-correction-decoding-workflow-reasoning.html</link>
       <guid isPermaLink="true">https://imitation-alpha.github.io/zh-Hant/blog/ai-self-correction-decoding-workflow-reasoning.html</guid>
-      <description>深入討論 AI self-correction：從 contrastive decoding、外部 feedback loop，到以可驗證 reward 訓練出的 reasoning。</description>
+      <description>AI self-correction 的實用地圖：decoding tricks、workflow feedback、trained reasoning 都需要真實 signal，而不只是 reflection。</description>
       <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
       <dc:creator>Arthur Yau</dc:creator>
     </item>
@@ -26,7 +34,7 @@
       <title>agent-04 · Harness engineering 才是讓 agent 真正有用的關鍵</title>
       <link>https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-harness-engineering.html</link>
       <guid isPermaLink="true">https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-harness-engineering.html</guid>
-      <description>深入討論 harness engineering：小模型為何會因糟糕的 scaffolding 失敗，tool 與 feedback 如何塑造 agent 行為，以及為什麼 agent 需要的不只是 prompt。</description>
+      <description>面向 agent builders 的 harness engineering：tools、permissions、workflows、feedback、memory 與 verification loops 如何讓 LLM 變得可用。</description>
       <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
       <dc:creator>Arthur Yau</dc:creator>
     </item>
@@ -34,7 +42,7 @@
       <title>agent-03 · AI agent 會如何改變研究工作</title>
       <link>https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-research-work.html</link>
       <guid isPermaLink="true">https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-research-work.html</guid>
-      <description>深入拆解李宏毅關於 AI agents 在學術研究中的課程：research assistants、idea generation、AI review，以及 human judgment 仍然重要的地方。</description>
+      <description>AI agents 如何改變 research work：first pass 變便宜、verification 變更重要，而 human judgment 移到 problem choice 與 evidence。</description>
       <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
       <dc:creator>Arthur Yau</dc:creator>
     </item>
@@ -42,7 +50,7 @@
       <title>agent-02 · Multi-agent systems 是拓樸問題</title>
       <link>https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-multi-agent-interaction.html</link>
       <guid isPermaLink="true">https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-multi-agent-interaction.html</guid>
-      <description>深入拆解 AI agent 互動：協作拓樸、對抗式遊戲、AI-only 社交平台，以及為什麼 agents 變多不等於 agents 變好。</description>
+      <description>面向 builders 的 multi-agent topology 地圖：什麼時候該 branch、critique、compete、merge，什麼時候該保持獨立。</description>
       <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
       <dc:creator>Arthur Yau</dc:creator>
     </item>
@@ -50,15 +58,15 @@
       <title>agent-01 · Context engineering 是 agent 的工作記憶</title>
       <link>https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-context-engineering.html</link>
       <guid isPermaLink="true">https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-context-engineering.html</guid>
-      <description>深入解讀李宏毅關於 context engineering 的課程：prompt 與 context 的差異、memory、壓縮、sub-agents，以及 agentic context 管理。</description>
+      <description>面向 agent builders 的 context taxonomy：prompt-visible workspace、external memory、compression、bounded observations、sub-agents 與 on-demand skills。</description>
       <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
       <dc:creator>Arthur Yau</dc:creator>
     </item>
     <item>
-      <title>agent-00 · 從李宏毅 2026 年課程看 AI agent stack</title>
+      <title>agent-00 · AI agent 是圍繞 LLM processor 建成的 computer system</title>
       <link>https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-systems-hung-yi-lee-summary.html</link>
       <guid isPermaLink="true">https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-systems-hung-yi-lee-summary.html</guid>
-      <description>一份導讀，整理李宏毅六堂課中關於 context engineering、multi-agent systems、harness、自我修正與 recursive self-improvement 的重點。</description>
+      <description>用 computer architecture 重新理解 AI agent：LLM 是 processor，context 是 working set，memory 是 storage，tools 是 I/O，harness 是 OS。</description>
       <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
       <dc:creator>Arthur Yau</dc:creator>
     </item>
