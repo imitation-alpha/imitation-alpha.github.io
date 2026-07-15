@@ -370,6 +370,40 @@ em { color: var(--accent-warm); font-style: normal; }
 }
 
 /* PROJECTS */
+.blog-versions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 20px;
+  padding: 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+}
+.blog-versions__label {
+  margin-right: 2px;
+  color: var(--fg-muted);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.blog-versions a {
+  padding: 4px 8px;
+  color: var(--fg);
+  border: 1px solid var(--border);
+  font-size: 12px;
+}
+.blog-versions a:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.blog-versions a:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
 .project-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_URL = "https://imitation-alpha.github.io/"
 AUTHOR = "Arthur Yau"
 FEED_TITLE = "arthuryau's blog RSS"
+HYL_FEED_TITLE = "arthuryau's Lee Hung-yi-inspired teaching-style RSS"
 DC_NS = "http://purl.org/dc/elements/1.1/"
 
 ET.register_namespace("dc", DC_NS)
@@ -106,7 +107,7 @@ def post_files(directory: Path) -> list[Path]:
     index_html = (directory / "index.html").read_text(encoding="utf-8")
     ordered_names = [
         href
-        for href in re.findall(r'<a href="([^"]+\.html)">', index_html)
+        for href in re.findall(r'<a\b[^>]*\bhref="([^"]+\.html)"[^>]*>', index_html)
         if href in files
     ]
 
@@ -158,6 +159,7 @@ def collect_posts(directory: Path, language: str) -> list[Post]:
 
 def main() -> None:
     english_posts = collect_posts(ROOT / "blog", "en")
+    english_hyl_posts = collect_posts(ROOT / "en-hyl" / "blog", "en-x-hyl")
     zh_posts = collect_posts(ROOT / "zh-Hant" / "blog", "zh-Hant")
 
     write_feed(
@@ -171,6 +173,21 @@ def main() -> None:
         english_posts,
     )
     shutil.copyfile(ROOT / "blog" / "feed.xml", ROOT / "feed.xml")
+
+    write_feed(
+        ROOT / "en-hyl" / "blog" / "feed.xml",
+        {
+            "title": HYL_FEED_TITLE,
+            "link": SITE_URL + "en-hyl/blog/",
+            "description": (
+                "English posts rewritten with a roadmap-first, intuition-before-mechanism "
+                "teaching flow inspired by Lee Hung-yi. These posts were not written, "
+                "reviewed, or endorsed by Lee Hung-yi."
+            ),
+            "language": "en-x-hyl",
+        },
+        english_hyl_posts,
+    )
 
     write_feed(
         ROOT / "zh-Hant" / "blog" / "feed.xml",

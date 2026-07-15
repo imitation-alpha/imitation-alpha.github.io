@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en-x-hyl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>agent-00 · The AI agent is a computer system around an LLM processor — Lee Hung-yi-inspired teaching style — Arthur</title>
+  <meta name="description" content="A Lee Hung-yi-inspired, not written, reviewed, or endorsed by him, explanation of agent architecture: LLM as processor, context as working set, memory as storage, tools as I/O, and harness as OS." />
+  <meta name="theme-color" content="#0a0e0a" />
+  <meta name="author" content="Arthur Yau" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="agent-00 · The AI agent is a computer system around an LLM processor — Lee Hung-yi-inspired teaching style" />
+  <meta property="og:description" content="A Lee Hung-yi-inspired, not written, reviewed, or endorsed by him, explanation of agent architecture: LLM as processor, context as working set, memory as storage, tools as I/O, and harness as OS." />
+  <meta property="og:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-systems-llm-computer-system-peripherals-gpt-image-2-xpost-cover.png?v=agent00-llm-computer-system-peripherals-gpt-image-2-20260525-01" />
+  <meta property="og:image:width" content="1600" />
+  <meta property="og:image:height" content="900" />
+  <meta property="og:image:alt" content="Generated motherboard-style architecture map showing an AI agent system around an LLM processor, with manual labels for context, memory, retrieval, tools, feedback, and harness layers." />
+  <meta property="og:locale" content="en_US" />
+  <meta property="article:author" content="Arthur Yau" />
+  <meta property="article:published_time" content="2026-05-19" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@imitation_alpha" />
+  <meta name="twitter:title" content="agent-00 · The AI agent is a computer system around an LLM processor — Lee Hung-yi-inspired teaching style" />
+  <meta name="twitter:description" content="A Lee Hung-yi-inspired, not written, reviewed, or endorsed by him, explanation of agent architecture: LLM as processor, context as working set, memory as storage, tools as I/O, and harness as OS." />
+  <meta name="twitter:image" content="https://imitation-alpha.github.io/assets/blog-headers/ai-agent-systems-llm-computer-system-peripherals-gpt-image-2-xpost-cover.png?v=agent00-llm-computer-system-peripherals-gpt-image-2-20260525-01" />
+  <meta name="twitter:image:alt" content="Generated motherboard-style architecture map showing an AI agent system around an LLM processor, with manual labels for context, memory, retrieval, tools, feedback, and harness layers." />
+  <link rel="canonical" href="https://imitation-alpha.github.io/en-hyl/blog/ai-agent-systems-hung-yi-lee-summary.html" />
+  <link rel="alternate" hreflang="en" href="https://imitation-alpha.github.io/blog/ai-agent-systems-hung-yi-lee-summary.html" />
+  <link rel="alternate" hreflang="en-x-hyl" href="https://imitation-alpha.github.io/en-hyl/blog/ai-agent-systems-hung-yi-lee-summary.html" />
+  <link rel="alternate" hreflang="zh-Hant" href="https://imitation-alpha.github.io/zh-Hant/blog/ai-agent-systems-hung-yi-lee-summary.html" />
+  <link rel="alternate" hreflang="zh-Hant-x-hyl" href="https://imitation-alpha.github.io/zh-Hant-hyl/blog/ai-agent-systems-hung-yi-lee-summary.html" />
+  <link rel="alternate" hreflang="x-default" href="https://imitation-alpha.github.io/blog/ai-agent-systems-hung-yi-lee-summary.html" />
+  <link rel="alternate" type="application/rss+xml" title="arthuryau's Lee Hung-yi-inspired teaching-style RSS" href="feed.xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/styles.css?v=post-prev-next-20260521-0929" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="read-progress" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="Primary">
+    <div class="nav__inner">
+      <a class="nav__brand" href="../../index.html">Arthur</a>
+      <button class="nav__toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links">
+        <li><a href="../../index.html#about">About</a></li>
+        <li><a href="../../index.html#experience">Experience</a></li>
+        <li><a href="../../index.html#projects">Projects</a></li>
+        <li><a href="index.html" class="active">Blog</a></li>
+        <li><a href="../../index.html#publications">Publications</a></li>
+        <li><button class="nav__theme" aria-label="Toggle theme">◑</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="post">
+    <a class="post__back" href="index.html">Back to style-version posts</a>
+
+    <header class="post__header">
+      <h1>agent-00 · The AI agent is a computer system around an LLM processor — Lee Hung-yi-inspired teaching style</h1>
+      <p class="post__lede">Inspired by Lee Hung-yi's teaching style. In this lesson, we use computer architecture to understand an AI agent: LLM as processor, context as working set, memory as storage, tools as I/O, feedback as diagnostics, and harness as OS.</p>
+      <p class="post__meta">
+        May 19, 2026
+        <span class="dot">·</span>
+        <span data-reading-time>13 min</span>
+        <span class="dot">·</span>
+        Arthur Yau
+        <span class="dot view-dot" hidden>·</span>
+        <span data-views data-views-label="views" hidden></span>
+      </p>
+      <p class="post__lang">
+        This is a teaching-style rewrite inspired by Lee Hung-yi. It was not written, reviewed, or endorsed by him. Also available as the
+        <a href="../../blog/ai-agent-systems-hung-yi-lee-summary.html" hreflang="en" lang="en">English original</a>,
+        <a href="../../zh-Hant/blog/ai-agent-systems-hung-yi-lee-summary.html" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a>, and
+        <a href="../../zh-Hant-hyl/blog/ai-agent-systems-hung-yi-lee-summary.html" hreflang="zh-Hant-x-hyl" lang="zh-Hant-x-hyl">繁體中文李宏毅老師經典的教學風格版</a>.
+      </p>
+      <figure class="post__hero">
+        <img src="../../assets/blog-headers/ai-agent-systems-llm-computer-system-peripherals-gpt-image-2-xpost-cover.png?v=agent00-llm-computer-system-peripherals-gpt-image-2-20260525-01" alt="Generated motherboard-style architecture map showing an AI agent system around an LLM processor, with manual labels for context, memory, retrieval, tools, feedback, and harness layers." width="1600" height="900" loading="eager" decoding="async" />
+      </figure>
+    </header>
+
+    <aside class="post__toc" aria-label="Contents">
+      <p class="post__toc__label">Content outline</p>
+      <ul>
+        <li><a href="#why-this-frame-helps">Why this frame helps</a></li>
+        <li><a href="#architecture-map">Architecture map</a></li>
+        <li><a href="#the-llm-is-the-processor-not-the-whole-computer">The LLM is the processor, not the whole computer</a></li>
+        <li><a href="#context-is-the-loaded-working-set">Context is the loaded working set</a></li>
+        <li><a href="#memory-and-retrieval-are-storage-plus-loading-policy">Memory and retrieval are storage plus loading policy</a></li>
+        <li><a href="#tools-are-peripherals-accelerators-and-interfaces">Tools are peripherals, accelerators, and interfaces</a></li>
+        <li><a href="#feedback-and-tests-are-diagnostics">Feedback and tests are diagnostics</a></li>
+        <li><a href="#the-harness-is-the-system-layer">The harness is the system layer</a></li>
+        <li><a href="#multi-agent-systems-are-network-topologies">Multi-agent systems are network topologies</a></li>
+        <li><a href="#self-correction-is-a-control-loop">Self-correction is a control loop</a></li>
+        <li><a href="#a-builder-checklist">A builder checklist</a></li>
+        <li><a href="#companion-deep-dives">Companion deep dives</a></li>
+      </ul>
+    </aside>
+
+    <div class="post__body" id="main">
+      <p>All right, everyone, let's start class.</p>
+      <p>Today we want to answer a basic question: what exactly is an AI agent?</p>
+      <p>You might say, “Isn't it just an LLM, a chat box, and permission to do things?” If you begin there, every failure starts to look like a model failure. The model forgot. The model hallucinated. The model was not smart enough. The model needs a larger context window.</p>
+      <p>Sometimes that diagnosis is correct. But very often, it is not the first diagnosis we should make.</p>
+      <p>Today's one-sentence version is this: <strong>an AI agent is not merely a brain that can chat. It is a computer system built around an LLM processor.</strong></p>
+      <p>That is the punchline. Do not ask only how smart the model is. Ask which layer of the computer is failing.</p>
+      <p>Our roadmap is simple. First, we ask why the computer-architecture frame is useful. Then we open the box and inspect the LLM, context, memory, tools, feedback, and harness. Finally, we return to a builder checklist that you can use to debug a real agent.</p>
+      <p>The whole map compresses into one line:</p>
+      <pre><code class="language-text">agent capability = model x context x tools x feedback x harness x memory</code></pre>
+      <p>The model matters. Of course it does. But it is not the entire machine.</p>
+
+      <h2 id="why-this-frame-helps">Why this frame helps</h2>
+      <p>Let's begin from the outside. Do not rush to open the LLM and ask what is happening inside its reasoning.</p>
+      <p>Suppose you buy a computer with a very fast CPU. Would you look only at the CPU and declare the whole computer excellent? No.</p>
+      <p>You would also ask whether it has enough RAM, whether storage is reliable, whether device drivers work, whether I/O ports connect to the outside world, whether the OS schedules processes correctly, whether diagnostics surface failures, and whether permissions are locked down.</p>
+      <p>An agent is the same kind of system.</p>
+      <p>A strong model inside a weak system can look strangely incompetent. A smaller model inside a disciplined system can look surprisingly capable. This is not magic. System architecture changes what the processor sees, what it can do, how errors return, and when it is allowed to claim success.</p>
+      <p>So we are not saying the model is unimportant. We are saying that if you stare only at model weights, you will miss many of the places that are actually broken.</p>
+
+      <h2 id="architecture-map">Architecture map</h2>
+      <p>Now let's draw the entire computer. The compact map looks like this:</p>
+      <ul>
+        <li><strong>LLM:</strong> CPU / reasoning processor.</li>
+        <li><strong>Context window:</strong> active working set.</li>
+        <li><strong>Long-term memory:</strong> storage layer.</li>
+        <li><strong>Retrieval:</strong> page loader / cache fill.</li>
+        <li><strong>Tools:</strong> peripherals, I/O devices, and accelerators.</li>
+        <li><strong>Tool schemas:</strong> drivers and syscalls.</li>
+        <li><strong>Feedback and tests:</strong> interrupts, diagnostics, and watchdogs.</li>
+        <li><strong>Harness:</strong> motherboard, OS, scheduler, permission layer, and recovery system.</li>
+      </ul>
+      <figure class="post__concept-figure">
+        <img src="../../assets/blog-illustrations/agent-00/llm-computer-system-map.png?v=agent00-motherboard-inline-20260525-03" alt="Motherboard-style architecture map showing an LLM processor connected to context RAM, memory, retrieval, tools, feedback, tests, and harness layers." width="1600" height="900" loading="lazy" decoding="async" />
+        <figcaption>An agent is not just the LLM CPU. It is the whole system around that processor.</figcaption>
+      </figure>
+      <p>You may object that the analogy is imperfect. An LLM does not randomly address memory like a CPU. A vector database is not literally a page table. A prompt is not literally RAM.</p>
+      <p>Correct. The analogy is not physically exact.</p>
+      <p>But it is useful as a builder's map because it forces us to inspect interfaces. Was the data loaded? Is the tool driver clear? Did an error signal return? Did the OS layer allow the process to finish too early?</p>
+      <p>A surprising amount of agent engineering is made of these boring questions.</p>
+
+      <h2 id="the-llm-is-the-processor-not-the-whole-computer">The LLM is the processor, not the whole computer</h2>
+      <p>Let's open the first box: the LLM.</p>
+      <p>Why call it the processor? Because the central reasoning step happens here. It consumes serialized input tokens and produces output tokens. Its weights encode language ability, coding patterns, world knowledge, reasoning habits, and behavior learned from pretraining and post-training.</p>
+      <p>That is a great deal of capability. It is still not enough.</p>
+      <p>Ask it to modify a repository and it does not automatically know which files exist. Ask it to continue yesterday's work and it does not automatically remember yesterday. Run a command and it does not innately know whether the command succeeded. Expect verification before completion and it may not do that automatically either.</p>
+      <p>What does it see? Whatever the harness loads into the prompt. What can it do? Only what the system's tools allow.</p>
+      <p>So when the agent fails, the processor may not be too weak. The active context may be wrong. The tool schema may be too loose. Feedback may be missing. The harness may allow “done” before verification.</p>
+      <p>Remember the sentence: the LLM is central, but it is not the whole computer.</p>
+
+      <h2 id="context-is-the-loaded-working-set">Context is the loaded working set</h2>
+      <p>Next, context.</p>
+      <p>Many people hear “context engineering” and imagine decorating a prompt. In our computer map, it is working-set management.</p>
+      <p>A working set is the small amount of data a process has actually loaded and can use now. An LLM cannot reach into all long-term memory on demand. It sees a prompt. If important information is not serialized into that prompt-visible workspace, it effectively does not exist for the model.</p>
+      <figure class="post__concept-figure">
+        <img src="../../assets/blog-illustrations/agent-00/context-engineering.png?v=agent00-motherboard-inline-20260525-03" alt="Motherboard-style diagram showing context engineering as prompt-visible RAM, a context manager, a memory store, and loaded pages connected to an LLM processor." width="1600" height="900" loading="lazy" decoding="async" />
+        <figcaption>Context engineering is working-set management for an LLM-shaped processor.</figcaption>
+      </figure>
+      <p>What does the naive agent do? It keeps appending everything:</p>
+      <pre><code class="language-text">C_next = C_current + new_input + model_output</code></pre>
+      <p>That works for short conversations. Once the agent begins real work, it breaks. Tool outputs grow. File reads flood the prompt. Old mistakes remain. Important constraints sink beneath noise. The context window becomes a warehouse with boxes piled everywhere.</p>
+      <p>What do we do?</p>
+      <p>We replace append-only history with a function:</p>
+      <pre><code class="language-text">C_next = F(C_current, new_input, model_output)</code></pre>
+      <p>The interesting part is <code>F</code>. It decides what remains hot, what is evicted, what is summarized, what is externalized, what is retrieved, and what is delegated to a sub-agent.</p>
+      <p>So context engineering is not prompt decoration. It is memory management for an LLM-shaped processor.</p>
+
+      <h2 id="memory-and-retrieval-are-storage-plus-loading-policy">Memory and retrieval are storage plus loading policy</h2>
+      <p>You might now ask, “Isn't context simply memory?” No. Prompt-visible context and memory are different.</p>
+      <p>Memory is the storage layer outside the prompt: files, notes, logs, embeddings, databases, traces, previous decisions, user preferences, and project conventions.</p>
+      <pre><code class="language-text">C = P + M</code></pre>
+      <p><code>P</code> is the prompt-visible working set. <code>M</code> is external memory.</p>
+      <p>A weak design tries to stuff too much of <code>M</code> into <code>P</code>, putting everything into the prompt and hoping the model sorts it out.</p>
+      <p>A better system keeps memory outside, retains pointers, searches deliberately, and loads relevant pages only when needed.</p>
+      <p>Retrieval is the page-loading layer. It finds the right memory chunk and brings it into the active working set. A vector index is not literally an address-translation unit, but its architectural role is similar: the system can find relevant stored state without asking the model to carry everything at once.</p>
+      <p>This also makes sub-agents interesting. They are not only parallel workers. They can be context-compression devices. A parent sends a messy branch into another process and gets back a compact result: a claim, evidence, a file path, a command, a timestamp, or a reproduction handle.</p>
+      <p>It sounds mysterious until you open the box. Then it is simply storage plus loading policy.</p>
+
+      <h2 id="tools-are-peripherals-accelerators-and-interfaces">Tools are peripherals, accelerators, and interfaces</h2>
+      <p>Now let's inspect the tools.</p>
+      <p>Tools are not merely extra output channels. They are the I/O system around the LLM processor.</p>
+      <p>A browser tool is a network interface plus a web client. A calculator is a math coprocessor. A shell is an execution environment. A database tool is a storage controller and query engine. Image and audio tools are media accelerators. Calendar, email, cloud, robotics, and sensor APIs are external peripherals.</p>
+      <p>The LLM can reason about an action. Tools let the system touch the world.</p>
+      <p>But there is an easily overlooked layer: the tool schema.</p>
+      <p>A tool schema is the driver. It translates model intent into valid operations: argument names, types, constraints, return shapes, permissions, failure modes, and safe boundaries.</p>
+      <p>A poor driver makes a device hard to use. A vague schema forces the model to guess. A tool that returns a wall of unstructured text turns every observation into another context-management problem.</p>
+      <p>Agent-first tools should expose structured inputs, bounded outputs, concise errors, stable IDs, line numbers, raw-output handles, and deterministic verification commands. Human interfaces hide state behind visual affordances. Agent interfaces should make state machine-readable.</p>
+      <p>This is why the motherboard cover works. RAM, storage, ports, slots, accelerators, and diagnostic LEDs are not decoration. They are the agent's capability surface.</p>
+
+      <h2 id="feedback-and-tests-are-diagnostics">Feedback and tests are diagnostics</h2>
+      <p>At this point, we have a processor, working set, storage, and peripherals. How does the system learn that it is wrong?</p>
+      <p>Through feedback.</p>
+      <p>An agent that only generates and reflects is like a machine without diagnostics. It may sound thoughtful while drifting away from reality.</p>
+      <figure class="post__concept-figure">
+        <img src="../../assets/blog-illustrations/agent-00/self-correction-layers.png?v=agent00-motherboard-inline-20260525-03" alt="Motherboard-style diagram showing self-correction as an LLM processor connected to decoding, verifier, diagnostics, and watchdog modules." width="1600" height="900" loading="lazy" decoding="async" />
+        <figcaption>Self-correction needs signal paths: decoding, workflow checks, and trained reasoning behavior.</figcaption>
+      </figure>
+      <p>A useful system needs interrupts and test signals: compiler errors, failing tests, lint output, browser screenshots, user corrections, evaluator scores, reward signals, timeouts, permission denials, and watchdog checks.</p>
+      <p>The point is not to tell the model, “Please reflect.” The point is to feed a grounded signal from the environment back into the processor.</p>
+      <p>This is why programming is such a strong domain for agents. The environment can say exactly which test failed, which line would not compile, or which command returned a nonzero exit code.</p>
+      <p>Tests beat vibes because tests create an interrupt that the system cannot honestly ignore.</p>
+
+      <h2 id="the-harness-is-the-system-layer">The harness is the system layer</h2>
+      <p>Now we reach the layer builders should study most carefully: the harness.</p>
+      <p>Consider a small but brutal example. A 2B model tries to fix a bug, hallucinates the file contents, and confidently claims success. Of course it has not succeeded.</p>
+      <p>The naive response is to replace it with a larger model. That is one possible solution. But there is another: before blaming the processor, improve the system layer.</p>
+      <p>Add a few boring rules. List the directory first. Read the file before editing. Run the verification script before claiming completion. The same small model suddenly performs much better.</p>
+      <p>The model did not become smarter. The system around it became less careless.</p>
+      <figure class="post__concept-figure">
+        <img src="../../assets/blog-illustrations/agent-00/harness-engineering.png?v=agent00-motherboard-inline-20260525-03" alt="Motherboard-style diagram showing the harness as an OS boundary around the LLM processor with policy, tools, memory, verification, and scheduler modules." width="1600" height="900" loading="lazy" decoding="async" />
+        <figcaption>The harness is the OS layer: tools, tests, memory, permissions, and recovery loops.</figcaption>
+      </figure>
+      <p>The harness is more than a bus. A bus moves data. The harness decides what can happen.</p>
+      <p>It chooses what context gets loaded, what tools exist, what permissions apply, how state is stored, how failures surface, whether tests must pass, when to retry, when to stop, and how successful procedures become reusable skills.</p>
+      <p>In our analogy, the harness is motherboard plus operating system plus scheduler plus permission layer plus recovery system.</p>
+      <p>It turns a powerful text processor into a delegatable worker. That's it.</p>
+
+      <h2 id="multi-agent-systems-are-network-topologies">Multi-agent systems are network topologies</h2>
+      <p>If one processor is useful, can we simply add more? This is the multi-agent question.</p>
+      <p>You might think more agents must mean more intelligence, just as a larger meeting must produce more wisdom. It is not that simple.</p>
+      <figure class="post__concept-figure">
+        <img src="../../assets/blog-illustrations/agent-00/multi-agent-topology.png?v=agent00-motherboard-inline-20260525-03" alt="Motherboard-style diagram comparing star, chain, tree, and mesh multi-agent communication topologies." width="1600" height="900" loading="lazy" decoding="async" />
+        <figcaption>Multi-agent systems are distributed systems; communication topology changes the algorithm.</figcaption>
+      </figure>
+      <p>“Multi-agent” is not a feature. It is a topology choice.</p>
+      <p>Chain, tree, star, mesh, debate, blackboard, manager-worker, and role-based search all behave differently. Distributed-systems logic has entered agent design.</p>
+      <p>More processors do not automatically make a computer better. More communication does not automatically improve the result.</p>
+      <p>A chain is simple, but errors propagate. A mesh creates more chances for critique, but costs more and produces more noise. A tree can branch into variations, but direction and merge policy matter.</p>
+      <p>The builder's question is not merely “one agent or many?” It is: what network are you building, what state crosses each boundary, and what summary may return to the main loop?</p>
+      <p>Topology changes the algorithm. Remember that sentence.</p>
+
+      <h2 id="self-correction-is-a-control-loop">Self-correction is a control loop</h2>
+      <p>Finally, self-correction.</p>
+      <p>Self-correction sounds magical, as if the model sits quietly and reflects on its life. In practice, it is a control-loop problem.</p>
+      <p>The system tries an action, observes a signal, updates state, retries, or escalates.</p>
+      <p>This can happen at several layers. Decoding changes token selection. Workflow generates, verifies, revises, and tries again. Training can teach reasoning behavior that checks intermediate work before final output.</p>
+      <p>Self-improvement is the larger version of the same idea. Can a system improve its own data, objectives, rewards, model, tools, memory, or harness?</p>
+      <figure class="post__concept-figure">
+        <img src="../../assets/blog-illustrations/agent-00/self-improvement-spectrum.png?v=agent00-motherboard-inline-20260525-03" alt="Motherboard-style spectrum showing self-improvement moving from human-defined tasks through AI-assisted labels, harness improvement, AI judges, and recursive loops." width="1600" height="900" loading="lazy" decoding="async" />
+        <figcaption>Self-improvement is a larger control loop over data, rewards, tools, memory, model behavior, and harnesses.</figcaption>
+      </figure>
+      <p>We are not clearly across that river. AI can generate pseudo-labels, help write rewards, judge outputs, create tasks, train weaker models, and improve harness rules. But each step has traps.</p>
+      <p>Proxy reward drift makes a system chase the score instead of the goal. Self-training can plateau. Benchmark overfitting improves exams without improving work. Evaluator hacking fools the judge. Fake progress makes a metric prettier without making the system better.</p>
+      <p>The near-term self-improvement path I trust most is harness improvement: add a verifier, tighten a tool, write a reusable skill, clean memory, or improve the workflow.</p>
+      <p>That sounds less dramatic than rewriting model weights. It is also easier to inspect and much more like ordinary engineering.</p>
+
+      <h2 id="a-builder-checklist">A builder checklist</h2>
+      <p>Let's return to the opening punchline.</p>
+      <p>When an agent fails, do not blame the processor in the first second. Inspect the whole computer:</p>
+      <ul>
+        <li>Was the right working set loaded?</li>
+        <li>Was long-term memory retrieved cleanly?</li>
+        <li>Did the tools expose explicit state?</li>
+        <li>Did the drivers constrain valid actions?</li>
+        <li>Did feedback arrive as a real diagnostic signal?</li>
+        <li>Did tests or watchdogs prevent fake completion?</li>
+        <li>Did permissions match the task?</li>
+        <li>Did the harness know when to retry, stop, or escalate?</li>
+      </ul>
+      <p>Agent engineering feels messy because there is no single knob. We are building computer systems around LLM processors, and every layer changes what the processor appears capable of.</p>
+      <p>The strongest agent builders do not ask only whether the model is smart enough. They ask which system layer is failing.</p>
+      <p>If you remember only one thing, remember this: an AI agent is not a model plus a chat box. It is a computer. The LLM is the processor.</p>
+
+      <h2 id="companion-deep-dives">Companion deep dives</h2>
+      <p>This post is the architecture map. Each companion post goes deeper into one lecture topic behind the layers:</p>
+      <ol>
+        <li><a href="ai-agent-context-engineering.html">agent-01 · Context engineering is the agent's working memory</a></li>
+        <li><a href="ai-agent-multi-agent-interaction.html">agent-02 · Multi-agent systems are topology problems</a></li>
+        <li><a href="ai-agent-research-work.html">agent-03 · What AI agents change about research work</a></li>
+        <li><a href="ai-agent-harness-engineering.html">agent-04 · Harness engineering is how we actually make agents useful</a></li>
+        <li><a href="ai-self-correction-decoding-workflow-reasoning.html">agent-05 · Self-correction has three layers: decoding, workflow, and reasoning</a></li>
+        <li><a href="recursive-self-improving-ai-rubicon.html">agent-06 · Self-improving AI is a spectrum, not a switch</a></li>
+      </ol>
+      <section class="post__references" aria-labelledby="sources-and-references">
+        <h2 id="sources-and-references">Sources and references</h2>
+        <p>Source lectures behind this architecture map:</p>
+        <ul class="post__references-list">
+          <li><a href="https://www.youtube.com/watch?v=urwDLyNa9FU&amp;t=4s" target="_blank" rel="noopener">AI Agent (1/3)：核心技術 Context Engineering 基本概念解說</a></li>
+          <li><a href="https://www.youtube.com/watch?v=mmPmNezjCi0&amp;t=5s" target="_blank" rel="noopener">AI Agent (2/3): AI Agent 之間可以有什麼樣的互動</a></li>
+          <li><a href="https://www.youtube.com/watch?v=VqB8zMujdjM&amp;t=2s" target="_blank" rel="noopener">AI Agent (3/3): AI Agent 對於工作帶來的衝擊 - 以學術研究為例</a></li>
+          <li><a href="https://www.youtube.com/watch?v=R6fZR_9kmIw&amp;t=3950s" target="_blank" rel="noopener">Harness Engineering：有時候語言模型不是不夠聰明，只是沒有人類好好引導</a></li>
+          <li><a href="https://www.youtube.com/watch?v=m3i2mk5hs8U&amp;t=381s" target="_blank" rel="noopener">AI 能自我修正嗎？從 decoding、workflow 到 reasoning 的技術發展整理</a></li>
+          <li><a href="https://www.youtube.com/watch?v=s06mSAGN4gM&amp;t=415s" target="_blank" rel="noopener">AI 要跨越盧比孔河了嗎？自我成長的 AI 離我們多遠？</a></li>
+        </ul>
+      </section>
+    </div><!-- /.post__body -->
+
+    <footer class="post__footer" aria-label="Post navigation">
+      <ul class="post__nav" aria-label="Newer and older posts">
+        <li class="post__nav__item post__nav__item--previous">
+          <a href="ai-agent-context-engineering.html">
+            <span class="post__nav__label">Newer post</span>
+            <span class="post__nav__title">agent-01 · Context engineering is the agent&#x27;s working memory</span>
+          </a>
+        </li>
+        <li class="post__nav__item post__nav__item--next">
+          <a href="orchestrating-coding-agents.html">
+            <span class="post__nav__label">Older post</span>
+            <span class="post__nav__title">My setup for running 10+ CLI coding agents at once</span>
+          </a>
+        </li>
+      </ul>
+    </footer>
+  </article>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <p>© <span id="year">2026</span> Arthur</p>
+      <p class="footer__links">
+        <a href="https://linkedin.com/in/arthur-yau" target="_blank" rel="noopener">LinkedIn</a> ·
+        <a href="https://github.com/imitation-alpha" target="_blank" rel="noopener">GitHub</a> ·
+        <a href="https://x.com/imitation_alpha" target="_blank" rel="noopener">X</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js" defer></script>
+  <!-- GoatCounter pageview tracking (privacy-friendly, no cookies) -->
+  <script data-goatcounter="https://imitation-alpha.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

@@ -13,6 +13,7 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:creator" content="@imitation_alpha" />
   <link rel="alternate" type="application/rss+xml" title="arthuryau's blog RSS" href="feed.xml" />
+  <link rel="alternate" type="application/rss+xml" title="arthuryau's Lee Hung-yi-inspired teaching-style RSS" href="en-hyl/blog/feed.xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
@@ -69,7 +70,15 @@
     <!-- BLOG -->
     <section class="section" id="blog">
       <h2 class="section__title"><span class="accent">01</span> Blog</h2>
-      <div class="section__body project-grid">
+      <div class="section__body">
+        <nav class="blog-versions" aria-label="Blog versions">
+          <span class="blog-versions__label">Browse versions</span>
+          <a href="blog/index.html" hreflang="en" lang="en">English</a>
+          <a href="en-hyl/blog/index.html" hreflang="en-x-hyl" lang="en-x-hyl">English · teaching style</a>
+          <a href="zh-Hant/blog/index.html" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a>
+          <a href="zh-Hant-hyl/blog/index.html" hreflang="zh-Hant-x-hyl" lang="zh-Hant-x-hyl">繁體中文 · 教學風格</a>
+        </nav>
+        <div class="project-grid">
         <article class="project">
           <header>
             <h3><a href="blog/loop-engineering.html">agent-07 · Loop engineering is the harness on a timer</a></h3>
@@ -160,6 +169,7 @@
             <span>tmux</span><span>Tailscale</span><span>Agents</span><span>PWA</span>
           </div>
         </article>
+        </div>
       </div>
     </section>
 

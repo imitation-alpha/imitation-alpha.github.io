@@ -10,10 +10,10 @@ home-page/
 ├── css/styles.css          # All styles (light + dark theme)
 ├── js/main.js              # Nav toggle, theme switcher, year, scroll spy
 ├── scripts/generate_rss.py # RSS feed generator
-└── blog/
-    ├── index.html          # Blog index (post list)
-    ├── feed.xml            # English RSS feed
-    └── orchestrating-coding-agents.html  # Sample post — copy & rename for new posts
+├── blog/                   # Standard English posts + RSS
+├── en-hyl/blog/            # English teaching-style variants + dedicated RSS
+├── zh-Hant/blog/           # Traditional Chinese posts + RSS
+└── zh-Hant-hyl/blog/       # Traditional Chinese teaching-style variants
 ```
 
 ## Run locally
@@ -34,8 +34,10 @@ Then open <http://localhost:8000>.
 
 1. Copy `blog/orchestrating-coding-agents.html` to `blog/your-slug.html`
 2. Update `<title>`, `<meta description>`, the `<h1>`, the `post__meta` date, and the body
-3. Add a new `<li>` to the `.post-list` in `blog/index.html` linking to the new file
-4. Run `python3 scripts/generate_rss.py` to update `feed.xml` and localized blog feeds
+3. Create the matching pages in the other three variant directories and add the slug to all four indexes
+4. Add reciprocal `hreflang` metadata and visible version links to the four-page cluster
+5. Run `python3 scripts/generate_rss.py` to update the standard, localized, and teaching-style feeds
+6. Run `python3 tests/validate_rss.py` and `python3 tests/validate_variants.py`
 
 ## Customize
 

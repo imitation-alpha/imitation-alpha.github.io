@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='utf-8'?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+  <channel>
+    <title>arthuryau's Lee Hung-yi-inspired teaching-style RSS</title>
+    <link>https://imitation-alpha.github.io/en-hyl/blog/</link>
+    <description>English posts rewritten with a roadmap-first, intuition-before-mechanism teaching flow inspired by Lee Hung-yi. These posts were not written, reviewed, or endorsed by Lee Hung-yi.</description>
+    <language>en-x-hyl</language>
+    <lastBuildDate>Wed, 10 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>agent-07 · Loop engineering is the harness on a timer — Lee Hung-yi-inspired teaching style</title>
+      <link>https://imitation-alpha.github.io/en-hyl/blog/loop-engineering.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/en-hyl/blog/loop-engineering.html</guid>
+      <description>A Lee Hung-yi-inspired teaching-style explanation—not written, reviewed, or endorsed by him—of loop engineering: schedule, state, spawn, hard oracles, and review cost.</description>
+      <pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+    <item>
+      <title>agent-06 · Self-improving AI is a spectrum, not a switch — Lee Hung-yi-inspired teaching style</title>
+      <link>https://imitation-alpha.github.io/en-hyl/blog/recursive-self-improving-ai-rubicon.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/en-hyl/blog/recursive-self-improving-ai-rubicon.html</guid>
+      <description>A Lee Hung-yi-inspired teaching-style explanation—not written, reviewed, or endorsed by him—of the self-improving AI spectrum: labels, rewards, judges, tasks, harnesses, and the Rubicon.</description>
+      <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+    <item>
+      <title>agent-05 · Self-correction has three layers: decoding, workflow, and reasoning — Lee Hung-yi-inspired teaching style</title>
+      <link>https://imitation-alpha.github.io/en-hyl/blog/ai-self-correction-decoding-workflow-reasoning.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/en-hyl/blog/ai-self-correction-decoding-workflow-reasoning.html</guid>
+      <description>A Lee Hung-yi-inspired teaching-style explanation, not written, reviewed, or endorsed by Lee Hung-yi, of why AI self-correction needs signals across decoding, workflow, and trained reasoning.</description>
+      <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+    <item>
+      <title>agent-04 · Harness engineering is how we actually make agents useful — Lee Hung-yi-inspired teaching style</title>
+      <link>https://imitation-alpha.github.io/en-hyl/blog/ai-agent-harness-engineering.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/en-hyl/blog/ai-agent-harness-engineering.html</guid>
+      <description>A Lee Hung-yi-inspired teaching-style explanation, not written, reviewed, or endorsed by Lee Hung-yi, of how tools, permissions, workflows, feedback, memory, and verification turn an LLM into a useful agent.</description>
+      <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+    <item>
+      <title>agent-03 · What AI agents change about research work — Lee Hung-yi-inspired teaching style</title>
+      <link>https://imitation-alpha.github.io/en-hyl/blog/ai-agent-research-work.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/en-hyl/blog/ai-agent-research-work.html</guid>
+      <description>A Lee Hung-yi-inspired teaching-style explanation, not written, reviewed, or endorsed by Lee Hung-yi, of how agents make research first passes cheaper while verification, feasibility, and judgment become more important.</description>
+      <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+    <item>
+      <title>agent-02 · Multi-agent systems are topology problems — Lee Hung-yi-inspired teaching style</title>
+      <link>https://imitation-alpha.github.io/en-hyl/blog/ai-agent-multi-agent-interaction.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/en-hyl/blog/ai-agent-multi-agent-interaction.html</guid>
+      <description>A Lee Hung-yi-inspired, not written, reviewed, or endorsed by him, explanation of multi-agent topology: agent count is not intelligence; information graphs, critique, merging, and incentives matter.</description>
+      <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+    <item>
+      <title>agent-01 · Context engineering is the agent's working memory — Lee Hung-yi-inspired teaching style</title>
+      <link>https://imitation-alpha.github.io/en-hyl/blog/ai-agent-context-engineering.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/en-hyl/blog/ai-agent-context-engineering.html</guid>
+      <description>A Lee Hung-yi-inspired, not written, reviewed, or endorsed by him, explanation of context engineering: prompt-visible workspace, external memory, compression, bounded observations, sub-agents, and on-demand skills.</description>
+      <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+    <item>
+      <title>agent-00 · The AI agent is a computer system around an LLM processor — Lee Hung-yi-inspired teaching style</title>
+      <link>https://imitation-alpha.github.io/en-hyl/blog/ai-agent-systems-hung-yi-lee-summary.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/en-hyl/blog/ai-agent-systems-hung-yi-lee-summary.html</guid>
+      <description>A Lee Hung-yi-inspired, not written, reviewed, or endorsed by him, explanation of agent architecture: LLM as processor, context as working set, memory as storage, tools as I/O, and harness as OS.</description>
+      <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+    <item>
+      <title>My setup for running 10+ CLI coding agents at once — Lee Hung-yi-inspired teaching style</title>
+      <link>https://imitation-alpha.github.io/en-hyl/blog/orchestrating-coding-agents.html</link>
+      <guid isPermaLink="true">https://imitation-alpha.github.io/en-hyl/blog/orchestrating-coding-agents.html</guid>
+      <description>A Lee Hung-yi-inspired, not written, reviewed, or endorsed by him, explanation of CLI agent orchestration: tmux as workspace, Tailscale as private network, Termius as mobile I/O, and a PWA panel as control room.</description>
+      <pubDate>Tue, 28 Apr 2026 00:00:00 +0000</pubDate>
+      <dc:creator>Arthur Yau</dc:creator>
+    </item>
+  </channel>
+</rss>
